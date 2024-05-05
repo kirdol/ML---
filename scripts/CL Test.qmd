@@ -1,0 +1,41 @@
+```{r}
+library(rpart)
+library(caret)
+library(data.table)  # for fast data manipulation
+
+# Load data
+data <- fread(here::here("data", "Vehicle MPG - 1984 to 2023.csv"))
+
+# Drop columns with many missing values
+data[, c("Fuel Type 2", "Engine Description") := NULL]
+
+# Fill missing numeric values with the median
+numeric_cols <- names(data)[sapply(data, is.numeric)]
+data[, (numeric_cols) := lapply(.SD, function(x) fifelse(is.na(x), median(x, na.rm = TRUE), x)), .SDcols = numeric_cols]
+
+# Convert factor variables for categorical encoding
+categorical_cols <- names(data)[sapply(data, is.character)]
+data[, (categorical_cols) := lapply(.SD, as.factor), .SDcols = categorical_cols]
+
+set.seed(42)  # for reproducibility
+# Create indices for the training set
+train_indices <- createDataPartition(y = data$Make, p = 0.8, list = FALSE)
+train_data <- data[train_indices]
+test_data <- data[-train_indices]
+
+# Define the model formula
+model_formula <- Make ~ .
+
+# Train the model
+tree_model <- rpart(model_formula, data = train_data, method = "class")
+
+# Check model performance
+print(tree_model)
+
+# Make predictions
+predictions <- predict(tree_model, test_data, type = "class")
+
+# Calculate accuracy
+accuracy <- sum(predictions == test_data$Make) / nrow(test_data)
+print(paste("Accuracy:", accuracy))
+```

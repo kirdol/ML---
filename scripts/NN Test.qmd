@@ -1,5 +1,4 @@
-data <- fread(here::here("data", "Vehicle MPG - 1984 to 2023.csv"))
-
+```{r}
 install.packages("tidyverse") # For data manipulation and visualization
 install.packages("data.table") # For fast data manipulation
 install.packages("caret") # For machine learning
@@ -10,6 +9,11 @@ library(data.table)
 library(caret)
 library(keras)
 
+data <- fread(here::here("data", "Vehicle MPG - 1984 to 2023.csv"))
+str(data)
+```
+
+```{r}
 # Drop the 'Model' column
 data_dropped <- data[, .(Model = NULL)]
 
@@ -17,11 +21,15 @@ data_dropped <- data[, .(Model = NULL)]
 missing_data_summary <- sapply(data_dropped, function(x) sum(is.na(x)))
 
 # Drop specified columns
-data_cleaned <- data_dropped[, .(Fuel_Type_2 = NULL, Engine_Description = NULL)]
+data_cleaned <- data_dropped[, .('Fuel Type 2' = NULL, 'Engine Description' = NULL)]
 
 # Fill missing values for numerical columns with their median
-num_cols <- c('Engine_Cylinders', 'Engine_Displacement')
-data_cleaned[, (num_cols) := lapply(.SD, function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x)), .SDcols = num_cols]
+num_cols <- c('Engine Cylinders', 'Engine Displacement')
+if (all(num_cols %in% names(data_cleaned))) {
+  data_cleaned[, (num_cols) := lapply(.SD, function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x)), .SDcols = num_cols]
+} else {
+  stop("One or more specified columns do not exist in the data frame.")
+}
 
 # Drop rows with any remaining missing values
 data_cleaned <- na.omit(data_cleaned)
@@ -61,4 +69,4 @@ history <- fit(model, as.matrix(train_data[, -ncol(train_data)]), Y_train, epoch
 
 # Plot training & validation accuracy values
 plot(history)
-
+```
