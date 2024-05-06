@@ -1,0 +1,22 @@
+
+**Data description**
+
+•	Description of the data file format (xlsx, csv, text, video, etc.)
+
+On the webpage of the dataset, we have found a CSV and xlsx format. We have decided then to download both. 
+
+•	The features or variables: type, units, the range (e.g. the time, numerical, in weeks from January 1, 2012 to December 31, 2015), their coding (numerical, the levels for categorical, etc.), etc.
+
+In the original dataset, we had the following 26 columns, each one corresponding to a a feature. Here is a quick overview of the types of variables. (MAKE TABLE)
+
+•	The instances: customers, company, products, subjects, etc.
+
+In a basic instance, each row is concerning one car. We can find in order the ID of the car corresponding to a precise feature observation, then the features as seen in the table before. 
+
+
+
+•	Missing data pattern: if there are missing data, if they are specific to some features, etc.
+
+•	Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc.
+
+•	If only a subset was used, it should be mentioned and explained; e.g. inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications.
