@@ -1,0 +1,22 @@
+---
+title: "ML Project"
+author: "Lodrik Adam, Stefan Favre, Victor Hogan, Jeff Macaraeg"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format:
+  pdf:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    embed-resources: true
+    self-contained: true
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    theme: Flatly
+    code-block-bg: true
+    code-block-border-left: "#1ABC9C"
+    link-external-icon: true
+---
+
+```{r child = c('introduction.qmd', 'data_description.qmd')}
+```
