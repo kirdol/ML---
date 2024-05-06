@@ -7,16 +7,70 @@ On the webpage of the dataset, we have found a CSV and xlsx format. We have deci
 
 •	The features or variables: type, units, the range (e.g. the time, numerical, in weeks from January 1, 2012 to December 31, 2015), their coding (numerical, the levels for categorical, etc.), etc.
 
+**The features or variables: type, units,...**
+```{r}
+
+D1_1_SDG_table_info <- data.frame(
+  Column1 = c("ID",
+              "Model Year",
+              "Make",
+              "Model",
+              "Estimated Annual Petroleum Consumption (Barrels)", 
+              "Fuel Type 1",
+              "City MPG (Fuel Type 1)",
+              "Highway MPG (Fuel Type 1)",
+              "Combined MPG (Fuel Type 1)",
+              "Fuel Type 2",
+              "City MPG (Fuel Type 2)",
+              "Highway MPG (Fuel Type 2)",
+              "Combined MPG (Fuel Type 2)",
+              "Engine Cylinders",
+              "Engine Displacement",
+              "Drive",
+              "Engine Description",
+              "Transmission",
+              "Vehicle Class",
+              "Time to Charge EV (hours at 120v)",
+              "Time to Charge EV (hours at 240v)",
+              "Range (for EV)",
+              "City Range (for EV - Fuel Type 1)",
+              "City Range (for EV - Fuel Type 2)",
+              "Hwy Range (for EV - Fuel Type 1)",
+              "Hwy Range (for EV - Fuel Type 2)"),
+  Column2 = c("Number corresponding to the precise combination of the features", 
+              "Year of the model of the car",
+              "The brand of the car, character",
+              "The model of the car, character",
+              "Consumption in Barrels, numerical",
+              "Regular Gasoline, Diesel, ",
+              "Score on each SDG except SDG 14 (16 variables)",
+              "Population of the country"))
+
+# Rename the columns
+colnames(D1_1_SDG_table_info) <- c("Variable Name", "",
+                                   "Explanation")
+
+# Print the table with the variables information
+D1_1_SDG_table_info %>%
+  kable(format = "html", escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped",
+                                      "hover",
+                                      "condensed",
+                                      "responsive")) %>%
+  column_spec(1, width = "35%")
+
+
+```
+
 In the original dataset, we had the following 26 columns, each one corresponding to a a feature. Here is a quick overview of the types of variables. (MAKE TABLE)
 
 •	The instances: customers, company, products, subjects, etc.
 
 In a basic instance, each row is concerning one car. We can find in order the ID of the car corresponding to a precise feature observation, then the features as seen in the table before. 
 
-
-
 •	Missing data pattern: if there are missing data, if they are specific to some features, etc.
 
 •	Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc.
 
 •	If only a subset was used, it should be mentioned and explained; e.g. inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications.
+
