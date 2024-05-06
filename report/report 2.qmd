@@ -1,0 +1,51 @@
+---
+title: Machine Learning Final Project
+subtitle: Machine learning in Business Analytics 2024, Group C
+date: "`r Sys.Date()`"
+author:
+  - name: Lodrik ADAM
+    affiliations:
+    - name: "Student id: 18418871"
+  - name: Stefan FAVRE
+    affiliations:
+    - name: "Student id: 18826333"
+  - name: Jeff MACARAEG
+    affiliations:
+    - name: "Student id: 18876233"
+format:
+  titlepage-pdf:
+    titlepage: academic
+    titlepage-logo: "unil_logo.png"
+    titlepage-theme:
+      logo-size: "7cm"
+      elements: ["\\headerblock", "\\logoblock", "\\titleblock", "\\authorblock", "\\vfill", "\\dateblock"]
+      page-align: "center"
+      title-style: "doublelinetight"
+      title-fontstyle: ["huge", "bfseries"]
+      title-space-after: "1.5cm"
+      subtitle-fontstyle: "Large"
+      author-style: "two-column"
+      affiliation-style: "none"
+      author-fontstyle: "textsc"
+      affiliation-fontstyle: "large"
+      logo-space-after: "0\\baselineskip"
+      header-fontstyle: ["textsc", "LARGE"]
+      title-fontfamily: "Times New Roman"
+      subtitle-fontfamily: "Times New Roman"
+      header-space-after: "1.5cm"
+      date-fontstyle: "large"
+    mainfont: "Times New Roman"
+    fontsize: 11pt
+    papersize: a4
+    geometry: [margin=2.5cm]
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    theme: Flatly
+    code-block-bg: true
+    code-block-border-left: "#1ABC9C"
+    link-external-icon: true
+---
+
+```{r child = c('introduction.qmd', 'data_description.qmd')}
+```
