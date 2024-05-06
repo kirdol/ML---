@@ -1,17 +1,17 @@
 ---
 title: "ML Project"
-author: "Lodrik Adam, Stefan Favre, Victor Hogan, Jeff Macaraeg"
+author: "Lodrik Adam, Stefan Favre, Jeff Macaraeg"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 format:
   pdf:
+    documentclass: article
+    fontsize: 11pt
+    mainfont: "Times New Roman"
+    papersize: a4
+    geometry: [margin=2.5cm]
     toc: true
     toc-depth: 3
     toc-expand: 1
-    embed-resources: true
-    self-contained: true
-    number-sections: true
-    code-fold: true
-    code-tools: true
     theme: Flatly
     code-block-bg: true
     code-block-border-left: "#1ABC9C"
