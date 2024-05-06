@@ -41,9 +41,8 @@ format:
     toc: true
     toc-depth: 3
     toc-expand: 1
-    theme: Flatly
     code-block-bg: true
-    code-block-border-left: "#1ABC9C"
+    code-block-border-left: "#0095C8"
     link-external-icon: true
 ---
 
