@@ -12,7 +12,7 @@ On the webpage of the dataset, we have found a CSV and xlsx format. We have deci
 
 D1_1_SDG_table_info <- data.frame(
   Column1 = c("ID", "Model Year", "Make", "Model", "Estimated Annual Petroleum Consumption (Barrels)", "Fuel Type 1", "City MPG (Fuel Type 1)", "Highway MPG (Fuel Type 1)", "Combined MPG (Fuel Type 1)", "Fuel Type 2", "City MPG (Fuel Type 2)", "Highway MPG (Fuel Type 2)", "Combined MPG (Fuel Type 2)", "Engine Cylinders", "Engine Displacement", "Drive", "Engine Description", "Transmission", "Vehicle Class", "Time to Charge EV (hours at 120v)", "Time to Charge EV (hours at 240v)", "Range (for EV)", "City Range (for EV - Fuel Type 1)", "City Range (for EV - Fuel Type 2)", "Hwy Range (for EV - Fuel Type 1)", "Hwy Range (for EV - Fuel Type 2)"),
-  Column2 = c("Country code (ISO)", 
+  Column2 = c("Number corresponding to the precise combination of the features, e.g. ", 
               "Country name",
               "Year of the observation (2000-2022)",
               "Overall score on all 17 SDGs (the score are % of achievement of the goals determined by the UN based on several indicators)",
