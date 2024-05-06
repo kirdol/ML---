@@ -1,5 +1,5 @@
 
-**Introduction**
+# Introduction
 •	The context and background: course, company name, business context.
 
 During our 1st master year as students in Management - orientation Business Analytics, we have had the opportunity to attend some lectures of Machine Learning for Business Analytics. In content of this class, we have seen multiple machine learning techniques for business context, mainly covering supervised (regressions, trees, support vector machine, neural networks) and unsupervised methods (clustering, PCA, FAMD, Auto-Encoder) but also other topics such as data splitting, ensemble methods and metrics. 

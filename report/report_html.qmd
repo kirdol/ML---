@@ -1,8 +1,9 @@
 ---
-title: My ML Project
+title: Machine Learning Final Project
 author:
- - Name I, First Name I
- - Name II, First Name II
+ - Adam Lodrik
+ - Favre Stefan
+ - Macaraeg Jeff
 institute : University of Lausanne
 date: today
 title-block-banner: "#0095C8" #chosen for the university of lausanne
@@ -20,5 +21,8 @@ abstract: |
 
 ```{r, echo = FALSE, message = FALSE}
 # loading all the necessary packages
-# source(here::here("src/setup.R"))
+source(here::here("scripts/setup.R"))
+```
+
+```{r child = paste0('sections/', c('introduction.qmd', 'references.qmd'))}
 ```
