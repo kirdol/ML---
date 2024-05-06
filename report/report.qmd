@@ -8,10 +8,10 @@ author:
     - name: "Student id: 18418871"
   - name: Stefan FAVRE
     affiliations:
-    - name: "Student id: 18826333"
+    - name: "Student id: 20402277"
   - name: Jeff MACARAEG
     affiliations:
-    - name: "Student id: 18876233"
+    - name: "Student id: 19322429"
 format:
   titlepage-pdf:
     titlepage: academic
@@ -47,5 +47,5 @@ format:
     link-external-icon: true
 ---
 
-```{r child = c('introduction.qmd', 'data_description.qmd')}
+```{r child = c('introduction.qmd')}
 ```
