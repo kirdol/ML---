@@ -41,6 +41,7 @@ format:
     toc: true
     toc-depth: 3
     toc-expand: 1
+    code-fold: true
     code-block-bg: true
     code-block-border-left: "#0095C8"
     link-external-icon: true

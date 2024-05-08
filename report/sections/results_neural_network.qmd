@@ -5,11 +5,16 @@ format:
 ---
 
 # Neural Network
+
 ```{r echo=FALSE, message=FALSE}
 source(here::here("scripts","setup.R"))
 ```
 
-```{python, message=FALSE}
+First, we load the necessary packages and the dataset. We then prepare the data by handling missing values and encoding categorical variables. We select a subset of features for modeling and split the data into training and testing sets. Finally, we fit a Neural Network model and evaluate its performance on the train and test sets.
+
+We can first load the necessary modules for the Decision Tree model. We also import our dataset from a csv file.
+
+```{python, output = FALSE}
 import sys
 # !pip3 install pandas ----- TO INSTALL IF MISSING
 # !pip3 install tensorflow ----- TO INSTALL IF MISSING
@@ -28,7 +33,11 @@ import pandas as pd
 # Load the dataset
 file_path = here("data/Vehicle MPG - 1984 to 2023.csv")
 data = pd.read_csv(file_path)
+```
 
+We can then concentrate on dealing with missing values and encoding categorical variables. We will select the necessary columns for our model and split the data into training and testing sets.
+
+```{python, output = FALSE}
 # Drop the 'Model' column
 data_dropped = data.drop('Model', axis=1)
 
@@ -41,7 +50,7 @@ column_types = data_dropped.dtypes
 missing_data_summary, column_types
 ```
 
-```{python, message=FALSE}
+```{python, output = FALSE}
 # Drop the specified columns
 data_cleaned = data_dropped.drop(['Fuel Type 2', 'Engine Description'], axis=1)
 
@@ -59,9 +68,7 @@ final_missing_data_summary = data_cleaned.isnull().sum()
 final_missing_data_summary
 ```
 
-```{python, message=FALSE}
-# Assuming 'data_cleaned' is your DataFrame after initial preprocessing
-
+```{python, output = FALSE}
 # Select categorical columns for one-hot encoding
 categorical_columns = ['Make', 'Fuel Type 1', 'Drive', 'Transmission', 'Vehicle Class']
 one_hot_encoder = OneHotEncoder()
@@ -84,8 +91,9 @@ normalized_numeric_df.index = data_cleaned.index  # To align indices
 final_preprocessed_data = pd.concat([encoded_categorical_df, normalized_numeric_df], axis=1)
 final_preprocessed_data.head()
 ```
+We then split our data into training and testing sets using an 80-20 split ratio. We build a neural network model with two hidden layers and compile it with the Adam optimizer and categorical cross-entropy loss function. Here is a summary of the model architecture:
 
-```{python}
+```{python, warning = FALSE}
 # Prepare the target data (y) and feature data (X)
 X = final_preprocessed_data.drop([col for col in final_preprocessed_data.columns if 'Make_' in col], axis=1)
 y = final_preprocessed_data[[col for col in final_preprocessed_data.columns if 'Make_' in col]]
@@ -106,11 +114,14 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 # Overview of the model
 model.summary()
 ```
+We can now train the model. We fit the model to the training data for 10 epochs with a batch size of 32.
 
 ```{python, output=FALSE}
 # Train the model
 history = model.fit(X_train, y_train, epochs=10, validation_split=0.2, batch_size=32)
 ```
+We can now plot the training and validation accuracy and loss values to visualize the model's performance.
+
 ```{python}
 # Plot training & validation accuracy values
 plt.plot(history.history['accuracy'])
