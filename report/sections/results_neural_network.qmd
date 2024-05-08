@@ -1,0 +1,132 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
+# Neural Network
+```{r echo=FALSE, message=FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+```{python, message=FALSE}
+import sys
+# !pip3 install pandas ----- TO INSTALL IF MISSING
+# !pip3 install tensorflow ----- TO INSTALL IF MISSING
+# !pip3 install scikit-learn ----- TO INSTALL IF MISSING
+# !pip3 install matplotlib ----- TO INSTALL IF MISSING
+# !pip3 install pyprojroot ----- TO INSTALL IF MISSING
+from pyprojroot.here import here
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Load the dataset
+file_path = here("data/Vehicle MPG - 1984 to 2023.csv")
+data = pd.read_csv(file_path)
+
+# Drop the 'Model' column
+data_dropped = data.drop('Model', axis=1)
+
+# Check for missing values
+missing_data_summary = data_dropped.isnull().sum()
+
+# Determine the types of each column to identify categorical vs numeric columns
+column_types = data_dropped.dtypes
+
+missing_data_summary, column_types
+```
+
+```{python, message=FALSE}
+# Drop the specified columns
+data_cleaned = data_dropped.drop(['Fuel Type 2', 'Engine Description'], axis=1)
+
+# Fill missing values for 'Engine Cylinders' and 'Engine Displacement' with their median
+# since these are numerical and median is a robust measure for central tendency
+for column in ['Engine Cylinders', 'Engine Displacement']:
+    median_value = data_cleaned[column].median()
+    data_cleaned[column].fillna(median_value, inplace=True)
+
+# Drop rows with any remaining missing values (mostly in 'Drive' and 'Transmission' columns)
+data_cleaned.dropna(inplace=True)
+
+# Check again for missing values to ensure clean dataset
+final_missing_data_summary = data_cleaned.isnull().sum()
+final_missing_data_summary
+```
+
+```{python, message=FALSE}
+# Assuming 'data_cleaned' is your DataFrame after initial preprocessing
+
+# Select categorical columns for one-hot encoding
+categorical_columns = ['Make', 'Fuel Type 1', 'Drive', 'Transmission', 'Vehicle Class']
+one_hot_encoder = OneHotEncoder()
+encoded_categorical = one_hot_encoder.fit_transform(data_cleaned[categorical_columns]).toarray()
+
+# Create a DataFrame from the encoded categorical data
+encoded_categorical_df = pd.DataFrame(encoded_categorical, columns=one_hot_encoder.get_feature_names_out(categorical_columns))
+encoded_categorical_df.index = data_cleaned.index  # To align indices
+
+# Carefully select and verify the numeric columns
+numeric_columns = [col for col in data_cleaned.columns if col not in categorical_columns and data_cleaned[col].dtype in ['int64', 'float64']]
+scaler = StandardScaler()
+normalized_numeric = scaler.fit_transform(data_cleaned[numeric_columns])
+
+# Create a DataFrame from the normalized numeric data
+normalized_numeric_df = pd.DataFrame(normalized_numeric, columns=numeric_columns)
+normalized_numeric_df.index = data_cleaned.index  # To align indices
+
+# Combine the encoded and normalized data
+final_preprocessed_data = pd.concat([encoded_categorical_df, normalized_numeric_df], axis=1)
+final_preprocessed_data.head()
+```
+
+```{python}
+# Prepare the target data (y) and feature data (X)
+X = final_preprocessed_data.drop([col for col in final_preprocessed_data.columns if 'Make_' in col], axis=1)
+y = final_preprocessed_data[[col for col in final_preprocessed_data.columns if 'Make_' in col]]
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Build the neural network model
+model = Sequential([
+    Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
+    Dense(64, activation='relu'),
+    Dense(y_train.shape[1], activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Overview of the model
+model.summary()
+```
+
+```{python, output=FALSE}
+# Train the model
+history = model.fit(X_train, y_train, epochs=10, validation_split=0.2, batch_size=32)
+```
+```{python}
+# Plot training & validation accuracy values
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
+
+# Plot training & validation loss values
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
+```

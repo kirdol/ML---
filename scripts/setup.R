@@ -15,7 +15,9 @@ packages_loaded <- c(
   "scales",
   "ggwordcloud",
   "tm",
-  "wordcloud2"
+  "wordcloud2",
+  "reticulate",
+  "kableExtra"
 )
 
 # Function that install the packages if not already installed on your computer

@@ -14,15 +14,19 @@ format:
     number-sections: true
     html-math-method: katex
     self-contained: true
+    code-fold: true
+    code-block-bg: true
+    code-block-border-left: "#0095C8"
+    code-summary: "Show the code"
   # pdf: default # use this if you want to render pdfs instead
 abstract: |
  The following machine learning project focuses on...
 ---
 
-```{r, echo = FALSE, message = FALSE}
+```{r Loading the packages, echo = FALSE, message = FALSE}
 # loading all the necessary packages
 source(here::here("scripts/setup.R"))
 ```
 
-```{r child = paste0('sections/', c('introduction.qmd', 'references.qmd'))}
+```{r child = paste0('sections/', c('introduction.qmd', 'data_description_html.qmd', 'results_classification_tree.qmd', 'results_neural_network.qmd', 'references.qmd'))}
 ```

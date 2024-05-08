@@ -1,0 +1,110 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
+# Classificatin Tree
+```{r echo=FALSE, message=FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+First, we load the necessary packages and the dataset. We then prepare the data by handling missing values and encoding categorical variables. We select a subset of features for modeling and split the data into training and testing sets. Finally, we fit a Decision Tree model and evaluate its performance on the train and test sets.
+
+We can first load pandas for data manipulation and the necessary modules for the Decision Tree model. We also import our dataset from a csv file.
+
+```{python Loading the packages and the data}
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from pathlib import Path
+# !pip3 install pyprojroot ----- TO INSTALL IF MISSING
+from pyprojroot.here import here
+
+# Load the dataset
+file_path = here("data/Vehicle MPG - 1984 to 2023.csv")
+data = pd.read_csv(file_path)
+```
+
+Now, that we have loaded the data, we can prepare it by handling missing values and encoding categorical variables. We have selected the "Engine Displacement", "Drive", "Transmission", "Vehicle Class", "Fuel Type 1", and "Model Year" columns as features for our model. We encode the categorical variables using one-hot encoding and label encoding for the "Make" column. We make sure to store our target and features in separate variables.
+
+```{python Preparing the data}
+# Handle missing values: dropping rows where specific required columns are missing
+required_columns = ['Engine Displacement', 'Drive', 'Transmission', 'Vehicle Class', 
+                    'Fuel Type 1', 'Model Year']
+data_clean = data.dropna(subset=required_columns)
+
+# Encode categorical variables
+categorical_features = ['Fuel Type 1', 'Drive', 'Transmission', 'Vehicle Class']
+data_clean = pd.get_dummies(data_clean, columns=categorical_features, drop_first=True)
+
+# Label encoding for 'Make' column
+le = LabelEncoder()
+data_clean['Make'] = le.fit_transform(data_clean['Make'])
+
+# Selecting a subset of features for modeling
+features = data_clean[['Engine Displacement', 'Model Year']]
+features = pd.concat([features, data_clean.filter(like='Fuel Type 1_'), 
+                      data_clean.filter(like='Drive_'), data_clean.filter(like='Transmission_'), 
+                      data_clean.filter(like='Vehicle Class_')], axis=1)
+target = data_clean['Make']
+```
+
+We then split our data into training and testing sets using a 90-10 split ratio.
+
+```{python Splitting the data}
+# Splitting data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.1, random_state=42)
+```
+
+## Fitting the Decision Tree Model
+We can now dive into the modeling part by fitting a Decision Tree model to the training data and evaluating its performance on the train and test sets.
+
+```{python Fitting the model}
+# Initialize and fit the Decision Tree model
+model = DecisionTreeClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# Checking the initial performance
+train_score = round(model.score(X_train, y_train)*100, 2)
+test_score = round(model.score(X_test, y_test)*100, 2)
+
+# Printing the result
+print("Trainset accuracy: ", train_score, "%","\nTestset accuracy: ", test_score, "%", sep="")
+```
+
+By looking at the accuracy of our model on the training and test set, we can see a clear indication of overfitting as the model performs well on the training set but poorly on the test set. To address this issue, we can prune the decision tree by limiting the maximum depth of the tree and setting a minimum number of samples required to be at a leaf node.
+
+```{python Setting the values, echo=FALSE}
+max_depth = 10
+min_samples_leaf = 50
+```
+
+We set here 10 as the maximum depth of the tree, and 50 as the minimum number of samples required to be at a leaf node.
+
+## Fitting the Decision Tree Model aftre pruning the tree
+```{python Fitting the model after pruning the tree}
+# We'll limit the maximum depth of the tree and set a minimum number of samples required to be at a leaf node
+
+pruned_model = DecisionTreeClassifier(max_depth=max_depth, min_samples_leaf=min_samples_leaf, random_state=42)
+pruned_model.fit(X_train, y_train)
+
+# Evaluating the pruned model
+pruned_train_score = round(pruned_model.score(X_train, y_train)*100, 2)
+pruned_test_score = round(pruned_model.score(X_test, y_test)*100, 2)
+
+print("Trainset accuracy: ", pruned_train_score, "%","\nTestset accuracy: ", pruned_test_score, "%", sep="")
+```
+
+We can see that the pruned model performs better on the test set compared to the initial model, indicating that pruning has helped reduce overfitting. But this has been at the expense of a noticable drop in the overall accuracy.
+
+Here is what the Tree looks like after pruning:
+```{python Showing the tree}
+# Plot the decision tree
+plt.figure(figsize=(20,10))  # Set the figure size for better readability
+plot_tree(pruned_model, filled=True, feature_names=X_train.columns, class_names=True)
+plt.title('Decision Tree Visualization')
+plt.show()
+```

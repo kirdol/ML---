@@ -46,5 +46,10 @@ format:
     link-external-icon: true
 ---
 
-```{r child = paste0('sections/', 'introduction.qmd')}
+```{r Loading of the packages, echo = FALSE, message = FALSE}
+# loading all the necessary packages
+source(here::here("scripts/setup.R"))
+```
+
+```{r child = paste0('sections/', c('introduction.qmd', 'data_description_pdf.qmd', 'results_classification_tree.qmd', 'results_neural_network.qmd', 'references.qmd'))}
 ```
