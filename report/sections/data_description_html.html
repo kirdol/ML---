@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>data_description_html</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="data_description_html_files/libs/clipboard/clipboard.min.js"></script>
+<script src="data_description_html_files/libs/quarto-html/quarto.js"></script>
+<script src="data_description_html_files/libs/quarto-html/popper.min.js"></script>
+<script src="data_description_html_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="data_description_html_files/libs/quarto-html/anchor.min.js"></script>
+<link href="data_description_html_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="data_description_html_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="data_description_html_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="data_description_html_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="data_description_html_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<script src="data_description_html_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="data_description_html_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="data-description" class="level1">
+<h1>Data description</h1>
+<ul>
+<li>Description of the data file format (xlsx, csv, text, video, etc.) <strong>DONE</strong></li>
+<li>The features or variables: type, units, the range (e.g.&nbsp;the time, numerical, in weeks from January 1, 2012 to December 31, 2015), their coding (numerical, the levels for categorical, etc.), etc. <strong>TABLE-NTBF</strong></li>
+<li>The instances: customers, company, products, subjects, etc. <strong>DONE</strong></li>
+<li>Missing data pattern: if there are missing data, if they are specific to some features, etc. <strong>NTBD</strong></li>
+<li>Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc. <strong>NTBD</strong></li>
+<li>If only a subset was used, it should be mentioned and explained; e.g.&nbsp;inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications. <strong>NTBD</strong></li>
+</ul>
+<p>For this project, we choose to go with a dataset on vehicle caracteristics. We found a <code>.csv</code> file on data.world. You can find the dataset using this link: <a href="https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023">data.world</a> The dataset contains a total of 26 features (or caracteristics) for 45’896 models of vehicles released between 1984 and 2023. Find below a table that gives an overview of the features we have, its explanation and the type of values it is ((numerical, the levels for categorical, etc.).</p>
+<section id="the-features-or-variables-type-units" class="level3">
+<h3 class="anchored" data-anchor-id="the-features-or-variables-type-units">The features or variables: type, units,…</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="table-responsive">
+<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">ID</td>
+<td style="text-align: left;">Number corresponding to the precise combination of the features</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Model Year</td>
+<td style="text-align: left;">Year of the model of the car</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Make</td>
+<td style="text-align: left;">The brand of the car, character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Model</td>
+<td style="text-align: left;">The model of the car, character</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Estimated Annual Petroleum Consumption (Barrels)</td>
+<td style="text-align: left;">Consumption in Barrels, numerical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Fuel Type 1</td>
+<td style="text-align: left;">Regular Gasoline, Diesel,</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">City MPG (Fuel Type 1)</td>
+<td style="text-align: left;">Score on each SDG except SDG 14 (16 variables)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Highway MPG (Fuel Type 1)</td>
+<td style="text-align: left;">Population of the country</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Combined MPG (Fuel Type 1)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Fuel Type 2</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">City MPG (Fuel Type 2)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Highway MPG (Fuel Type 2)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Combined MPG (Fuel Type 2)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Engine Cylinders</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Engine Displacement</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Drive</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Engine Description</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Transmission</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Vehicle Class</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Time to Charge EV (hours at 120v)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Time to Charge EV (hours at 240v)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Range (for EV)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">City Range (for EV - Fuel Type 1)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">City Range (for EV - Fuel Type 2)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 35%;">Hwy Range (for EV - Fuel Type 1)</td>
+<td style="text-align: left;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 35%;">Hwy Range (for EV - Fuel Type 2)</td>
+<td style="text-align: left;">d</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+</section>
+<section id="the-instances-customers-company-products-subjects-etc." class="level2">
+<h2 class="anchored" data-anchor-id="the-instances-customers-company-products-subjects-etc.">The instances: customers, company, products, subjects, etc.</h2>
+<p>In a basic instance, each row is concerning one car. We can find in order the ID of the car corresponding to a precise feature observation, then the features as seen in the table before.</p>
+</section>
+<section id="missing-data-pattern-if-there-are-missing-data-if-they-are-specific-to-some-features-etc." class="level2">
+<h2 class="anchored" data-anchor-id="missing-data-pattern-if-there-are-missing-data-if-they-are-specific-to-some-features-etc.">Missing data pattern: if there are missing data, if they are specific to some features, etc.</h2>
+</section>
+<section id="any-modification-to-the-initial-data-aggregation-imputation-in-replacement-of-missing-data-recoding-of-levels-etc." class="level2">
+<h2 class="anchored" data-anchor-id="any-modification-to-the-initial-data-aggregation-imputation-in-replacement-of-missing-data-recoding-of-levels-etc.">Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc.</h2>
+</section>
+<section id="if-only-a-subset-was-used-it-should-be-mentioned-and-explained-e.g.-inclusion-criteria.-note-that-if-inclusion-criteria-do-not-exist-and-the-inclusion-was-an-arbitrary-choice-it-should-be-stated-as-such.-one-should-not-try-to-invent-unreal-justifications." class="level2">
+<h2 class="anchored" data-anchor-id="if-only-a-subset-was-used-it-should-be-mentioned-and-explained-e.g.-inclusion-criteria.-note-that-if-inclusion-criteria-do-not-exist-and-the-inclusion-was-an-arbitrary-choice-it-should-be-stated-as-such.-one-should-not-try-to-invent-unreal-justifications.">If only a subset was used, it should be mentioned and explained; e.g.&nbsp;inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications.</h2>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

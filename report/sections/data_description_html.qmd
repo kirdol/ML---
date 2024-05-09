@@ -1,16 +1,20 @@
 # Data description
+* Description of the data file format (xlsx, csv, text, video, etc.) __DONE__
+* The features or variables: type, units, the range (e.g. the time, numerical, in weeks from January 1, 2012 to December 31, 2015), their coding (numerical, the levels for categorical, etc.), etc. __TABLE-NTBF__
+* The instances: customers, company, products, subjects, etc. __DONE__
+* Missing data pattern: if there are missing data, if they are specific to some features, etc. __NTBD__
+* Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc. __NTBD__
+* If only a subset was used, it should be mentioned and explained; e.g. inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications. __NTBD__
 
 ```{r Packages, echo = FALSE, message = FALSE}
 source(here::here("scripts","setup.R"))
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 ```
 
-## Description of the data file format (xlsx, csv, text, video, etc.)
+For this project, we choose to go with a dataset on vehicle caracteristics. We found a `.csv` file on data.world. You can find the dataset using this link: [data.world](https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023)
+The dataset contains a total of 26 features (or caracteristics) for 45'896 models of vehicles released between 1984 and 2023. Find below a table that gives an overview of the features we have, its explanation and the type of values it is ((numerical, the levels for categorical, etc.).
 
-On the webpage of the dataset, we have found a CSV and xlsx format. We have decided then to download both. 
-
-## The features or variables: type, units, the range (e.g. the time, numerical, in weeks from January 1, 2012 to December 31, 2015), their coding (numerical, the levels for categorical, etc.), etc.
-
-**The features or variables: type, units,...**
+### The features or variables: type, units,...
 
 ```{r echo=FALSE}
 D1_1_SDG_table_info <- data.frame(
@@ -80,8 +84,6 @@ D1_1_SDG_table_info %>%
                                       "responsive")) %>%
   column_spec(1, width = "35%")
 ```
-
-In the original dataset, we had the following 26 columns, each one corresponding to a a feature. Here is a quick overview of the types of variables. (MAKE TABLE)
 
 ## The instances: customers, company, products, subjects, etc.
 
