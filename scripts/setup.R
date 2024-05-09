@@ -19,7 +19,8 @@ packages_loaded <- c(
   "reticulate",
   "kableExtra",
   "rmarkdown",
-  "summarytools"
+  "summarytools",
+  "visdat"
 )
 
 # Function that install the packages if not already installed on your computer
