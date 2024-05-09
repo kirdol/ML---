@@ -6,8 +6,15 @@ format:
 
 # Neural Network
 
-```{r echo=FALSE, message=FALSE}
+```{r Loading R packages, echo= FALSE, message = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
+```
+
+```{python Loading python Librairies, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
 ```
 
 First, we load the necessary packages and the dataset. We then prepare the data by handling missing values and encoding categorical variables. We select a subset of features for modeling and split the data into training and testing sets. Finally, we fit a Neural Network model and evaluate its performance on the train and test sets.
