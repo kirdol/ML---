@@ -1,0 +1,12 @@
+# Annex {#sec-Annex}
+
+```{r echo = FALSE, output = FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+## Data Summary
+```{r, echo = FALSE}
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
+print(dfSummary(data), method = "render")
+```
+
