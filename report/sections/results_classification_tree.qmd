@@ -4,7 +4,7 @@ format:
     code-fold: true
 ---
 
-# Classificatin Tree
+# Classification Tree
 ```{r Loading R packages, echo= FALSE, message = FALSE}
 source(here::here("scripts","setup.R"))
 ```
