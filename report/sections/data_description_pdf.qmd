@@ -96,4 +96,9 @@ In a basic instance, each row is concerning one car. We can find in order the ID
 
 ## If only a subset was used, it should be mentioned and explained; e.g. inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications.
 
+## Data Frame Summary
+
+```{r}
+view(dfSummary(Vehicle_MPG_1984_to_2023))
+```
 
