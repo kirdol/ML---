@@ -16,11 +16,6 @@ We can first load the necessary modules for the Decision Tree model. We also imp
 
 ```{python, output = FALSE}
 import sys
-# !pip3 install pandas ----- TO INSTALL IF MISSING
-# !pip3 install tensorflow ----- TO INSTALL IF MISSING
-# !pip3 install scikit-learn ----- TO INSTALL IF MISSING
-# !pip3 install matplotlib ----- TO INSTALL IF MISSING
-# !pip3 install pyprojroot ----- TO INSTALL IF MISSING
 from pyprojroot.here import here
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.model_selection import train_test_split

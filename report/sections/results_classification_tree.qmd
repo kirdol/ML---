@@ -5,22 +5,30 @@ format:
 ---
 
 # Classificatin Tree
-```{r echo=FALSE, message=FALSE}
+```{r Loading R packages, echo= FALSE, message = FALSE}
 source(here::here("scripts","setup.R"))
 ```
+
+```{python Loading python Librairies, echo = FALSE, message = FALSE, waring}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
+```
+
 
 First, we load the necessary packages and the dataset. We then prepare the data by handling missing values and encoding categorical variables. We select a subset of features for modeling and split the data into training and testing sets. Finally, we fit a Decision Tree model and evaluate its performance on the train and test sets.
 
 We can first load pandas for data manipulation and the necessary modules for the Decision Tree model. We also import our dataset from a csv file.
 
-```{python Loading the packages and the data}
+```{python Importing necessayry functions and the data}
+# !pip3 install pyprojroot ----- TO INSTALL IF MISSING
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from pathlib import Path
-# !pip3 install pyprojroot ----- TO INSTALL IF MISSING
 from pyprojroot.here import here
 
 # Load the dataset

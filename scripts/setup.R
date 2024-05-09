@@ -17,7 +17,8 @@ packages_loaded <- c(
   "tm",
   "wordcloud2",
   "reticulate",
-  "kableExtra"
+  "kableExtra",
+  "rmarkdown"
 )
 
 # Function that install the packages if not already installed on your computer
