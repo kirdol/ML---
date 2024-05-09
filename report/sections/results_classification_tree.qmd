@@ -5,11 +5,11 @@ format:
 ---
 
 # Classificatin Tree
-```{r Loading R packages, echo= FALSE, message = FALSE, output = FALSE}
+```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
 ```
 
-```{python Loading python Librairies, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+```{python Loading python Librairies CT, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
 import subprocess
 subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 from pyprojroot.here import here
