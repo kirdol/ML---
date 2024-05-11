@@ -2,6 +2,8 @@
 title: "Unsupervised Learning"
 format: pdf
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -10,50 +12,56 @@ data <- fread(here::here("data", "Vehicle MPG - 1984 to 2023.csv"))
 ```
 
 ```{r}
-library(FactoMineR)
-data.pca <- PCA(data[, -1, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22, 23], graph = FALSE)
+# Selecting all columns except 'ID'
+data_interest <- data %>%
+  dplyr::select(-ID)%>%  # exclude the 'ID' column
+  mutate_if(is.integer, as.numeric) %>%  # convert all integer columns to numeric
+  select_if(~ !is.character(.)) %>%
+  select_if(~ var(.) != 0)
+
+# Initialize matrices for correlations, p-values
+n <- ncol(data_interest)
+cor_matrix <- matrix(1, n, n)
+p_matrix <- matrix(NA, n, n)
+colnames(cor_matrix) <- colnames(data_interest)
+rownames(cor_matrix) <- colnames(data_interest)
+
+# Calculating correlations and p-values
+for (i in 1:n) {
+  for (j in 1:n) {
+    if (i != j) {
+      test <- cor.test(data_interest[[i]],
+                       data_interest[[j]],
+                       method = "spearman")
+      cor_matrix[i, j] <- test$estimate
+      p_matrix[i, j] <- test$p.value
+    }
+  }
+}
+
+# Set a threshold for displaying text on the heatmap
+threshold_heatmap <- 0.2  # adjust this based on your preference
+
+# Melting the correlation matrix for ggplot
+melted_corr <- melt(cor_matrix)
+
+# Creating the heatmap
+ggplot(melted_corr, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = ifelse(abs(value) > threshold_heatmap,
+                               sprintf("%.2f", value), "")), 
+            vjust = 0.5, size = 2.5) +
+  scale_fill_viridis_c(name = "Spearman\nCorrelation", begin = 0.15) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = paste("Heatmap of Spearman Correlations \n(Only correlation values higher than ",
+                     threshold_heatmap,
+                     " are shown)", sep = ""),
+       x = "",
+       y = "")
 ```
 
 ```{r}
-head(data)
-summary(data)
 
-# Assuming 'make' is a factor (categorical variable) and located in column 3
-data[,3] <- as.factor(data[,3])
-
-# Scale numerical features, assuming 'make' is the only non-numerical column
-numerical_indices <- setdiff(1:ncol(data), 3)  # Exclude column 3
-data[DT[, ..numerical_indices]] <- scaledata[DT[, ..numerical_indices]
-
-# Hierarchical clustering
-# Calculate distances (Manhattan) among the scaled numerical features
-library(reshape2)  # For melting the distance matrix
-library(ggplot2)   # For plotting
-data_d <- dist(data[,numerical_indices], method = "manhattan")
-data_melt <- melt(as.matrix(data_d))
-
-# Visualizing distances using tiles
-ggplot(data = data_melt, aes(x=Var1, y=Var2, fill=value)) + 
-  geom_tile()
-
-# Performing hierarchical clustering using complete linkage
-data_hc <- hclust(data_d, method = "complete")
-plot(data_hc, hang=-1)
-
-# Cutting the tree to form clusters, and extracting cluster assignments
-rect.hclust(data_hc, k=4)  # Modify 'k' as needed based on your analysis
-data_clust <- cutree(data_hc, k=4)
-
-# Analysis of clusters
-data_comp <- data.frame(data[,numerical_indices], Clust=factor(data_clust), Id=row.names(data))
-data_df <- melt(data_comp, id=c("Id", "Clust"))
-
-# Boxplots to analyze cluster distributions
-ggplot(data_df, aes(y=value, group=Clust, fill=Clust)) +
-  geom_boxplot() +
-  facet_wrap(~variable, ncol=4, nrow=3)
 ```
-
-
-
 
