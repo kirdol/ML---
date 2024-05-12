@@ -1,0 +1,90 @@
+# Data cleaning
+
+
+```{r echo = FALSE, message = FALSE}
+source(here::here("scripts","setup.R"))
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"), na = c(""))
+```
+
+
+Let's have a look at the entire dataset an its missing values in grey.
+
+
+```{r echo = FALSE}
+vis_dat(data, warn_large_data = FALSE)
+```
+
+
+We can see that overall, we do not have many missing values in proportion with the size of our dataset. However, we can see that some columns have a lot of missing values. Let's have a look at the columns and rows with missing values more in details.
+
+
+```{r echo = FALSE}
+data_with_missing_columns <- data %>%
+  select_if(function(x) any(is.na(x)))
+data_with_missing_r_c <- data_with_missing_columns %>%
+  filter(rowSums(is.na(.)) > 0)
+vis_dat(data_with_missing_r_c, warn_large_data = FALSE)
+```
+
+```{r echo = FALSE}
+# Create a summary dataframe of missing values by column
+missing_summary_df <- data %>%
+  summarise(across(everything(), ~sum(is.na(.)))) %>%
+  pivot_longer(cols = everything(), names_to = "Column", values_to = "Missing_Count") %>%
+  mutate(
+    Total_Rows = nrow(data),
+    Proportion_Missing = Missing_Count / Total_Rows
+  ) %>%
+  arrange(desc(Proportion_Missing)) %>%
+  select(Column, "Missing values" = Missing_Count, "Prop. Missing" = Proportion_Missing)
+
+# Print the summary dataframe
+datatable(missing_summary_df,
+          options = list(pageLength = 6,
+                          class = "hover",
+                          searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("Prop. Missing", 2)
+```
+
+```{r echo = FALSE}
+# Filter rows where 'Engine Cylinders' is missing and select the 'Model' and 'Fuel Type 1'
+models_and_fuel_with_missing_cylinders <- data %>%
+  filter(is.na(`Engine.Cylinders`)) %>%
+  select(Model, `Fuel.Type.1`)
+
+# Filter rows where 'Engine Cylinders' is missing and select the 'Model' and 'Fuel Type 1'
+models_and_fuel_with_missing_cylinders <- data %>%
+  filter(is.na(`Engine.Cylinders`)) %>%
+  select(Model, `Fuel.Type.1`)
+
+# Count the number of missing values per fuel type
+missing_values_per_fuel_type <- models_and_fuel_with_missing_cylinders %>%
+  group_by(`Fuel.Type.1`) %>%
+  summarise(Count = n())
+
+# Missing values per fuel type
+miss_elec <- missing_values_per_fuel_type
+
+# Count the number of models per fuel type
+fuel_type_1_miss <- unique(models_and_fuel_with_missing_cylinders$`Fuel.Type.1`)
+
+# Count the number of models per fuel type
+elec <- data %>%
+  group_by(`Fuel.Type.1`) %>%
+  summarise(Count = n())
+# elec = 484, meaninf that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type reprenst all our electric vehicle
+```
+
+
+We see that all the `r .QuartoInlineRender(miss_elec)` missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type is only "`r .QuartoInlineRender(fuel_type_1_miss)`". Therefore, we can conclude that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type represent all our electric vehicle. This make sense since electric vehicle do not have an combustion engine and therefore those categories are not really applicable. We will therefore replace all missing values in this two columns with "none".
+
+
+```{r echo = FALSE}
+# Replace missing values in 'Engine Cylinders' and 'Engine Displacement' with "none"
+data_cleaning <- data %>%
+  mutate(
+    `Engine.Cylinders` = ifelse(is.na(`Engine.Cylinders`), "none", `Engine.Cylinders`),
+    `Engine.Displacement` = ifelse(is.na(`Engine.Displacement`), "none", `Engine.Displacement`))
+```
+
