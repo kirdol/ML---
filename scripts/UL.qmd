@@ -11,6 +11,8 @@ library(data.table)
 data <- fread(here::here("data", "Vehicle MPG - 1984 to 2023.csv"))
 ```
 
+## PCA
+
 ```{r, message = FALSE, warning = FALSE}
 # Selecting all columns except 'ID'
 data_interest <- data %>%
@@ -91,3 +93,27 @@ fviz_pca_biplot(pca_result,
   theme_minimal()
 ```
 
+## Clustering
+
+```{r}
+# Using the Elbow Method to determine the number of clusters
+set.seed(123)  # Ensure reproducibility
+wss <- sapply(1:15, function(k) {
+  kmeans(data_standardized, centers=k, nstart=25)$tot.withinss
+})
+plot(1:15, wss, type="b", pch = 20, frame = FALSE, 
+     xlab="Number of clusters K", ylab="Total within-clusters sum of squares")
+
+# Assuming the optimal number of clusters from the plot is, e.g., 3
+k <- 3
+km_result <- kmeans(data_standardized, centers=k, nstart=25)
+
+# Viewing cluster assignments
+print(km_result$cluster)
+
+# Viewing cluster centers
+print(km_result$centers)
+
+# Use PCA for dimensionality reduction
+fviz_cluster(km_result, data = data_standardized, ellipse.type = "convex")
+```
