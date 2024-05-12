@@ -20,7 +20,8 @@ packages_loaded <- c(
   "kableExtra",
   "rmarkdown",
   "summarytools",
-  "visdat"
+  "visdat",
+  "factoextra"
 )
 
 # Function that install the packages if not already installed on your computer
