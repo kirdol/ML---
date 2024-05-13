@@ -4,7 +4,7 @@ format:
     code-fold: true
 ---
 
-# Classificatin Tree
+# Classification Tree
 
 In this section we are going to perform a classification tree analysis on the dataset. We will first load the necessary packages and the dataset. We then prepare the data by encoding categorical variables and splitting it into training and testing sets. We then tried to pruned the tree with different max_depth values to find the optimal tree depth that balances between training and test accuracy.
 
