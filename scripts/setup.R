@@ -21,7 +21,8 @@ packages_loaded <- c(
   "rmarkdown",
   "summarytools",
   "visdat",
-  "factoextra"
+  "factoextra",
+  "FactoMineR"
 )
 
 # Function that install the packages if not already installed on your computer
