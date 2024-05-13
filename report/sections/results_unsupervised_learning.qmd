@@ -11,6 +11,8 @@ library(data.table)
 data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
 ```
 
+In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities accross instances and combine features in fewer dimensions.
+
 ## PCA
 
 ```{r, message = F, warning = F}
@@ -31,3 +33,51 @@ fviz_pca_biplot(pca_results,
                 repel = TRUE  # Avoid text overlapping
 )
 ```
+
+The biplot shows several information.
+- The colored dots represent the numerical observations of the dataset.
+- The cos2 gradient shows the representation of the feature by the dimension, so the higher the cos2 (tending to red), the better the representation of the observation in the dimension.
+- The arrows represent the features in the form of the circle of correlation. Here, we have 2 dimensions which represent almost 49% of the observations.
+- Looking at the arrows, it shows that most of variables are stongly linked to dimension 2. We can also see that the arrows that go in opposite directions (such as fuel_type_1 and highway_mpg_fuel_type_1) are negatively correlated. From another view, fuel_type_1 and fuel_type_2 are uncorrelated.
+
+## Screeplot
+
+```{r}
+# Generating the scree plot from PCA results
+fviz_eig(pca_results, 
+         addlabels = TRUE,  # Adds labels to the plot indicating the percentage of variance
+         ylim = c(0, 100),  # Optional: Sets the limits of the y-axis to make the plot easier to interpret
+         barfill = "lightblue",  # Color of the bars
+         barcolor = "black",  # Color of the borders of bars
+         main = "Scree Plot of PCA")  # Title of the plot
+```
+
+Taking the screeplot into account, 6 dimensions are needed to reach at least 75%, meaning the features might be relatively independent. It is alredy shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. To check further the correlation, we can use a heatmap.
+
+## Heatmap
+
+```{r}
+library(reshape2)
+
+# Assuming data_prepared has been previously defined and standardized
+cor_matrix <- cor(data_prepared)  # Calculate correlation matrix
+
+# Melt the correlation matrix for ggplot2
+melted_cor_matrix <- melt(cor_matrix)
+
+# Heatmap with all correlation coefficients displayed
+ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
+  geom_tile(color = "white") +  # Add white lines to distinguish the tiles
+  geom_text(aes(label = sprintf("%.2f", value)), color = "black", size = 3.5) +  # Always display labels
+  scale_fill_gradient2(low = "lightblue", high = "darkblue", mid = "blue", midpoint = 0, limit = c(-1,1),
+                       name = "Spearman\nCorrelation") +  # Use gradient2 for a diverging color scheme
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.text.y = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(hjust = 0.5),  # Center the title
+        plot.title.position = "plot") +
+  labs(x = 'Variables', y = 'Variables', 
+       title = 'Correlations Heatmap of Variables')  # Adjust the title and labels as needed
+```
+
+This heatmap indicates the correlation between the variables. It shows that the correlations aren't that strong between variables, expect for a few such as mighway_mpg_fuel and city_mpg_fuel.
