@@ -62,3 +62,28 @@ history <- fit(model, as.matrix(train_data[, -ncol(train_data)]), Y_train, epoch
 # Plot training & validation accuracy values
 plot(history)
 
+
+```{r} Missing values by vehicle class
+# Check for missing values in the 'Drive' column
+missing_drive <- data_cleaning %>% filter(is.na(Drive))
+
+# Count the missing values per vehicle class
+missing_counts <- missing_drive %>% count(Vehicle.Class)
+
+# Get total counts per vehicle class in the entire dataset
+total_counts <- data_cleaning %>% count(Vehicle.Class)
+
+# Calculate the percentage of missing 'Drive' values per vehicle class
+percentage_missing <- missing_counts %>% 
+  left_join(total_counts, by = "Vehicle.Class", suffix = c(".missing", ".total")) %>%
+  mutate(PercentageMissing = (n.missing / n.total))
+
+# Print the summary dataframe
+datatable(percentage_missing,
+          options = list(pageLength = 6,
+                         class = "hover",
+                         searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("PercentageMissing", 2)
+```
+

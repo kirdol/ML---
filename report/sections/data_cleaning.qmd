@@ -1,4 +1,5 @@
 # Data cleaning
+In this section we will handle the missing value of our dataset to make sure that we have a clean dataset to perform our EDA and modeling. We will first visualize the missing values in our dataset and then clean the missing values in the columns that we will use for our analysis. We will also remove some rows and columns that are not relevant for our analysis.
 
 ```{r echo = FALSE, message = FALSE}
 source(here::here("scripts","setup.R"))
@@ -6,7 +7,7 @@ data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"), na = c(""))
 brand_missing_threshold <- 0.1
 ```
 
-Let's have a look at the entire dataset an its missing values in grey.
+Let's have a look at the entire dataset and its missing values in grey.
 
 ```{r echo = FALSE}
 vis_dat(data, warn_large_data = FALSE)
@@ -22,6 +23,8 @@ data_with_missing_r_c <- data_with_missing_columns %>%
 vis_dat(data_with_missing_r_c, warn_large_data = FALSE)
 ```
 
+We can now more easily see the missing in our data. Below we have the detail of the pourcentage of missing values by columns.
+
 ```{r echo = FALSE}
 # Create a summary dataframe of missing values by column
 missing_summary_df <- data %>%
@@ -36,12 +39,14 @@ missing_summary_df <- data %>%
 
 # Print the summary dataframe
 datatable(missing_summary_df,
-          options = list(pageLength = 6,
+          options = list(pageLength = 7,
                           class = "hover",
                           searchHighlight = TRUE),
           rownames = FALSE)%>%
   formatPercentage("Prop. Missing", 2)
 ```
+
+Let's first have a closer look at the engine cylinders and engine displacement columns.
 
 ```{r echo = FALSE}
 # Filter rows where 'Engine Cylinders' is missing and select the 'Model' and 'Fuel Type 1'
@@ -104,29 +109,6 @@ datatable(missing_summary_df2,
 ```
 
 ```{r}
-# Check for missing values in the 'Drive' column
-missing_drive <- data_cleaning %>% filter(is.na(Drive))
-
-# Count the missing values per vehicle class
-missing_counts <- missing_drive %>% count(Vehicle.Class)
-
-# Get total counts per vehicle class in the entire dataset
-total_counts <- data_cleaning %>% count(Vehicle.Class)
-
-# Calculate the percentage of missing 'Drive' values per vehicle class
-percentage_missing <- missing_counts %>% 
-  left_join(total_counts, by = "Vehicle.Class", suffix = c(".missing", ".total")) %>%
-  mutate(PercentageMissing = (n.missing / n.total))
-
-# Print the summary dataframe
-datatable(percentage_missing,
-          options = list(pageLength = 6,
-                          class = "hover",
-                          searchHighlight = TRUE),
-          rownames = FALSE)%>%
-  formatPercentage("PercentageMissing", 2)
-```
-```{r}
 # Count the missing 'Drive' values per brand
 missing_drive_by_make <- data_cleaning %>% 
   filter(is.na(Drive)) %>% 
@@ -150,6 +132,34 @@ datatable(percentage_missing_drive_by_make,
           rownames = FALSE)%>%
   formatPercentage("PercentageMissing", 2)
 ```
+
+```{r Percentage of missing drive values by brand, echo = FALSE}
+# Count the missing 'Drive' values per brand
+missing_drive_by_make <- data_cleaning %>% 
+  filter(is.na(Drive)) %>% 
+  count(Make)
+
+# Get total counts per brand in the entire dataset
+total_counts_by_make <- data_cleaning %>% 
+  count(Make)
+
+# Calculate the percentage of missing 'Drive' values per brand
+percentage_missing_drive_by_make <- missing_drive_by_make %>%
+  left_join(total_counts_by_make, by = "Make", suffix = c(".missing", ".total")) %>%
+  mutate(PercentageMissing = (n.missing / n.total) * 100) %>%
+  arrange(PercentageMissing) # Arranging in ascending order of missing percentage
+
+# Create a histogram using ggplot
+ggplot(percentage_missing_drive_by_make, aes(x = reorder(Make, PercentageMissing), y = PercentageMissing)) +
+  geom_col(fill = "steelblue") + 
+  theme_minimal() + # Apply a minimal theme for aesthetics
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip() +
+  labs(title = "Percentage of Missing 'Drive' Values by Brand",
+       x = "Brand",
+       y = "Percentage Missing (%)")
+```
+
 
 
 
@@ -250,7 +260,5 @@ data_cleaned <- data_cleaning4 %>%
 
 # Save the cleaned dataset
 write_csv(data_cleaned, here("data","data_cleaned.csv"))
-
-data_test <- read_csv(here("data","data_cleaned.csv"))
 ```
 
