@@ -1,12 +1,13 @@
 ---
 title: "Unsupervised Learning"
-format: pdf
+format: html
 editor: visual
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r}
+source(here::here("scripts","setup.R"))
 library(data.table)
 data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
 ```
@@ -34,11 +35,7 @@ fviz_pca_biplot(pca_results,
 )
 ```
 
-The biplot shows several information.
-- The colored dots represent the numerical observations of the dataset.
-- The cos2 gradient shows the representation of the feature by the dimension, so the higher the cos2 (tending to red), the better the representation of the observation in the dimension.
-- The arrows represent the features in the form of the circle of correlation. Here, we have 2 dimensions which represent almost 49% of the observations.
-- Looking at the arrows, it shows that most of variables are stongly linked to dimension 2. We can also see that the arrows that go in opposite directions (such as fuel_type_1 and highway_mpg_fuel_type_1) are negatively correlated. From another view, fuel_type_1 and fuel_type_2 are uncorrelated.
+The biplot shows several information. - The colored dots represent the numerical observations of the dataset. - The cos2 gradient shows the representation of the feature by the dimension, so the higher the cos2 (tending to red), the better the representation of the observation in the dimension. - The arrows represent the features in the form of the circle of correlation. Here, we have 2 dimensions which represent almost 49% of the observations. - Looking at the arrows, it shows that most of variables are stongly linked to dimension 2. We can also see that the arrows that go in opposite directions (such as fuel_type_1 and highway_mpg_fuel_type_1) are negatively correlated. From another view, fuel_type_1 and fuel_type_2 are uncorrelated.
 
 ## Screeplot
 
