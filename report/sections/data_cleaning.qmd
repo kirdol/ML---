@@ -3,6 +3,7 @@
 ```{r echo = FALSE, message = FALSE}
 source(here::here("scripts","setup.R"))
 data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"), na = c(""))
+brand_missing_threshold <- 0.1
 ```
 
 Let's have a look at the entire dataset an its missing values in grey.
@@ -68,16 +69,188 @@ fuel_type_1_miss <- unique(models_and_fuel_with_missing_cylinders$`Fuel.Type.1`)
 elec <- data %>%
   group_by(`Fuel.Type.1`) %>%
   summarise(Count = n())
-# elec = 484, meaninf that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type reprenst all our electric vehicle
+# elec = 484, meaninf that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type represent all our electric vehicle
 ```
 
 We see that all the `{r} miss_elec` missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type is only "`{r} fuel_type_1_miss`". Therefore, we can conclude that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type represent all our electric vehicle. This make sense since electric vehicle do not have an combustion engine and therefore those categories are not really applicable. We will therefore replace all missing values in this two columns with "none".
 
-```{r echo = FALSE}
+```{r Cleaning of Engine Cylinders and Engine Displacement, echo = FALSE}
 # Replace missing values in 'Engine Cylinders' and 'Engine Displacement' with "none"
 data_cleaning <- data %>%
   mutate(
     `Engine.Cylinders` = ifelse(is.na(`Engine.Cylinders`), "none", `Engine.Cylinders`),
     `Engine.Displacement` = ifelse(is.na(`Engine.Displacement`), "none", `Engine.Displacement`))
+```
+
+```{r}
+# Create a summary dataframe of missing values by column
+missing_summary_df2 <- data_cleaning %>%
+  summarise(across(everything(), ~sum(is.na(.)))) %>%
+  pivot_longer(cols = everything(), names_to = "Column", values_to = "Missing_Count") %>%
+  mutate(
+    Total_Rows = nrow(data),
+    Proportion_Missing = Missing_Count / Total_Rows
+  ) %>%
+  arrange(desc(Proportion_Missing)) %>%
+  select(Column, "Missing values" = Missing_Count, "Prop. Missing" = Proportion_Missing)
+
+# Print the summary dataframe
+datatable(missing_summary_df2,
+          options = list(pageLength = 6,
+                          class = "hover",
+                          searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("Prop. Missing", 2)
+```
+
+```{r}
+# Check for missing values in the 'Drive' column
+missing_drive <- data_cleaning %>% filter(is.na(Drive))
+
+# Count the missing values per vehicle class
+missing_counts <- missing_drive %>% count(Vehicle.Class)
+
+# Get total counts per vehicle class in the entire dataset
+total_counts <- data_cleaning %>% count(Vehicle.Class)
+
+# Calculate the percentage of missing 'Drive' values per vehicle class
+percentage_missing <- missing_counts %>% 
+  left_join(total_counts, by = "Vehicle.Class", suffix = c(".missing", ".total")) %>%
+  mutate(PercentageMissing = (n.missing / n.total))
+
+# Print the summary dataframe
+datatable(percentage_missing,
+          options = list(pageLength = 6,
+                          class = "hover",
+                          searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("PercentageMissing", 2)
+```
+```{r}
+# Count the missing 'Drive' values per brand
+missing_drive_by_make <- data_cleaning %>% 
+  filter(is.na(Drive)) %>% 
+  count(Make)
+
+# Get total counts per brand in the entire dataset
+total_counts_by_make <- data_cleaning %>% 
+  count(Make)
+
+# Calculate the percentage of missing 'Drive' values per brand
+percentage_missing_drive_by_make <- missing_drive_by_make %>%
+  left_join(total_counts_by_make, by = "Make", suffix = c(".missing", ".total")) %>%
+  mutate(PercentageMissing = (n.missing / n.total)) %>%
+  arrange(desc(PercentageMissing))
+
+# Print the summary dataframe
+datatable(percentage_missing_drive_by_make,
+          options = list(pageLength = 6,
+                          class = "hover",
+                          searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("PercentageMissing", 2)
+```
+
+
+
+```{r}
+# Calculate the percentage of missing 'Drive' values per brand
+brand_summary <- data_cleaning %>%
+  group_by(Make) %>%
+  summarise(Total = n(),
+            Missing = sum(is.na(Drive)),
+            PercentageMissing = (Missing / Total))
+
+# Identify brands with more than 10% missing 'Drive' data
+brands_to_remove <- brand_summary %>%
+  filter(PercentageMissing > brand_missing_threshold) %>%
+  pull(Make)
+
+# Filter out these brands from the dataset
+data_filtered <- data_cleaning %>%
+  filter(!(Make %in% brands_to_remove))
+
+# For the remaining data, drop rows with missing 'Drive' values
+data_cleaning2 <- data_filtered %>%
+  filter(!is.na(Drive))
+```
+
+```{r}
+# Create a summary dataframe of missing values by column
+missing_summary_df3 <- data_cleaning2 %>%
+  summarise(across(everything(), ~sum(is.na(.)))) %>%
+  pivot_longer(cols = everything(), names_to = "Column", values_to = "Missing_Count") %>%
+  mutate(
+    Total_Rows = nrow(data),
+    Proportion_Missing = Missing_Count / Total_Rows
+  ) %>%
+  arrange(desc(Proportion_Missing)) %>%
+  select(Column, "Missing values" = Missing_Count, "Prop. Missing" = Proportion_Missing)
+
+# Print the summary dataframe
+datatable(missing_summary_df3,
+          options = list(pageLength = 6,
+                          class = "hover",
+                          searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("Prop. Missing", 2)
+```
+
+```{r}
+# Remove rows where the 'Transmission' column has missing values
+data_cleaning3 <- data_cleaning2 %>%
+  filter(!is.na(Transmission))
+data_cleaning4 <- data_cleaning3 %>%
+  mutate(Fuel.Type.2 = replace_na(Fuel.Type.2, "none"))
+```
+
+```{r}
+# Create a summary dataframe of missing values by column
+missing_summary_df3 <- data_cleaning3 %>%
+  summarise(across(everything(), ~sum(is.na(.)))) %>%
+  pivot_longer(cols = everything(), names_to = "Column", values_to = "Missing_Count") %>%
+  mutate(
+    Total_Rows = nrow(data_cleaning3),
+    Proportion_Missing = Missing_Count / Total_Rows
+  ) %>%
+  arrange(desc(Proportion_Missing)) %>%
+  select(Column, "Missing values" = Missing_Count, "Prop. Missing" = Proportion_Missing)
+
+# Print the summary dataframe
+datatable(missing_summary_df3,
+          options = list(pageLength = 3,
+                          class = "hover",
+                          searchHighlight = TRUE),
+          rownames = FALSE)%>%
+  formatPercentage("Prop. Missing", 2)
+```
+
+```{r creation of the final dataset, echo = FALSE}
+# Create the final dataset
+data_cleaned <- data_cleaning4 %>%
+  select(make = Make,
+         model_year = Model.Year,
+         vehicle_class = Vehicle.Class,
+         drive = Drive,
+         engine_cylinders = Engine.Cylinders,
+         engine_displacement = Engine.Displacement,
+         transmission = Transmission,
+         fuel_type_1 = Fuel.Type.1,
+         city_mpg_fuel_type_1 = City.MPG..Fuel.Type.1.,
+         highway_mpg_fuel_type_1 = Highway.MPG..Fuel.Type.1.,
+         fuel_type_2 = Fuel.Type.2,
+         city_mpg_fuel_type_2 = City.MPG..Fuel.Type.2.,
+         highway_mpg_fuel_type_2 = Highway.MPG..Fuel.Type.2.,
+         combined_mpg_fuel_type_2 = Combined.MPG..Fuel.Type.2.,
+         range_ev_city_fuel_type_1 = City.MPG..Fuel.Type.1.,
+         range_ev_highway_fuel_type_1 = Hwy.Range..for.EV...Fuel.Type.1.,
+         range_ev_city_fuel_type_2 = City.MPG..Fuel.Type.2.,
+         range_ev_highway_fuel_type_2 = Hwy.Range..for.EV...Fuel.Type.2.,
+         charge_time_240v = Time.to.Charge.EV..hours.at.240v.)
+
+# Save the cleaned dataset
+write_csv(data_cleaned, here("data","data_cleaned.csv"))
+
+data_test <- read_csv(here("data","data_cleaned.csv"))
 ```
 

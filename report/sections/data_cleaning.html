@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -83,11 +117,166 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-cdf7315a5a0fabaeaae1" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-cdf7315a5a0fabaeaae1">{"x":{"filter":"none","vertical":false,"data":[["Fuel.Type.2","Engine.Description","Drive","Engine.Cylinders","Engine.Displacement","Transmission","ID","Model.Year","Make","Model","Estimated.Annual.Petrolum.Consumption..Barrels.","Fuel.Type.1","City.MPG..Fuel.Type.1.","Highway.MPG..Fuel.Type.1.","Combined.MPG..Fuel.Type.1.","City.MPG..Fuel.Type.2.","Highway.MPG..Fuel.Type.2.","Combined.MPG..Fuel.Type.2.","Vehicle.Class","Time.to.Charge.EV..hours.at.120v.","Time.to.Charge.EV..hours.at.240v.","Range..for.EV.","City.Range..for.EV...Fuel.Type.1.","City.Range..for.EV...Fuel.Type.2.","Hwy.Range..for.EV...Fuel.Type.1.","Hwy.Range..for.EV...Fuel.Type.2."],[44059,17031,1186,484,483,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0.9599747254662716,0.3710780895938644,0.02584103189820464,0.01054558131427575,0.01052379292313056,0.0002396723025971762,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column<\/th>\n      <th>Missing values<\/th>\n      <th>Prop. Missing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"name":"Column","targets":0},{"name":"Missing values","targets":1},{"name":"Prop. Missing","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-55da538ba6d9a02e1040" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-55da538ba6d9a02e1040">{"x":{"filter":"none","vertical":false,"data":[["Fuel.Type.2","Engine.Description","Drive","Engine.Cylinders","Engine.Displacement","Transmission","ID","Model.Year","Make","Model","Estimated.Annual.Petrolum.Consumption..Barrels.","Fuel.Type.1","City.MPG..Fuel.Type.1.","Highway.MPG..Fuel.Type.1.","Combined.MPG..Fuel.Type.1.","City.MPG..Fuel.Type.2.","Highway.MPG..Fuel.Type.2.","Combined.MPG..Fuel.Type.2.","Vehicle.Class","Time.to.Charge.EV..hours.at.120v.","Time.to.Charge.EV..hours.at.240v.","Range..for.EV.","City.Range..for.EV...Fuel.Type.1.","City.Range..for.EV...Fuel.Type.2.","Hwy.Range..for.EV...Fuel.Type.1.","Hwy.Range..for.EV...Fuel.Type.2."],[44059,17031,1186,484,483,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0.9599747254662716,0.3710780895938644,0.02584103189820464,0.01054558131427575,0.01052379292313056,0.0002396723025971762,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column<\/th>\n      <th>Missing values<\/th>\n      <th>Prop. Missing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"name":"Column","targets":0},{"name":"Missing values","targets":1},{"name":"Prop. Missing","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p>We see that all the Electricity, 484 missing values in “Engine Cylinders” and “Engine Displacement” vehicle fuel type is only “Electricity”. Therefore, we can conclude that all the missing values in “Engine Cylinders” and “Engine Displacement” vehicle fuel type represent all our electric vehicle. This make sense since electric vehicle do not have an combustion engine and therefore those categories are not really applicable. We will therefore replace all missing values in this two columns with “none”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary dataframe of missing values by column</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>missing_summary_df2 <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">sum</span>(<span class="fu">is.na</span>(.)))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Column"</span>, <span class="at">values_to =</span> <span class="st">"Missing_Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Rows =</span> <span class="fu">nrow</span>(data),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Proportion_Missing =</span> Missing_Count <span class="sc">/</span> Total_Rows</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Proportion_Missing)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Column, <span class="st">"Missing values"</span> <span class="ot">=</span> Missing_Count, <span class="st">"Prop. Missing"</span> <span class="ot">=</span> Proportion_Missing)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the summary dataframe</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(missing_summary_df2,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">6</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                          <span class="at">class =</span> <span class="st">"hover"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                          <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="st">"Prop. Missing"</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0220d2fdabddbfa36bbb" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0220d2fdabddbfa36bbb">{"x":{"filter":"none","vertical":false,"data":[["Fuel.Type.2","Engine.Description","Drive","Transmission","ID","Model.Year","Make","Model","Estimated.Annual.Petrolum.Consumption..Barrels.","Fuel.Type.1","City.MPG..Fuel.Type.1.","Highway.MPG..Fuel.Type.1.","Combined.MPG..Fuel.Type.1.","City.MPG..Fuel.Type.2.","Highway.MPG..Fuel.Type.2.","Combined.MPG..Fuel.Type.2.","Engine.Cylinders","Engine.Displacement","Vehicle.Class","Time.to.Charge.EV..hours.at.120v.","Time.to.Charge.EV..hours.at.240v.","Range..for.EV.","City.Range..for.EV...Fuel.Type.1.","City.Range..for.EV...Fuel.Type.2.","Hwy.Range..for.EV...Fuel.Type.1.","Hwy.Range..for.EV...Fuel.Type.2."],[44059,17031,1186,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0.9599747254662716,0.3710780895938644,0.02584103189820464,0.0002396723025971762,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column<\/th>\n      <th>Missing values<\/th>\n      <th>Prop. Missing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"name":"Column","targets":0},{"name":"Missing values","targets":1},{"name":"Prop. Missing","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values in the 'Drive' column</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>missing_drive <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(Drive))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the missing values per vehicle class</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>missing_counts <span class="ot">&lt;-</span> missing_drive <span class="sc">%&gt;%</span> <span class="fu">count</span>(Vehicle.Class)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get total counts per vehicle class in the entire dataset</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>total_counts <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span> <span class="fu">count</span>(Vehicle.Class)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the percentage of missing 'Drive' values per vehicle class</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>percentage_missing <span class="ot">&lt;-</span> missing_counts <span class="sc">%&gt;%</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(total_counts, <span class="at">by =</span> <span class="st">"Vehicle.Class"</span>, <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">".missing"</span>, <span class="st">".total"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PercentageMissing =</span> (n.missing <span class="sc">/</span> n.total))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the summary dataframe</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(percentage_missing,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">6</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">class =</span> <span class="st">"hover"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="st">"PercentageMissing"</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-c537f4f111756bd24262" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c537f4f111756bd24262">{"x":{"filter":"none","vertical":false,"data":[["Compact Cars","Large Cars","Midsize Cars","Midsize Station Wagons","Midsize-Large Station Wagons","Minicompact Cars","Small Station Wagons","Special Purpose Vehicles","Subcompact Cars","Two Seaters"],[247,49,217,98,16,24,111,2,370,52],[6276,2550,5497,585,656,1542,1720,1455,5557,2360],[0.03935627788400255,0.0192156862745098,0.03947607786065126,0.1675213675213675,0.02439024390243903,0.01556420233463035,0.06453488372093023,0.001374570446735395,0.06658268850098974,0.02203389830508475]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Vehicle.Class<\/th>\n      <th>n.missing<\/th>\n      <th>n.total<\/th>\n      <th>PercentageMissing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3]},{"name":"Vehicle.Class","targets":0},{"name":"n.missing","targets":1},{"name":"n.total","targets":2},{"name":"PercentageMissing","targets":3}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the missing 'Drive' values per brand</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>missing_drive_by_make <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(Drive)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Make)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get total counts per brand in the entire dataset</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>total_counts_by_make <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Make)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the percentage of missing 'Drive' values per brand</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>percentage_missing_drive_by_make <span class="ot">&lt;-</span> missing_drive_by_make <span class="sc">%&gt;%</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(total_counts_by_make, <span class="at">by =</span> <span class="st">"Make"</span>, <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">".missing"</span>, <span class="st">".total"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PercentageMissing =</span> (n.missing <span class="sc">/</span> n.total)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(PercentageMissing))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the summary dataframe</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(percentage_missing_drive_by_make,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">6</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">class =</span> <span class="st">"hover"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                          <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="st">"PercentageMissing"</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e674465d34694e88f876" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e674465d34694e88f876">{"x":{"filter":"none","vertical":false,"data":[["Avanti Motor Corporation","Kenyon Corporation Of America","Pininfarina","Bill Dovell Motor Car Company","Renault","Bitter Gmbh and Co. Kg","Bertone","Peugeot","Oldsmobile","Mercury","Buick","Pontiac","Plymouth","Chrysler","Alfa Romeo","Volkswagen","Volvo","Rolls-Royce","Nissan","Aston Martin","Dodge","Isuzu","Mitsubishi","Honda","Ford","Lincoln","Chevrolet","Audi","Maserati","Toyota","Mazda","Saab","Cadillac","Subaru","Mercedes-Benz","Lamborghini","Porsche","BMW","Jaguar","MINI","GMC"],[2,4,4,2,23,2,2,22,77,71,81,99,51,42,4,59,37,8,58,6,81,13,27,26,85,9,94,26,4,48,21,8,13,16,27,2,10,16,3,1,2],[2,4,6,4,56,5,7,98,462,609,705,893,526,753,87,1286,895,221,1605,176,2677,434,1118,1126,3692,400,4333,1209,187,2326,1086,432,709,976,1822,156,1389,2315,523,502,2724],[1,1,0.6666666666666666,0.5,0.4107142857142857,0.4,0.2857142857142857,0.2244897959183673,0.1666666666666667,0.1165845648604269,0.1148936170212766,0.1108622620380739,0.09695817490494296,0.05577689243027888,0.04597701149425287,0.04587869362363919,0.04134078212290503,0.03619909502262444,0.03613707165109034,0.03409090909090909,0.03025775121404557,0.02995391705069124,0.02415026833631485,0.02309058614564831,0.02302275189599133,0.0225,0.02169397645972767,0.02150537634408602,0.0213903743315508,0.02063628546861565,0.01933701657458563,0.01851851851851852,0.01833568406205924,0.01639344262295082,0.01481888035126235,0.01282051282051282,0.007199424046076314,0.006911447084233261,0.005736137667304016,0.00199203187250996,0.0007342143906020558]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Make<\/th>\n      <th>n.missing<\/th>\n      <th>n.total<\/th>\n      <th>PercentageMissing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3]},{"name":"Make","targets":0},{"name":"n.missing","targets":1},{"name":"n.total","targets":2},{"name":"PercentageMissing","targets":3}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the percentage of missing 'Drive' values per brand</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>brand_summary <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Make) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">n</span>(),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">Missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(Drive)),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">PercentageMissing =</span> (Missing <span class="sc">/</span> Total))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify brands with more than 10% missing 'Drive' data</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>brands_to_remove <span class="ot">&lt;-</span> brand_summary <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PercentageMissing <span class="sc">&gt;</span> brand_missing_threshold) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(Make)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out these brands from the dataset</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>data_filtered <span class="ot">&lt;-</span> data_cleaning <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(Make <span class="sc">%in%</span> brands_to_remove))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># For the remaining data, drop rows with missing 'Drive' values</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>data_cleaning2 <span class="ot">&lt;-</span> data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Drive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary dataframe of missing values by column</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>missing_summary_df3 <span class="ot">&lt;-</span> data_cleaning2 <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">sum</span>(<span class="fu">is.na</span>(.)))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Column"</span>, <span class="at">values_to =</span> <span class="st">"Missing_Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Rows =</span> <span class="fu">nrow</span>(data),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Proportion_Missing =</span> Missing_Count <span class="sc">/</span> Total_Rows</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Proportion_Missing)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Column, <span class="st">"Missing values"</span> <span class="ot">=</span> Missing_Count, <span class="st">"Prop. Missing"</span> <span class="ot">=</span> Proportion_Missing)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the summary dataframe</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(missing_summary_df3,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">6</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                          <span class="at">class =</span> <span class="st">"hover"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                          <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="st">"Prop. Missing"</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-8d40ecb3bc3dc7529722" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8d40ecb3bc3dc7529722">{"x":{"filter":"none","vertical":false,"data":[["Fuel.Type.2","Engine.Description","Transmission","ID","Model.Year","Make","Model","Estimated.Annual.Petrolum.Consumption..Barrels.","Fuel.Type.1","City.MPG..Fuel.Type.1.","Highway.MPG..Fuel.Type.1.","Combined.MPG..Fuel.Type.1.","City.MPG..Fuel.Type.2.","Highway.MPG..Fuel.Type.2.","Combined.MPG..Fuel.Type.2.","Engine.Cylinders","Engine.Displacement","Drive","Vehicle.Class","Time.to.Charge.EV..hours.at.120v.","Time.to.Charge.EV..hours.at.240v.","Range..for.EV.","City.Range..for.EV...Fuel.Type.1.","City.Range..for.EV...Fuel.Type.2.","Hwy.Range..for.EV...Fuel.Type.1.","Hwy.Range..for.EV...Fuel.Type.2."],[40474,16341,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0.8818633432107373,0.3560440997036779,0.0001743071291615827,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column<\/th>\n      <th>Missing values<\/th>\n      <th>Prop. Missing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"name":"Column","targets":0},{"name":"Missing values","targets":1},{"name":"Prop. Missing","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows where the 'Transmission' column has missing values</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data_cleaning3 <span class="ot">&lt;-</span> data_cleaning2 <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Transmission))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>data_cleaning4 <span class="ot">&lt;-</span> data_cleaning3 <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Fuel.Type.2 =</span> <span class="fu">replace_na</span>(Fuel.Type<span class="fl">.2</span>, <span class="st">"none"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary dataframe of missing values by column</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>missing_summary_df3 <span class="ot">&lt;-</span> data_cleaning3 <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">sum</span>(<span class="fu">is.na</span>(.)))) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Column"</span>, <span class="at">values_to =</span> <span class="st">"Missing_Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Rows =</span> <span class="fu">nrow</span>(data_cleaning3),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Proportion_Missing =</span> Missing_Count <span class="sc">/</span> Total_Rows</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Proportion_Missing)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Column, <span class="st">"Missing values"</span> <span class="ot">=</span> Missing_Count, <span class="st">"Prop. Missing"</span> <span class="ot">=</span> Proportion_Missing)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the summary dataframe</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(missing_summary_df3,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">3</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                          <span class="at">class =</span> <span class="st">"hover"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                          <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="st">"Prop. Missing"</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-5bd86d07ae9b5a92e8ea" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5bd86d07ae9b5a92e8ea">{"x":{"filter":"none","vertical":false,"data":[["Fuel.Type.2","Engine.Description","ID","Model.Year","Make","Model","Estimated.Annual.Petrolum.Consumption..Barrels.","Fuel.Type.1","City.MPG..Fuel.Type.1.","Highway.MPG..Fuel.Type.1.","Combined.MPG..Fuel.Type.1.","City.MPG..Fuel.Type.2.","Highway.MPG..Fuel.Type.2.","Combined.MPG..Fuel.Type.2.","Engine.Cylinders","Engine.Displacement","Drive","Transmission","Vehicle.Class","Time.to.Charge.EV..hours.at.120v.","Time.to.Charge.EV..hours.at.240v.","Range..for.EV.","City.Range..for.EV...Fuel.Type.1.","City.Range..for.EV...Fuel.Type.2.","Hwy.Range..for.EV...Fuel.Type.1.","Hwy.Range..for.EV...Fuel.Type.2."],[40466,16334,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0.9580018939393939,0.3866950757575758,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column<\/th>\n      <th>Missing values<\/th>\n      <th>Prop. Missing<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":3,"class":"hover","searchHighlight":true,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"name":"Column","targets":0},{"name":"Missing values","targets":1},{"name":"Prop. Missing","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[3,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
 </section>
 
 </main>
