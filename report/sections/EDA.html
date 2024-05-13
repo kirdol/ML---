@@ -92,840 +92,1360 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>EDA:</p>
+<p><strong><em>EDA:</em></strong></p>
+<p><strong>Columns description</strong></p>
+<p>To begin with our EDA, let’s have a look at our dataset and in particular the characteristics of the columns.</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in fun(libname, pkgname): couldn't connect to display ":0"</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#to get a detailed summary</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">45896</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 12%">
+<col style="width: 18%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Make</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">141</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Model</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4762</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fuel Type 1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fuel Type 2</td>
+<td style="text-align: right;">44059</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Drive</td>
+<td style="text-align: right;">1186</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Engine Description</td>
+<td style="text-align: right;">17031</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">589</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transmission</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vehicle Class</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ID</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">23102.11</td>
+<td style="text-align: right;">13403.10</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">11474.75</td>
+<td style="text-align: right;">23090.50</td>
+<td style="text-align: right;">34751.25</td>
+<td style="text-align: right;">46332.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Model Year</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2003.61</td>
+<td style="text-align: right;">12.19</td>
+<td style="text-align: right;">1984.00</td>
+<td style="text-align: right;">1992.00</td>
+<td style="text-align: right;">2005.00</td>
+<td style="text-align: right;">2015.00</td>
+<td style="text-align: right;">2023.00</td>
+<td style="text-align: left;">▇▆▆▇▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estimated Annual Petrolum Consumption (Barrels)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">15.33</td>
+<td style="text-align: right;">4.34</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">12.94</td>
+<td style="text-align: right;">14.88</td>
+<td style="text-align: right;">17.50</td>
+<td style="text-align: right;">42.50</td>
+<td style="text-align: left;">▁▇▃▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City MPG (Fuel Type 1)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">19.11</td>
+<td style="text-align: right;">10.31</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">17.00</td>
+<td style="text-align: right;">21.00</td>
+<td style="text-align: right;">150.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Highway MPG (Fuel Type 1)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.16</td>
+<td style="text-align: right;">9.40</td>
+<td style="text-align: right;">9.00</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">24.00</td>
+<td style="text-align: right;">28.00</td>
+<td style="text-align: right;">140.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Combined MPG (Fuel Type 1)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">21.33</td>
+<td style="text-align: right;">9.78</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: right;">17.00</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">23.00</td>
+<td style="text-align: right;">142.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">City MPG (Fuel Type 2)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">6.47</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">145.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Highway MPG (Fuel Type 2)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6.55</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">121.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Combined MPG (Fuel Type 2)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">6.43</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">133.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Engine Cylinders</td>
+<td style="text-align: right;">487</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">5.71</td>
+<td style="text-align: right;">1.77</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: left;">▇▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Engine Displacement</td>
+<td style="text-align: right;">485</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">3.28</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.20</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.20</td>
+<td style="text-align: right;">8.40</td>
+<td style="text-align: left;">▁▇▅▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time to Charge EV (hours at 120v)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: left;">▁▁▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Time to Charge EV (hours at 240v)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">15.30</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Range (for EV)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.36</td>
+<td style="text-align: right;">24.97</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">520.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">City Range (for EV - Fuel Type 1)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.62</td>
+<td style="text-align: right;">20.89</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">520.80</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City Range (for EV - Fuel Type 2)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">2.73</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">135.28</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hwy Range (for EV - Fuel Type 1)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.51</td>
+<td style="text-align: right;">19.70</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">520.50</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hwy Range (for EV - Fuel Type 2)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">114.76</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
+<p>The dataset that we are working with contains approx. 46’000 rows and 26 columns. We can see that most of our features are concerning the consumption of the cars. In addition, we notice that some variables contain a lot of missing and that the variable “Time.to.Charge.EV..hours.at.120v.” is only containing 0s. We will be handle these in the section “data cleaning”.</p>
+<p><strong>Exploration of the distribution</strong> Here are more details about the distribution of the numerical features.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DataExplorer)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       ID          Model.Year       Make              Model          
- Min.   :    1   Min.   :1984   Length:45896       Length:45896      
- 1st Qu.:11475   1st Qu.:1992   Class :character   Class :character  
- Median :23090   Median :2005   Mode  :character   Mode  :character  
- Mean   :23102   Mean   :2004                                        
- 3rd Qu.:34751   3rd Qu.:2015                                        
- Max.   :46332   Max.   :2023                                        
- Estimated.Annual.Petrolum.Consumption..Barrels. Fuel.Type.1       
- Min.   : 0.04708                                Length:45896      
- 1st Qu.:12.93522                                Class :character  
- Median :14.87550                                Mode  :character  
- Mean   :15.32811                                                  
- 3rd Qu.:17.50059                                                  
- Max.   :42.50143                                                  
- City.MPG..Fuel.Type.1. Highway.MPG..Fuel.Type.1. Combined.MPG..Fuel.Type.1.
- Min.   :  6.00         Min.   :  9.00            Min.   :  7.00            
- 1st Qu.: 15.00         1st Qu.: 20.00            1st Qu.: 17.00            
- Median : 17.00         Median : 24.00            Median : 20.00            
- Mean   : 19.11         Mean   : 25.16            Mean   : 21.33            
- 3rd Qu.: 21.00         3rd Qu.: 28.00            3rd Qu.: 23.00            
- Max.   :150.00         Max.   :140.00            Max.   :142.00            
- Fuel.Type.2        City.MPG..Fuel.Type.2. Highway.MPG..Fuel.Type.2.
- Length:45896       Min.   :  0.0000       Min.   :  0.0000         
- Class :character   1st Qu.:  0.0000       1st Qu.:  0.0000         
- Mode  :character   Median :  0.0000       Median :  0.0000         
-                    Mean   :  0.8484       Mean   :  0.9975         
-                    3rd Qu.:  0.0000       3rd Qu.:  0.0000         
-                    Max.   :145.0000       Max.   :121.0000         
- Combined.MPG..Fuel.Type.2. Engine.Cylinders   Engine.Displacement
- Min.   :  0.0000           Length:45896       Length:45896       
- 1st Qu.:  0.0000           Class :character   Class :character   
- Median :  0.0000           Mode  :character   Mode  :character   
- Mean   :  0.9017                                                 
- 3rd Qu.:  0.0000                                                 
- Max.   :133.0000                                                 
-    Drive           Engine.Description Transmission       Vehicle.Class     
- Length:45896       Length:45896       Length:45896       Length:45896      
- Class :character   Class :character   Class :character   Class :character  
- Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-                                                                            
-                                                                            
-                                                                            
- Time.to.Charge.EV..hours.at.120v. Time.to.Charge.EV..hours.at.240v.
- Min.   :0                         Min.   : 0.0000                  
- 1st Qu.:0                         1st Qu.: 0.0000                  
- Median :0                         Median : 0.0000                  
- Mean   :0                         Mean   : 0.1143                  
- 3rd Qu.:0                         3rd Qu.: 0.0000                  
- Max.   :0                         Max.   :15.3000                  
- Range..for.EV.    City.Range..for.EV...Fuel.Type.1.
- Min.   :  0.000   Min.   :  0.000                  
- 1st Qu.:  0.000   1st Qu.:  0.000                  
- Median :  0.000   Median :  0.000                  
- Mean   :  2.362   Mean   :  1.618                  
- 3rd Qu.:  0.000   3rd Qu.:  0.000                  
- Max.   :520.000   Max.   :520.800                  
- City.Range..for.EV...Fuel.Type.2. Hwy.Range..for.EV...Fuel.Type.1.
- Min.   :  0.0000                  Min.   :  0.000                 
- 1st Qu.:  0.0000                  1st Qu.:  0.000                 
- Median :  0.0000                  Median :  0.000                 
- Mean   :  0.1724                  Mean   :  1.508                 
- 3rd Qu.:  0.0000                  3rd Qu.:  0.000                 
- Max.   :135.2800                  Max.   :520.500                 
- Hwy.Range..for.EV...Fuel.Type.2.
- Min.   :  0.0000                
- 1st Qu.:  0.0000                
- Median :  0.0000                
- Mean   :  0.1615                
- 3rd Qu.:  0.0000                
- Max.   :114.7600                </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_histogram</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  melt.data &lt;- melt(data)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  ggplot(data = melt.data, aes(x = value)) + </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># stat_density() + </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># facet_wrap(~variable, scales = "free")</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_histogram</span>(data)<span class="co"># Time.to.Charge.EV..hours.at.120v. not appearing because all observations = 0 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="EDA_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_correlation</span>(data) <span class="co">#drop time charge EV 120V</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>6 features with more than 20 categories ignored!
-Make: 141 categories
-Model: 4762 categories
-Engine.Displacement: 68 categories
-Engine.Description: 590 categories
-Transmission: 41 categories
-Vehicle.Class: 34 categories</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in cor(x = structure(list(ID = c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, : the
-standard deviation is zero</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_report</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-
-processing file: report.rmd</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-  |                                           
-  |                                     |   0%
-  |                                           
-  |.                                    |   2%                                 
-  |                                           
-  |..                                   |   5% [global_options]                
-  |                                           
-  |...                                  |   7%                                 
-  |                                           
-  |....                                 |  10% [introduce]                     
-  |                                           
-  |....                                 |  12%                                 
-  |                                           
-  |.....                                |  14% [plot_intro]                    
-  |                                           
-  |......                               |  17%                                 
-  |                                           
-  |.......                              |  19% [data_structure]                
-  |                                           
-  |........                             |  21%                                 
-  |                                           
-  |.........                            |  24% [missing_profile]               
-  |                                           
-  |..........                           |  26%                                 
-  |                                           
-  |...........                          |  29% [univariate_distribution_header]
-  |                                           
-  |...........                          |  31%                                 
-  |                                           
-  |............                         |  33% [plot_histogram]                
-  |                                           
-  |.............                        |  36%                                 
-  |                                           
-  |..............                       |  38% [plot_density]                  
-  |                                           
-  |...............                      |  40%                                 
-  |                                           
-  |................                     |  43% [plot_frequency_bar]            
-  |                                           
-  |.................                    |  45%                                 
-  |                                           
-  |..................                   |  48% [plot_response_bar]             
-  |                                           
-  |..................                   |  50%                                 
-  |                                           
-  |...................                  |  52% [plot_with_bar]                 
-  |                                           
-  |....................                 |  55%                                 
-  |                                           
-  |.....................                |  57% [plot_normal_qq]                
-  |                                           
-  |......................               |  60%                                 
-  |                                           
-  |.......................              |  62% [plot_response_qq]              
-  |                                           
-  |........................             |  64%                                 
-  |                                           
-  |.........................            |  67% [plot_by_qq]                    
-  |                                           
-  |..........................           |  69%                                 
-  |                                           
-  |..........................           |  71% [correlation_analysis]          
-  |                                           
-  |...........................          |  74%                                 
-  |                                           
-  |............................         |  76% [principal_component_analysis]  
-  |                                           
-  |.............................        |  79%                                 
-  |                                           
-  |..............................       |  81% [bivariate_distribution_header] 
-  |                                           
-  |...............................      |  83%                                 
-  |                                           
-  |................................     |  86% [plot_response_boxplot]         
-  |                                           
-  |.................................    |  88%                                 
-  |                                           
-  |.................................    |  90% [plot_by_boxplot]               
-  |                                           
-  |..................................   |  93%                                 
-  |                                           
-  |...................................  |  95% [plot_response_scatterplot]     
-  |                                           
-  |.................................... |  98%                                 
-  |                                           
-  |.....................................| 100% [plot_by_scatterplot]           
-                                                                                                                           </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>output file: /Users/stefanfavre/Documents/GitHub/ML_Project/report/sections/report.knit.md</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>/Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS /Users/stefanfavre/Documents/GitHub/ML_Project/report/sections/report.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/stefanfavre/Documents/GitHub/ML_Project/report/sections/report.html --lua-filter /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --table-of-contents --toc-depth 6 --template /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=yeti --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/jx/1hdvc4j5033f_zgtfpc2_t0r0000gn/T//Rtmpqqa15E/rmarkdown-str10df71db7255.html </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Output created: report.html</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="EDA_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#nb cars per brand</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tentative boxplots</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># data_long &lt;- data %&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   select_if(is.numeric) %&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   pivot_longer(cols = c("ID",                                             </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   "Model.Year",                                     </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#  "Estimated.Annual.Petrolum.Consumption..Barrels.",</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#  "City.MPG..Fuel.Type.1.",                         </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#  "Highway.MPG..Fuel.Type.1." ,                     </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  "Combined.MPG..Fuel.Type.1.",                     </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  "City.MPG..Fuel.Type.2." ,                        </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  "Highway.MPG..Fuel.Type.2.",                      </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  "Combined.MPG..Fuel.Type.2."   ,                  </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># "Time.to.Charge.EV..hours.at.120v." ,             </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#  "Time.to.Charge.EV..hours.at.240v." ,             </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># "Range..for.EV.",                                 </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># "City.Range..for.EV...Fuel.Type.1.",              </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># "City.Range..for.EV...Fuel.Type.2.",              </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># "Hwy.Range..for.EV...Fuel.Type.1." ,              </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># "Hwy.Range..for.EV...Fuel.Type.2." ), names_to = "variable", values_to = "value")</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data_long, aes(x = variable, y = value, fill = variable)) +</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_boxplot() +</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   facet_wrap(~ variable, scales = "free_y") +  # Each variable gets its own y-axis</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_minimal() +</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(title = "Boxplots of Variables with Different Scales", x = "", y = "Value")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_correlation(data) #drop time charge EV 120V</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create_report(data)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#nb cars per brand</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p><strong>number of models per make</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Number of occurences/model per make </span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>nb_model_per_make <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Make, Model) <span class="sc">%&gt;%</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Number =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Make) <span class="sc">%&gt;%</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Models_Per_Make =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Models_Per_Make))</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#table</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(nb_model_per_make,</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>,</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                         <span class="at">class =</span> <span class="st">"hover"</span>,</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Number of occurences/model per make </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nb_model_per_make <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Make, Model) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Number =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Make) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Models_Per_Make =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Models_Per_Make))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#table</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(nb_model_per_make,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                         <span class="at">class =</span> <span class="st">"hover"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">searchHighlight =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-143cfc4b9f59a78276ac" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-143cfc4b9f59a78276ac">{"x":{"filter":"none","vertical":false,"data":[["Mercedes-Benz","BMW","Chevrolet","Ford","Porsche","GMC","Audi","Toyota","Nissan","Dodge","Volvo","Jaguar","Lexus","Hyundai","Volkswagen","Infiniti","Cadillac","Mazda","Ferrari","Jeep","Suzuki","Subaru","Kia","Honda","Land Rover","Tesla","Chrysler","Pontiac","Maserati","Mitsubishi","Rolls-Royce","Mercury","MINI","Acura","Buick","Lincoln","Aston Martin","Lamborghini","Isuzu","Oldsmobile","Bentley","McLaren Automotive","Saab","Plymouth","Saturn","J.K. Motors","Roush Performance","Wallace Environmental","Geo","Lucid","Federal Coach","Genesis","Alfa Romeo","Import Trade Services","Eagle","Lotus","Ram","Renault","Fiat","Scion","Daewoo","Peugeot","Rivian","smart","CX Automotive","Spyker","Maybach","Polestar","Tecstar, LP","Bugatti","AM General","American Motors Corporation","Karma","Kenyon Corporation Of America","Mcevoy Motors","TVR Engineering Ltd","Texas Coach Company","Yugo","Dacia","Daihatsu","Pagani","RUF Automobile","Saleen","Saleen Performance","Autokraft Limited","Azure Dynamics","BMW Alpina","Bill Dovell Motor Car Company","Bitter Gmbh and Co. Kg","Evans Automobiles","Hummer","Koenigsegg","Merkur","Mobility Ventures LLC","PAS Inc - GMC","PAS, Inc","Sterling","VPG","Vector","ASC Incorporated","Aurora Cars Ltd","Avanti Motor Corporation","BYD","Bertone","CCC Engineering","CODA Automotive","Consulier Industries Inc","Dabryan Coach Builders Inc","E. P. Dutton, Inc.","Environmental Rsch and Devp Corp","Excalibur Autos","Fisker","General Motors","Goldacre","Grumman Allied Industries","Grumman Olson","Import Foreign Auto Sales Inc","Isis Imports Ltd","JBA Motorcars, Inc.","Kandi","Laforza Automobile Inc","Lambda Control Systems","London Coach Co Inc","London Taxi","Mahindra","Morgan","Panos","Panoz Auto-Development","Panther Car Company Limited","Pininfarina","Quantum Technologies","Qvale","Red Shift Ltd.","Ruf Automobile Gmbh","S and S Coach Company  E.p. Dutton","SRT","STI","Shelby","Superior Coaches Div E.p. Dutton","Vixen Motor Company","Volga Associated Automobile"],[420,416,268,261,191,169,159,151,133,121,121,105,99,96,91,87,82,82,78,77,77,76,74,67,67,66,64,60,56,56,54,51,50,49,49,45,40,38,36,35,29,27,27,23,23,21,19,18,15,15,14,13,12,12,10,10,10,10,9,9,8,8,8,8,7,7,6,6,6,5,4,4,4,4,4,4,4,4,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Make<\/th>\n      <th>Models_Per_Make<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"class":"hover","searchHighlight":true,"columnDefs":[{"className":"dt-right","targets":1},{"name":"Make","targets":0},{"name":"Models_Per_Make","targets":1}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-a9e620db56ca17ecaa9c" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a9e620db56ca17ecaa9c">{"x":{"filter":"none","vertical":false,"data":[["Mercedes-Benz","BMW","Chevrolet","Ford","Porsche","GMC","Audi","Toyota","Nissan","Dodge","Volvo","Jaguar","Lexus","Hyundai","Volkswagen","Infiniti","Cadillac","Mazda","Ferrari","Jeep","Suzuki","Subaru","Kia","Honda","Land Rover","Tesla","Chrysler","Pontiac","Maserati","Mitsubishi","Rolls-Royce","Mercury","MINI","Acura","Buick","Lincoln","Aston Martin","Lamborghini","Isuzu","Oldsmobile","Bentley","McLaren Automotive","Saab","Plymouth","Saturn","J.K. Motors","Roush Performance","Wallace Environmental","Geo","Lucid","Federal Coach","Genesis","Alfa Romeo","Import Trade Services","Eagle","Lotus","Ram","Renault","Fiat","Scion","Daewoo","Peugeot","Rivian","smart","CX Automotive","Spyker","Maybach","Polestar","Tecstar, LP","Bugatti","AM General","American Motors Corporation","Karma","Kenyon Corporation Of America","Mcevoy Motors","TVR Engineering Ltd","Texas Coach Company","Yugo","Dacia","Daihatsu","Pagani","RUF Automobile","Saleen","Saleen Performance","Autokraft Limited","Azure Dynamics","BMW Alpina","Bill Dovell Motor Car Company","Bitter Gmbh and Co. Kg","Evans Automobiles","Hummer","Koenigsegg","Merkur","Mobility Ventures LLC","PAS Inc - GMC","PAS, Inc","Sterling","VPG","Vector","ASC Incorporated","Aurora Cars Ltd","Avanti Motor Corporation","BYD","Bertone","CCC Engineering","CODA Automotive","Consulier Industries Inc","Dabryan Coach Builders Inc","E. P. Dutton, Inc.","Environmental Rsch and Devp Corp","Excalibur Autos","Fisker","General Motors","Goldacre","Grumman Allied Industries","Grumman Olson","Import Foreign Auto Sales Inc","Isis Imports Ltd","JBA Motorcars, Inc.","Kandi","Laforza Automobile Inc","Lambda Control Systems","London Coach Co Inc","London Taxi","Mahindra","Morgan","Panos","Panoz Auto-Development","Panther Car Company Limited","Pininfarina","Quantum Technologies","Qvale","Red Shift Ltd.","Ruf Automobile Gmbh","S and S Coach Company  E.p. Dutton","SRT","STI","Shelby","Superior Coaches Div E.p. Dutton","Vixen Motor Company","Volga Associated Automobile"],[420,416,268,261,191,169,159,151,133,121,121,105,99,96,91,87,82,82,78,77,77,76,74,67,67,66,64,60,56,56,54,51,50,49,49,45,40,38,36,35,29,27,27,23,23,21,19,18,15,15,14,13,12,12,10,10,10,10,9,9,8,8,8,8,7,7,6,6,6,5,4,4,4,4,4,4,4,4,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Make<\/th>\n      <th>Models_Per_Make<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"class":"hover","searchHighlight":true,"columnDefs":[{"className":"dt-right","targets":1},{"name":"Make","targets":0},{"name":"Models_Per_Make","targets":1}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reordering the Make variable within the plotting code to make it ordered by Models_Per_Make descending</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>nb_model_per_make<span class="sc">$</span>Make <span class="ot">&lt;-</span> <span class="fu">factor</span>(nb_model_per_make<span class="sc">$</span>Make, <span class="at">levels =</span> nb_model_per_make<span class="sc">$</span>Make[<span class="fu">order</span>(<span class="sc">-</span>nb_model_per_make<span class="sc">$</span>Models_Per_Make)])</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar Plot</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nb_model_per_make, <span class="fu">aes</span>(<span class="at">x =</span> Models_Per_Make, <span class="at">y =</span> Make, <span class="at">fill =</span> Make)) <span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bar Plot of Models per Make"</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Make"</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Models"</span>) <span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  <span class="co"># Rotate x labels for better visibility</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reordering the Make variable within the plotting code to make it ordered by Models_Per_Make descending</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nb_model_per_make<span class="sc">$</span>Make <span class="ot">&lt;-</span> <span class="fu">factor</span>(nb_model_per_make<span class="sc">$</span>Make, <span class="at">levels =</span> nb_model_per_make<span class="sc">$</span>Make[<span class="fu">order</span>(<span class="sc">-</span>nb_model_per_make<span class="sc">$</span>Models_Per_Make)])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar Plot</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nb_model_per_make, <span class="fu">aes</span>(<span class="at">x =</span> Models_Per_Make, <span class="at">y =</span> Make, <span class="at">fill =</span> Make)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bar Plot of Models per Make"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Make"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Models"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  <span class="co"># Rotate x labels for better visibility</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="EDA_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p><strong>Correlation matrix for numerical features</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>corrplot 0.92 loaded</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#select only numerical columns, drop Time.to.Charge.EV..hours.at.120v. because NAs</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>data_corrplot <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">%&gt;%</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(Time.to.Charge.EV..hours.at<span class="fl">.120</span>v.))</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#correlation transformation for plot</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data_corrplot, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                                                         ID  Model.Year
-ID                                               1.00000000  0.89987774
-Model.Year                                       0.89987774  1.00000000
-Estimated.Annual.Petrolum.Consumption..Barrels. -0.29664273 -0.30209839
-City.MPG..Fuel.Type.1.                           0.23805592  0.22361711
-Highway.MPG..Fuel.Type.1.                        0.28454168  0.28269113
-Combined.MPG..Fuel.Type.1.                       0.25773498  0.24716319
-City.MPG..Fuel.Type.2.                           0.13129336  0.13119185
-Highway.MPG..Fuel.Type.2.                        0.14260679  0.14439681
-Combined.MPG..Fuel.Type.2.                       0.13652649  0.13716197
-Time.to.Charge.EV..hours.at.240v.                0.16146523  0.15114973
-Range..for.EV.                                   0.13823166  0.12829668
-City.Range..for.EV...Fuel.Type.1.                0.10740003  0.10041723
-City.Range..for.EV...Fuel.Type.2.                0.08581501  0.08116042
-Hwy.Range..for.EV...Fuel.Type.1.                 0.10568491  0.09881376
-Hwy.Range..for.EV...Fuel.Type.2.                 0.08941268  0.08453359
-                                                Estimated.Annual.Petrolum.Consumption..Barrels.
-ID                                                                                   -0.2966427
-Model.Year                                                                           -0.3020984
-Estimated.Annual.Petrolum.Consumption..Barrels.                                       1.0000000
-City.MPG..Fuel.Type.1.                                                               -0.7089584
-Highway.MPG..Fuel.Type.1.                                                            -0.8079242
-Combined.MPG..Fuel.Type.1.                                                           -0.7576990
-City.MPG..Fuel.Type.2.                                                               -0.1524980
-Highway.MPG..Fuel.Type.2.                                                            -0.1377325
-Combined.MPG..Fuel.Type.2.                                                           -0.1473145
-Time.to.Charge.EV..hours.at.240v.                                                    -0.3716804
-Range..for.EV.                                                                       -0.3325076
-City.Range..for.EV...Fuel.Type.1.                                                    -0.2723553
-City.Range..for.EV...Fuel.Type.2.                                                    -0.1585631
-Hwy.Range..for.EV...Fuel.Type.1.                                                     -0.2692831
-Hwy.Range..for.EV...Fuel.Type.2.                                                     -0.1621287
-                                                City.MPG..Fuel.Type.1.
-ID                                                          0.23805592
-Model.Year                                                  0.22361711
-Estimated.Annual.Petrolum.Consumption..Barrels.            -0.70895843
-City.MPG..Fuel.Type.1.                                      1.00000000
-Highway.MPG..Fuel.Type.1.                                   0.95589897
-Combined.MPG..Fuel.Type.1.                                  0.99310560
-City.MPG..Fuel.Type.2.                                      0.07299688
-Highway.MPG..Fuel.Type.2.                                   0.05854935
-Combined.MPG..Fuel.Type.2.                                  0.06732485
-Time.to.Charge.EV..hours.at.240v.                           0.76541371
-Range..for.EV.                                              0.77087725
-City.Range..for.EV...Fuel.Type.1.                           0.65926212
-City.Range..for.EV...Fuel.Type.2.                           0.07172557
-Hwy.Range..for.EV...Fuel.Type.1.                            0.64376604
-Hwy.Range..for.EV...Fuel.Type.2.                            0.07054797
-                                                Highway.MPG..Fuel.Type.1.
-ID                                                             0.28454168
-Model.Year                                                     0.28269113
-Estimated.Annual.Petrolum.Consumption..Barrels.               -0.80792424
-City.MPG..Fuel.Type.1.                                         0.95589897
-Highway.MPG..Fuel.Type.1.                                      1.00000000
-Combined.MPG..Fuel.Type.1.                                     0.98158742
-City.MPG..Fuel.Type.2.                                         0.04672765
-Highway.MPG..Fuel.Type.2.                                      0.03623841
-Combined.MPG..Fuel.Type.2.                                     0.04255375
-Time.to.Charge.EV..hours.at.240v.                              0.69798517
-Range..for.EV.                                                 0.70972694
-City.Range..for.EV...Fuel.Type.1.                              0.60545000
-City.Range..for.EV...Fuel.Type.2.                              0.04629017
-Hwy.Range..for.EV...Fuel.Type.1.                               0.59818198
-Hwy.Range..for.EV...Fuel.Type.2.                               0.04552763
-                                                Combined.MPG..Fuel.Type.1.
-ID                                                              0.25773498
-Model.Year                                                      0.24716319
-Estimated.Annual.Petrolum.Consumption..Barrels.                -0.75769901
-City.MPG..Fuel.Type.1.                                          0.99310560
-Highway.MPG..Fuel.Type.1.                                       0.98158742
-Combined.MPG..Fuel.Type.1.                                      1.00000000
-City.MPG..Fuel.Type.2.                                          0.06479381
-Highway.MPG..Fuel.Type.2.                                       0.05148402
-Combined.MPG..Fuel.Type.2.                                      0.05955992
-Time.to.Charge.EV..hours.at.240v.                               0.74791452
-Range..for.EV.                                                  0.75555250
-City.Range..for.EV...Fuel.Type.1.                               0.64527491
-City.Range..for.EV...Fuel.Type.2.                               0.06443282
-Hwy.Range..for.EV...Fuel.Type.1.                                0.63346295
-Hwy.Range..for.EV...Fuel.Type.2.                                0.06344693
-                                                City.MPG..Fuel.Type.2.
-ID                                                          0.13129336
-Model.Year                                                  0.13119185
-Estimated.Annual.Petrolum.Consumption..Barrels.            -0.15249802
-City.MPG..Fuel.Type.1.                                      0.07299688
-Highway.MPG..Fuel.Type.1.                                   0.04672765
-Combined.MPG..Fuel.Type.1.                                  0.06479381
-City.MPG..Fuel.Type.2.                                      1.00000000
-Highway.MPG..Fuel.Type.2.                                   0.98322859
-Combined.MPG..Fuel.Type.2.                                  0.99700084
-Time.to.Charge.EV..hours.at.240v.                           0.20550669
-Range..for.EV.                                             -0.01240414
-City.Range..for.EV...Fuel.Type.1.                          -0.01015788
-City.Range..for.EV...Fuel.Type.2.                           0.79927685
-Hwy.Range..for.EV...Fuel.Type.1.                           -0.01004360
-Hwy.Range..for.EV...Fuel.Type.2.                            0.81001852
-                                                Highway.MPG..Fuel.Type.2.
-ID                                                             0.14260679
-Model.Year                                                     0.14439681
-Estimated.Annual.Petrolum.Consumption..Barrels.               -0.13773247
-City.MPG..Fuel.Type.1.                                         0.05854935
-Highway.MPG..Fuel.Type.1.                                      0.03623841
-Combined.MPG..Fuel.Type.1.                                     0.05148402
-City.MPG..Fuel.Type.2.                                         0.98322859
-Highway.MPG..Fuel.Type.2.                                      1.00000000
-Combined.MPG..Fuel.Type.2.                                     0.99419306
-Time.to.Charge.EV..hours.at.240v.                              0.19544733
-Range..for.EV.                                                -0.01439981
-City.Range..for.EV...Fuel.Type.1.                             -0.01179216
-City.Range..for.EV...Fuel.Type.2.                              0.73916026
-Hwy.Range..for.EV...Fuel.Type.1.                              -0.01165949
-Hwy.Range..for.EV...Fuel.Type.2.                               0.75598786
-                                                Combined.MPG..Fuel.Type.2.
-ID                                                              0.13652649
-Model.Year                                                      0.13716197
-Estimated.Annual.Petrolum.Consumption..Barrels.                -0.14731450
-City.MPG..Fuel.Type.1.                                          0.06732485
-Highway.MPG..Fuel.Type.1.                                       0.04255375
-Combined.MPG..Fuel.Type.1.                                      0.05955992
-City.MPG..Fuel.Type.2.                                          0.99700084
-Highway.MPG..Fuel.Type.2.                                       0.99419306
-Combined.MPG..Fuel.Type.2.                                      1.00000000
-Time.to.Charge.EV..hours.at.240v.                               0.20266053
-Range..for.EV.                                                 -0.01326076
-City.Range..for.EV...Fuel.Type.1.                              -0.01085938
-City.Range..for.EV...Fuel.Type.2.                               0.77760719
-Hwy.Range..for.EV...Fuel.Type.1.                               -0.01073720
-Hwy.Range..for.EV...Fuel.Type.2.                                0.79135159
-                                                Time.to.Charge.EV..hours.at.240v.
-ID                                                                      0.1614652
-Model.Year                                                              0.1511497
-Estimated.Annual.Petrolum.Consumption..Barrels.                        -0.3716804
-City.MPG..Fuel.Type.1.                                                  0.7654137
-Highway.MPG..Fuel.Type.1.                                               0.6979852
-Combined.MPG..Fuel.Type.1.                                              0.7479145
-City.MPG..Fuel.Type.2.                                                  0.2055067
-Highway.MPG..Fuel.Type.2.                                               0.1954473
-Combined.MPG..Fuel.Type.2.                                              0.2026605
-Time.to.Charge.EV..hours.at.240v.                                       1.0000000
-Range..for.EV.                                                          0.9381108
-City.Range..for.EV...Fuel.Type.1.                                       0.7645547
-City.Range..for.EV...Fuel.Type.2.                                       0.2252672
-Hwy.Range..for.EV...Fuel.Type.1.                                        0.7666908
-Hwy.Range..for.EV...Fuel.Type.2.                                        0.2323011
-                                                Range..for.EV.
-ID                                                 0.138231662
-Model.Year                                         0.128296678
-Estimated.Annual.Petrolum.Consumption..Barrels.   -0.332507621
-City.MPG..Fuel.Type.1.                             0.770877249
-Highway.MPG..Fuel.Type.1.                          0.709726940
-Combined.MPG..Fuel.Type.1.                         0.755552503
-City.MPG..Fuel.Type.2.                            -0.012404140
-Highway.MPG..Fuel.Type.2.                         -0.014399810
-Combined.MPG..Fuel.Type.2.                        -0.013260759
-Time.to.Charge.EV..hours.at.240v.                  0.938110796
-Range..for.EV.                                     1.000000000
-City.Range..for.EV...Fuel.Type.1.                  0.810718663
-City.Range..for.EV...Fuel.Type.2.                 -0.005969840
-Hwy.Range..for.EV...Fuel.Type.1.                   0.810212189
-Hwy.Range..for.EV...Fuel.Type.2.                  -0.006202132
-                                                City.Range..for.EV...Fuel.Type.1.
-ID                                                                    0.107400033
-Model.Year                                                            0.100417231
-Estimated.Annual.Petrolum.Consumption..Barrels.                      -0.272355330
-City.MPG..Fuel.Type.1.                                                0.659262124
-Highway.MPG..Fuel.Type.1.                                             0.605450004
-Combined.MPG..Fuel.Type.1.                                            0.645274909
-City.MPG..Fuel.Type.2.                                               -0.010157881
-Highway.MPG..Fuel.Type.2.                                            -0.011792156
-Combined.MPG..Fuel.Type.2.                                           -0.010859376
-Time.to.Charge.EV..hours.at.240v.                                     0.764554659
-Range..for.EV.                                                        0.810718663
-City.Range..for.EV...Fuel.Type.1.                                     1.000000000
-City.Range..for.EV...Fuel.Type.2.                                    -0.004888765
-Hwy.Range..for.EV...Fuel.Type.1.                                      0.995672943
-Hwy.Range..for.EV...Fuel.Type.2.                                     -0.005078991
-                                                City.Range..for.EV...Fuel.Type.2.
-ID                                                                    0.085815009
-Model.Year                                                            0.081160416
-Estimated.Annual.Petrolum.Consumption..Barrels.                      -0.158563094
-City.MPG..Fuel.Type.1.                                                0.071725571
-Highway.MPG..Fuel.Type.1.                                             0.046290172
-Combined.MPG..Fuel.Type.1.                                            0.064432821
-City.MPG..Fuel.Type.2.                                                0.799276846
-Highway.MPG..Fuel.Type.2.                                             0.739160264
-Combined.MPG..Fuel.Type.2.                                            0.777607185
-Time.to.Charge.EV..hours.at.240v.                                     0.225267176
-Range..for.EV.                                                       -0.005969840
-City.Range..for.EV...Fuel.Type.1.                                    -0.004888765
-City.Range..for.EV...Fuel.Type.2.                                     1.000000000
-Hwy.Range..for.EV...Fuel.Type.1.                                     -0.004833764
-Hwy.Range..for.EV...Fuel.Type.2.                                      0.996018747
-                                                Hwy.Range..for.EV...Fuel.Type.1.
-ID                                                                   0.105684913
-Model.Year                                                           0.098813756
-Estimated.Annual.Petrolum.Consumption..Barrels.                     -0.269283115
-City.MPG..Fuel.Type.1.                                               0.643766039
-Highway.MPG..Fuel.Type.1.                                            0.598181981
-Combined.MPG..Fuel.Type.1.                                           0.633462946
-City.MPG..Fuel.Type.2.                                              -0.010043601
-Highway.MPG..Fuel.Type.2.                                           -0.011659489
-Combined.MPG..Fuel.Type.2.                                          -0.010737203
-Time.to.Charge.EV..hours.at.240v.                                    0.766690812
-Range..for.EV.                                                       0.810212189
-City.Range..for.EV...Fuel.Type.1.                                    0.995672943
-City.Range..for.EV...Fuel.Type.2.                                   -0.004833764
-Hwy.Range..for.EV...Fuel.Type.1.                                     1.000000000
-Hwy.Range..for.EV...Fuel.Type.2.                                    -0.005021851
-                                                Hwy.Range..for.EV...Fuel.Type.2.
-ID                                                                   0.089412677
-Model.Year                                                           0.084533587
-Estimated.Annual.Petrolum.Consumption..Barrels.                     -0.162128701
-City.MPG..Fuel.Type.1.                                               0.070547970
-Highway.MPG..Fuel.Type.1.                                            0.045527631
-Combined.MPG..Fuel.Type.1.                                           0.063446926
-City.MPG..Fuel.Type.2.                                               0.810018517
-Highway.MPG..Fuel.Type.2.                                            0.755987864
-Combined.MPG..Fuel.Type.2.                                           0.791351587
-Time.to.Charge.EV..hours.at.240v.                                    0.232301117
-Range..for.EV.                                                      -0.006202132
-City.Range..for.EV...Fuel.Type.1.                                   -0.005078991
-City.Range..for.EV...Fuel.Type.2.                                    0.996018747
-Hwy.Range..for.EV...Fuel.Type.1.                                    -0.005021851
-Hwy.Range..for.EV...Fuel.Type.2.                                     1.000000000</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'reshape2'</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(cor_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    smiths</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#select only numerical columns, drop Time.to.Charge.EV..hours.at.120v. because NAs</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data_corrplot <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#correlation transformation for plot</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data_corrplot, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor(data_corrplot, use = "complete.obs"): the standard deviation is
+zero</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                          ID   Model Year
+ID                                               1.000000000  0.898172038
+Model Year                                       0.898172038  1.000000000
+Estimated Annual Petrolum Consumption (Barrels) -0.266893652 -0.276815795
+City MPG (Fuel Type 1)                           0.241377134  0.228012823
+Highway MPG (Fuel Type 1)                        0.283084314  0.291126991
+Combined MPG (Fuel Type 1)                       0.261835243  0.256301039
+City MPG (Fuel Type 2)                           0.134630658  0.134178928
+Highway MPG (Fuel Type 2)                        0.146379198  0.147794175
+Combined MPG (Fuel Type 2)                       0.140054478  0.140327837
+Engine Cylinders                                 0.033692800  0.050183765
+Engine Displacement                             -0.003199825  0.003489418
+Time to Charge EV (hours at 120v)                         NA           NA
+Time to Charge EV (hours at 240v)                0.105358751  0.099465867
+Range (for EV)                                            NA           NA
+City Range (for EV - Fuel Type 1)                         NA           NA
+City Range (for EV - Fuel Type 2)                0.087660644  0.082763271
+Hwy Range (for EV - Fuel Type 1)                          NA           NA
+Hwy Range (for EV - Fuel Type 2)                 0.091333071  0.086200984
+                                                Estimated Annual Petrolum Consumption (Barrels)
+ID                                                                                   -0.2668937
+Model Year                                                                           -0.2768158
+Estimated Annual Petrolum Consumption (Barrels)                                       1.0000000
+City MPG (Fuel Type 1)                                                               -0.8653379
+Highway MPG (Fuel Type 1)                                                            -0.9035610
+Combined MPG (Fuel Type 1)                                                           -0.9001868
+City MPG (Fuel Type 2)                                                               -0.1689445
+Highway MPG (Fuel Type 2)                                                            -0.1539511
+Combined MPG (Fuel Type 2)                                                           -0.1637478
+Engine Cylinders                                                                      0.7331933
+Engine Displacement                                                                   0.7837093
+Time to Charge EV (hours at 120v)                                                            NA
+Time to Charge EV (hours at 240v)                                                    -0.1859223
+Range (for EV)                                                                               NA
+City Range (for EV - Fuel Type 1)                                                            NA
+City Range (for EV - Fuel Type 2)                                                    -0.1727049
+Hwy Range (for EV - Fuel Type 1)                                                             NA
+Hwy Range (for EV - Fuel Type 2)                                                     -0.1766306
+                                                City MPG (Fuel Type 1)
+ID                                                           0.2413771
+Model Year                                                   0.2280128
+Estimated Annual Petrolum Consumption (Barrels)             -0.8653379
+City MPG (Fuel Type 1)                                       1.0000000
+Highway MPG (Fuel Type 1)                                    0.9207665
+Combined MPG (Fuel Type 1)                                   0.9857637
+City MPG (Fuel Type 2)                                       0.1671384
+Highway MPG (Fuel Type 2)                                    0.1420879
+Combined MPG (Fuel Type 2)                                   0.1574358
+Engine Cylinders                                            -0.6771928
+Engine Displacement                                         -0.7115445
+Time to Charge EV (hours at 120v)                                   NA
+Time to Charge EV (hours at 240v)                            0.1414919
+Range (for EV)                                                      NA
+City Range (for EV - Fuel Type 1)                                   NA
+City Range (for EV - Fuel Type 2)                            0.1530046
+Hwy Range (for EV - Fuel Type 1)                                    NA
+Hwy Range (for EV - Fuel Type 2)                             0.1510883
+                                                Highway MPG (Fuel Type 1)
+ID                                                             0.28308431
+Model Year                                                     0.29112699
+Estimated Annual Petrolum Consumption (Barrels)               -0.90356096
+City MPG (Fuel Type 1)                                         0.92076647
+Highway MPG (Fuel Type 1)                                      1.00000000
+Combined MPG (Fuel Type 1)                                     0.96771702
+City MPG (Fuel Type 2)                                         0.08903949
+Highway MPG (Fuel Type 2)                                      0.07514936
+Combined MPG (Fuel Type 2)                                     0.08359213
+Engine Cylinders                                              -0.64689904
+Engine Displacement                                           -0.70631422
+Time to Charge EV (hours at 120v)                                      NA
+Time to Charge EV (hours at 240v)                              0.07127195
+Range (for EV)                                                         NA
+City Range (for EV - Fuel Type 1)                                      NA
+City Range (for EV - Fuel Type 2)                              0.08014444
+Hwy Range (for EV - Fuel Type 1)                                       NA
+Hwy Range (for EV - Fuel Type 2)                               0.07924589
+                                                Combined MPG (Fuel Type 1)
+ID                                                               0.2618352
+Model Year                                                       0.2563010
+Estimated Annual Petrolum Consumption (Barrels)                 -0.9001868
+City MPG (Fuel Type 1)                                           0.9857637
+Highway MPG (Fuel Type 1)                                        0.9677170
+Combined MPG (Fuel Type 1)                                       1.0000000
+City MPG (Fuel Type 2)                                           0.1365411
+Highway MPG (Fuel Type 2)                                        0.1157063
+Combined MPG (Fuel Type 2)                                       0.1284624
+Engine Cylinders                                                -0.6825224
+Engine Displacement                                             -0.7267671
+Time to Charge EV (hours at 120v)                                       NA
+Time to Charge EV (hours at 240v)                                0.1153313
+Range (for EV)                                                          NA
+City Range (for EV - Fuel Type 1)                                       NA
+City Range (for EV - Fuel Type 2)                                0.1256720
+Hwy Range (for EV - Fuel Type 1)                                        NA
+Hwy Range (for EV - Fuel Type 2)                                 0.1242627
+                                                City MPG (Fuel Type 2)
+ID                                                          0.13463066
+Model Year                                                  0.13417893
+Estimated Annual Petrolum Consumption (Barrels)            -0.16894449
+City MPG (Fuel Type 1)                                      0.16713838
+Highway MPG (Fuel Type 1)                                   0.08903949
+Combined MPG (Fuel Type 1)                                  0.13654114
+City MPG (Fuel Type 2)                                      1.00000000
+Highway MPG (Fuel Type 2)                                   0.98322734
+Combined MPG (Fuel Type 2)                                  0.99700069
+Engine Cylinders                                           -0.02312181
+Engine Displacement                                        -0.02485931
+Time to Charge EV (hours at 120v)                                   NA
+Time to Charge EV (hours at 240v)                           0.83003369
+Range (for EV)                                                      NA
+City Range (for EV - Fuel Type 1)                                   NA
+City Range (for EV - Fuel Type 2)                           0.79927886
+Hwy Range (for EV - Fuel Type 1)                                    NA
+Hwy Range (for EV - Fuel Type 2)                            0.81001967
+                                                Highway MPG (Fuel Type 2)
+ID                                                            0.146379198
+Model Year                                                    0.147794175
+Estimated Annual Petrolum Consumption (Barrels)              -0.153951086
+City MPG (Fuel Type 1)                                        0.142087885
+Highway MPG (Fuel Type 1)                                     0.075149357
+Combined MPG (Fuel Type 1)                                    0.115706313
+City MPG (Fuel Type 2)                                        0.983227343
+Highway MPG (Fuel Type 2)                                     1.000000000
+Combined MPG (Fuel Type 2)                                    0.994192508
+Engine Cylinders                                             -0.005619978
+Engine Displacement                                          -0.005966497
+Time to Charge EV (hours at 120v)                                      NA
+Time to Charge EV (hours at 240v)                             0.799168034
+Range (for EV)                                                         NA
+City Range (for EV - Fuel Type 1)                                      NA
+City Range (for EV - Fuel Type 2)                             0.739164873
+Hwy Range (for EV - Fuel Type 1)                                       NA
+Hwy Range (for EV - Fuel Type 2)                              0.755992195
+                                                Combined MPG (Fuel Type 2)
+ID                                                              0.14005448
+Model Year                                                      0.14032784
+Estimated Annual Petrolum Consumption (Barrels)                -0.16374776
+City MPG (Fuel Type 1)                                          0.15743582
+Highway MPG (Fuel Type 1)                                       0.08359213
+Combined MPG (Fuel Type 1)                                      0.12846237
+City MPG (Fuel Type 2)                                          0.99700069
+Highway MPG (Fuel Type 2)                                       0.99419251
+Combined MPG (Fuel Type 2)                                      1.00000000
+Engine Cylinders                                               -0.01618583
+Engine Displacement                                            -0.01738760
+Time to Charge EV (hours at 120v)                                       NA
+Time to Charge EV (hours at 240v)                               0.82239662
+Range (for EV)                                                          NA
+City Range (for EV - Fuel Type 1)                                       NA
+City Range (for EV - Fuel Type 2)                               0.77761086
+Hwy Range (for EV - Fuel Type 1)                                        NA
+Hwy Range (for EV - Fuel Type 2)                                0.79135465
+                                                Engine Cylinders
+ID                                                   0.033692800
+Model Year                                           0.050183765
+Estimated Annual Petrolum Consumption (Barrels)      0.733193261
+City MPG (Fuel Type 1)                              -0.677192760
+Highway MPG (Fuel Type 1)                           -0.646899039
+Combined MPG (Fuel Type 1)                          -0.682522397
+City MPG (Fuel Type 2)                              -0.023121807
+Highway MPG (Fuel Type 2)                           -0.005619978
+Combined MPG (Fuel Type 2)                          -0.016185826
+Engine Cylinders                                     1.000000000
+Engine Displacement                                  0.905190858
+Time to Charge EV (hours at 120v)                             NA
+Time to Charge EV (hours at 240v)                   -0.049696335
+Range (for EV)                                                NA
+City Range (for EV - Fuel Type 1)                             NA
+City Range (for EV - Fuel Type 2)                   -0.057700272
+Hwy Range (for EV - Fuel Type 1)                              NA
+Hwy Range (for EV - Fuel Type 2)                    -0.057492631
+                                                Engine Displacement
+ID                                                     -0.003199825
+Model Year                                              0.003489418
+Estimated Annual Petrolum Consumption (Barrels)         0.783709304
+City MPG (Fuel Type 1)                                 -0.711544513
+Highway MPG (Fuel Type 1)                              -0.706314224
+Combined MPG (Fuel Type 1)                             -0.726767140
+City MPG (Fuel Type 2)                                 -0.024859311
+Highway MPG (Fuel Type 2)                              -0.005966497
+Combined MPG (Fuel Type 2)                             -0.017387603
+Engine Cylinders                                        0.905190858
+Engine Displacement                                     1.000000000
+Time to Charge EV (hours at 120v)                                NA
+Time to Charge EV (hours at 240v)                      -0.060216571
+Range (for EV)                                                   NA
+City Range (for EV - Fuel Type 1)                                NA
+City Range (for EV - Fuel Type 2)                      -0.062930177
+Hwy Range (for EV - Fuel Type 1)                                 NA
+Hwy Range (for EV - Fuel Type 2)                       -0.063488571
+                                                Time to Charge EV (hours at 120v)
+ID                                                                             NA
+Model Year                                                                     NA
+Estimated Annual Petrolum Consumption (Barrels)                                NA
+City MPG (Fuel Type 1)                                                         NA
+Highway MPG (Fuel Type 1)                                                      NA
+Combined MPG (Fuel Type 1)                                                     NA
+City MPG (Fuel Type 2)                                                         NA
+Highway MPG (Fuel Type 2)                                                      NA
+Combined MPG (Fuel Type 2)                                                     NA
+Engine Cylinders                                                               NA
+Engine Displacement                                                            NA
+Time to Charge EV (hours at 120v)                                               1
+Time to Charge EV (hours at 240v)                                              NA
+Range (for EV)                                                                 NA
+City Range (for EV - Fuel Type 1)                                              NA
+City Range (for EV - Fuel Type 2)                                              NA
+Hwy Range (for EV - Fuel Type 1)                                               NA
+Hwy Range (for EV - Fuel Type 2)                                               NA
+                                                Time to Charge EV (hours at 240v)
+ID                                                                     0.10535875
+Model Year                                                             0.09946587
+Estimated Annual Petrolum Consumption (Barrels)                       -0.18592232
+City MPG (Fuel Type 1)                                                 0.14149189
+Highway MPG (Fuel Type 1)                                              0.07127195
+Combined MPG (Fuel Type 1)                                             0.11533134
+City MPG (Fuel Type 2)                                                 0.83003369
+Highway MPG (Fuel Type 2)                                              0.79916803
+Combined MPG (Fuel Type 2)                                             0.82239662
+Engine Cylinders                                                      -0.04969633
+Engine Displacement                                                   -0.06021657
+Time to Charge EV (hours at 120v)                                              NA
+Time to Charge EV (hours at 240v)                                      1.00000000
+Range (for EV)                                                                 NA
+City Range (for EV - Fuel Type 1)                                              NA
+City Range (for EV - Fuel Type 2)                                      0.88124788
+Hwy Range (for EV - Fuel Type 1)                                               NA
+Hwy Range (for EV - Fuel Type 2)                                       0.90893793
+                                                Range (for EV)
+ID                                                          NA
+Model Year                                                  NA
+Estimated Annual Petrolum Consumption (Barrels)             NA
+City MPG (Fuel Type 1)                                      NA
+Highway MPG (Fuel Type 1)                                   NA
+Combined MPG (Fuel Type 1)                                  NA
+City MPG (Fuel Type 2)                                      NA
+Highway MPG (Fuel Type 2)                                   NA
+Combined MPG (Fuel Type 2)                                  NA
+Engine Cylinders                                            NA
+Engine Displacement                                         NA
+Time to Charge EV (hours at 120v)                           NA
+Time to Charge EV (hours at 240v)                           NA
+Range (for EV)                                               1
+City Range (for EV - Fuel Type 1)                           NA
+City Range (for EV - Fuel Type 2)                           NA
+Hwy Range (for EV - Fuel Type 1)                            NA
+Hwy Range (for EV - Fuel Type 2)                            NA
+                                                City Range (for EV - Fuel Type 1)
+ID                                                                             NA
+Model Year                                                                     NA
+Estimated Annual Petrolum Consumption (Barrels)                                NA
+City MPG (Fuel Type 1)                                                         NA
+Highway MPG (Fuel Type 1)                                                      NA
+Combined MPG (Fuel Type 1)                                                     NA
+City MPG (Fuel Type 2)                                                         NA
+Highway MPG (Fuel Type 2)                                                      NA
+Combined MPG (Fuel Type 2)                                                     NA
+Engine Cylinders                                                               NA
+Engine Displacement                                                            NA
+Time to Charge EV (hours at 120v)                                              NA
+Time to Charge EV (hours at 240v)                                              NA
+Range (for EV)                                                                 NA
+City Range (for EV - Fuel Type 1)                                               1
+City Range (for EV - Fuel Type 2)                                              NA
+Hwy Range (for EV - Fuel Type 1)                                               NA
+Hwy Range (for EV - Fuel Type 2)                                               NA
+                                                City Range (for EV - Fuel Type 2)
+ID                                                                     0.08766064
+Model Year                                                             0.08276327
+Estimated Annual Petrolum Consumption (Barrels)                       -0.17270494
+City MPG (Fuel Type 1)                                                 0.15300461
+Highway MPG (Fuel Type 1)                                              0.08014444
+Combined MPG (Fuel Type 1)                                             0.12567199
+City MPG (Fuel Type 2)                                                 0.79927886
+Highway MPG (Fuel Type 2)                                              0.73916487
+Combined MPG (Fuel Type 2)                                             0.77761086
+Engine Cylinders                                                      -0.05770027
+Engine Displacement                                                   -0.06293018
+Time to Charge EV (hours at 120v)                                              NA
+Time to Charge EV (hours at 240v)                                      0.88124788
+Range (for EV)                                                                 NA
+City Range (for EV - Fuel Type 1)                                              NA
+City Range (for EV - Fuel Type 2)                                      1.00000000
+Hwy Range (for EV - Fuel Type 1)                                               NA
+Hwy Range (for EV - Fuel Type 2)                                       0.99601860
+                                                Hwy Range (for EV - Fuel Type 1)
+ID                                                                            NA
+Model Year                                                                    NA
+Estimated Annual Petrolum Consumption (Barrels)                               NA
+City MPG (Fuel Type 1)                                                        NA
+Highway MPG (Fuel Type 1)                                                     NA
+Combined MPG (Fuel Type 1)                                                    NA
+City MPG (Fuel Type 2)                                                        NA
+Highway MPG (Fuel Type 2)                                                     NA
+Combined MPG (Fuel Type 2)                                                    NA
+Engine Cylinders                                                              NA
+Engine Displacement                                                           NA
+Time to Charge EV (hours at 120v)                                             NA
+Time to Charge EV (hours at 240v)                                             NA
+Range (for EV)                                                                NA
+City Range (for EV - Fuel Type 1)                                             NA
+City Range (for EV - Fuel Type 2)                                             NA
+Hwy Range (for EV - Fuel Type 1)                                               1
+Hwy Range (for EV - Fuel Type 2)                                              NA
+                                                Hwy Range (for EV - Fuel Type 2)
+ID                                                                    0.09133307
+Model Year                                                            0.08620098
+Estimated Annual Petrolum Consumption (Barrels)                      -0.17663055
+City MPG (Fuel Type 1)                                                0.15108834
+Highway MPG (Fuel Type 1)                                             0.07924589
+Combined MPG (Fuel Type 1)                                            0.12426275
+City MPG (Fuel Type 2)                                                0.81001967
+Highway MPG (Fuel Type 2)                                             0.75599220
+Combined MPG (Fuel Type 2)                                            0.79135465
+Engine Cylinders                                                     -0.05749263
+Engine Displacement                                                  -0.06348857
+Time to Charge EV (hours at 120v)                                             NA
+Time to Charge EV (hours at 240v)                                     0.90893793
+Range (for EV)                                                                NA
+City Range (for EV - Fuel Type 1)                                             NA
+City Range (for EV - Fuel Type 2)                                     0.99601860
+Hwy Range (for EV - Fuel Type 1)                                              NA
+Hwy Range (for EV - Fuel Type 2)                                      1.00000000</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(cor_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 10%">
+<col style="width: 9%">
 <col style="width: 2%">
 <col style="width: 2%">
-<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 4%">
 <col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
 <col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
 <col style="width: 3%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 2%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
 <th style="text-align: right;">ID</th>
-<th style="text-align: right;">Model.Year</th>
-<th style="text-align: right;">Estimated.Annual.Petrolum.Consumption..Barrels.</th>
-<th style="text-align: right;">City.MPG..Fuel.Type.1.</th>
-<th style="text-align: right;">Highway.MPG..Fuel.Type.1.</th>
-<th style="text-align: right;">Combined.MPG..Fuel.Type.1.</th>
-<th style="text-align: right;">City.MPG..Fuel.Type.2.</th>
-<th style="text-align: right;">Highway.MPG..Fuel.Type.2.</th>
-<th style="text-align: right;">Combined.MPG..Fuel.Type.2.</th>
-<th style="text-align: right;">Time.to.Charge.EV..hours.at.240v.</th>
-<th style="text-align: right;">Range..for.EV.</th>
-<th style="text-align: right;">City.Range..for.EV…Fuel.Type.1.</th>
-<th style="text-align: right;">City.Range..for.EV…Fuel.Type.2.</th>
-<th style="text-align: right;">Hwy.Range..for.EV…Fuel.Type.1.</th>
-<th style="text-align: right;">Hwy.Range..for.EV…Fuel.Type.2.</th>
+<th style="text-align: right;">Model Year</th>
+<th style="text-align: right;">Estimated Annual Petrolum Consumption (Barrels)</th>
+<th style="text-align: right;">City MPG (Fuel Type 1)</th>
+<th style="text-align: right;">Highway MPG (Fuel Type 1)</th>
+<th style="text-align: right;">Combined MPG (Fuel Type 1)</th>
+<th style="text-align: right;">City MPG (Fuel Type 2)</th>
+<th style="text-align: right;">Highway MPG (Fuel Type 2)</th>
+<th style="text-align: right;">Combined MPG (Fuel Type 2)</th>
+<th style="text-align: right;">Engine Cylinders</th>
+<th style="text-align: right;">Engine Displacement</th>
+<th style="text-align: right;">Time to Charge EV (hours at 120v)</th>
+<th style="text-align: right;">Time to Charge EV (hours at 240v)</th>
+<th style="text-align: right;">Range (for EV)</th>
+<th style="text-align: right;">City Range (for EV - Fuel Type 1)</th>
+<th style="text-align: right;">City Range (for EV - Fuel Type 2)</th>
+<th style="text-align: right;">Hwy Range (for EV - Fuel Type 1)</th>
+<th style="text-align: right;">Hwy Range (for EV - Fuel Type 2)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ID</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.8998777</td>
-<td style="text-align: right;">-0.2966427</td>
-<td style="text-align: right;">0.2380559</td>
-<td style="text-align: right;">0.2845417</td>
-<td style="text-align: right;">0.2577350</td>
-<td style="text-align: right;">0.1312934</td>
-<td style="text-align: right;">0.1426068</td>
-<td style="text-align: right;">0.1365265</td>
-<td style="text-align: right;">0.1614652</td>
-<td style="text-align: right;">0.1382317</td>
-<td style="text-align: right;">0.1074000</td>
-<td style="text-align: right;">0.0858150</td>
-<td style="text-align: right;">0.1056849</td>
-<td style="text-align: right;">0.0894127</td>
+<td style="text-align: right;">0.8981720</td>
+<td style="text-align: right;">-0.2668937</td>
+<td style="text-align: right;">0.2413771</td>
+<td style="text-align: right;">0.2830843</td>
+<td style="text-align: right;">0.2618352</td>
+<td style="text-align: right;">0.1346307</td>
+<td style="text-align: right;">0.1463792</td>
+<td style="text-align: right;">0.1400545</td>
+<td style="text-align: right;">0.0336928</td>
+<td style="text-align: right;">-0.0031998</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1053588</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0876606</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0913331</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Model.Year</td>
-<td style="text-align: right;">0.8998777</td>
+<td style="text-align: left;">Model Year</td>
+<td style="text-align: right;">0.8981720</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">-0.3020984</td>
-<td style="text-align: right;">0.2236171</td>
-<td style="text-align: right;">0.2826911</td>
-<td style="text-align: right;">0.2471632</td>
-<td style="text-align: right;">0.1311919</td>
-<td style="text-align: right;">0.1443968</td>
-<td style="text-align: right;">0.1371620</td>
-<td style="text-align: right;">0.1511497</td>
-<td style="text-align: right;">0.1282967</td>
-<td style="text-align: right;">0.1004172</td>
-<td style="text-align: right;">0.0811604</td>
-<td style="text-align: right;">0.0988138</td>
-<td style="text-align: right;">0.0845336</td>
+<td style="text-align: right;">-0.2768158</td>
+<td style="text-align: right;">0.2280128</td>
+<td style="text-align: right;">0.2911270</td>
+<td style="text-align: right;">0.2563010</td>
+<td style="text-align: right;">0.1341789</td>
+<td style="text-align: right;">0.1477942</td>
+<td style="text-align: right;">0.1403278</td>
+<td style="text-align: right;">0.0501838</td>
+<td style="text-align: right;">0.0034894</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0994659</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0827633</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0862010</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Estimated.Annual.Petrolum.Consumption..Barrels.</td>
-<td style="text-align: right;">-0.2966427</td>
-<td style="text-align: right;">-0.3020984</td>
+<td style="text-align: left;">Estimated Annual Petrolum Consumption (Barrels)</td>
+<td style="text-align: right;">-0.2668937</td>
+<td style="text-align: right;">-0.2768158</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">-0.7089584</td>
-<td style="text-align: right;">-0.8079242</td>
-<td style="text-align: right;">-0.7576990</td>
-<td style="text-align: right;">-0.1524980</td>
-<td style="text-align: right;">-0.1377325</td>
-<td style="text-align: right;">-0.1473145</td>
-<td style="text-align: right;">-0.3716804</td>
-<td style="text-align: right;">-0.3325076</td>
-<td style="text-align: right;">-0.2723553</td>
-<td style="text-align: right;">-0.1585631</td>
-<td style="text-align: right;">-0.2692831</td>
-<td style="text-align: right;">-0.1621287</td>
+<td style="text-align: right;">-0.8653379</td>
+<td style="text-align: right;">-0.9035610</td>
+<td style="text-align: right;">-0.9001868</td>
+<td style="text-align: right;">-0.1689445</td>
+<td style="text-align: right;">-0.1539511</td>
+<td style="text-align: right;">-0.1637478</td>
+<td style="text-align: right;">0.7331933</td>
+<td style="text-align: right;">0.7837093</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.1859223</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.1727049</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.1766306</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">City.MPG..Fuel.Type.1.</td>
-<td style="text-align: right;">0.2380559</td>
-<td style="text-align: right;">0.2236171</td>
-<td style="text-align: right;">-0.7089584</td>
+<td style="text-align: left;">City MPG (Fuel Type 1)</td>
+<td style="text-align: right;">0.2413771</td>
+<td style="text-align: right;">0.2280128</td>
+<td style="text-align: right;">-0.8653379</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9558990</td>
-<td style="text-align: right;">0.9931056</td>
-<td style="text-align: right;">0.0729969</td>
-<td style="text-align: right;">0.0585493</td>
-<td style="text-align: right;">0.0673249</td>
-<td style="text-align: right;">0.7654137</td>
-<td style="text-align: right;">0.7708772</td>
-<td style="text-align: right;">0.6592621</td>
-<td style="text-align: right;">0.0717256</td>
-<td style="text-align: right;">0.6437660</td>
-<td style="text-align: right;">0.0705480</td>
+<td style="text-align: right;">0.9207665</td>
+<td style="text-align: right;">0.9857637</td>
+<td style="text-align: right;">0.1671384</td>
+<td style="text-align: right;">0.1420879</td>
+<td style="text-align: right;">0.1574358</td>
+<td style="text-align: right;">-0.6771928</td>
+<td style="text-align: right;">-0.7115445</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1414919</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1530046</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1510883</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Highway.MPG..Fuel.Type.1.</td>
-<td style="text-align: right;">0.2845417</td>
-<td style="text-align: right;">0.2826911</td>
-<td style="text-align: right;">-0.8079242</td>
-<td style="text-align: right;">0.9558990</td>
+<td style="text-align: left;">Highway MPG (Fuel Type 1)</td>
+<td style="text-align: right;">0.2830843</td>
+<td style="text-align: right;">0.2911270</td>
+<td style="text-align: right;">-0.9035610</td>
+<td style="text-align: right;">0.9207665</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9815874</td>
-<td style="text-align: right;">0.0467277</td>
-<td style="text-align: right;">0.0362384</td>
-<td style="text-align: right;">0.0425538</td>
-<td style="text-align: right;">0.6979852</td>
-<td style="text-align: right;">0.7097269</td>
-<td style="text-align: right;">0.6054500</td>
-<td style="text-align: right;">0.0462902</td>
-<td style="text-align: right;">0.5981820</td>
-<td style="text-align: right;">0.0455276</td>
+<td style="text-align: right;">0.9677170</td>
+<td style="text-align: right;">0.0890395</td>
+<td style="text-align: right;">0.0751494</td>
+<td style="text-align: right;">0.0835921</td>
+<td style="text-align: right;">-0.6468990</td>
+<td style="text-align: right;">-0.7063142</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0712719</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0801444</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0792459</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Combined.MPG..Fuel.Type.1.</td>
-<td style="text-align: right;">0.2577350</td>
-<td style="text-align: right;">0.2471632</td>
-<td style="text-align: right;">-0.7576990</td>
-<td style="text-align: right;">0.9931056</td>
-<td style="text-align: right;">0.9815874</td>
+<td style="text-align: left;">Combined MPG (Fuel Type 1)</td>
+<td style="text-align: right;">0.2618352</td>
+<td style="text-align: right;">0.2563010</td>
+<td style="text-align: right;">-0.9001868</td>
+<td style="text-align: right;">0.9857637</td>
+<td style="text-align: right;">0.9677170</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.0647938</td>
-<td style="text-align: right;">0.0514840</td>
-<td style="text-align: right;">0.0595599</td>
-<td style="text-align: right;">0.7479145</td>
-<td style="text-align: right;">0.7555525</td>
-<td style="text-align: right;">0.6452749</td>
-<td style="text-align: right;">0.0644328</td>
-<td style="text-align: right;">0.6334629</td>
-<td style="text-align: right;">0.0634469</td>
+<td style="text-align: right;">0.1365411</td>
+<td style="text-align: right;">0.1157063</td>
+<td style="text-align: right;">0.1284624</td>
+<td style="text-align: right;">-0.6825224</td>
+<td style="text-align: right;">-0.7267671</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1153313</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1256720</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1242627</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">City.MPG..Fuel.Type.2.</td>
-<td style="text-align: right;">0.1312934</td>
-<td style="text-align: right;">0.1311919</td>
-<td style="text-align: right;">-0.1524980</td>
-<td style="text-align: right;">0.0729969</td>
-<td style="text-align: right;">0.0467277</td>
-<td style="text-align: right;">0.0647938</td>
+<td style="text-align: left;">City MPG (Fuel Type 2)</td>
+<td style="text-align: right;">0.1346307</td>
+<td style="text-align: right;">0.1341789</td>
+<td style="text-align: right;">-0.1689445</td>
+<td style="text-align: right;">0.1671384</td>
+<td style="text-align: right;">0.0890395</td>
+<td style="text-align: right;">0.1365411</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9832286</td>
-<td style="text-align: right;">0.9970008</td>
-<td style="text-align: right;">0.2055067</td>
-<td style="text-align: right;">-0.0124041</td>
-<td style="text-align: right;">-0.0101579</td>
-<td style="text-align: right;">0.7992768</td>
-<td style="text-align: right;">-0.0100436</td>
-<td style="text-align: right;">0.8100185</td>
+<td style="text-align: right;">0.9832273</td>
+<td style="text-align: right;">0.9970007</td>
+<td style="text-align: right;">-0.0231218</td>
+<td style="text-align: right;">-0.0248593</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.8300337</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7992789</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.8100197</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Highway.MPG..Fuel.Type.2.</td>
-<td style="text-align: right;">0.1426068</td>
-<td style="text-align: right;">0.1443968</td>
-<td style="text-align: right;">-0.1377325</td>
-<td style="text-align: right;">0.0585493</td>
-<td style="text-align: right;">0.0362384</td>
-<td style="text-align: right;">0.0514840</td>
-<td style="text-align: right;">0.9832286</td>
+<td style="text-align: left;">Highway MPG (Fuel Type 2)</td>
+<td style="text-align: right;">0.1463792</td>
+<td style="text-align: right;">0.1477942</td>
+<td style="text-align: right;">-0.1539511</td>
+<td style="text-align: right;">0.1420879</td>
+<td style="text-align: right;">0.0751494</td>
+<td style="text-align: right;">0.1157063</td>
+<td style="text-align: right;">0.9832273</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9941931</td>
-<td style="text-align: right;">0.1954473</td>
-<td style="text-align: right;">-0.0143998</td>
-<td style="text-align: right;">-0.0117922</td>
-<td style="text-align: right;">0.7391603</td>
-<td style="text-align: right;">-0.0116595</td>
-<td style="text-align: right;">0.7559879</td>
+<td style="text-align: right;">0.9941925</td>
+<td style="text-align: right;">-0.0056200</td>
+<td style="text-align: right;">-0.0059665</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7991680</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7391649</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7559922</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Combined.MPG..Fuel.Type.2.</td>
-<td style="text-align: right;">0.1365265</td>
-<td style="text-align: right;">0.1371620</td>
-<td style="text-align: right;">-0.1473145</td>
-<td style="text-align: right;">0.0673249</td>
-<td style="text-align: right;">0.0425538</td>
-<td style="text-align: right;">0.0595599</td>
-<td style="text-align: right;">0.9970008</td>
-<td style="text-align: right;">0.9941931</td>
+<td style="text-align: left;">Combined MPG (Fuel Type 2)</td>
+<td style="text-align: right;">0.1400545</td>
+<td style="text-align: right;">0.1403278</td>
+<td style="text-align: right;">-0.1637478</td>
+<td style="text-align: right;">0.1574358</td>
+<td style="text-align: right;">0.0835921</td>
+<td style="text-align: right;">0.1284624</td>
+<td style="text-align: right;">0.9970007</td>
+<td style="text-align: right;">0.9941925</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.2026605</td>
-<td style="text-align: right;">-0.0132608</td>
-<td style="text-align: right;">-0.0108594</td>
-<td style="text-align: right;">0.7776072</td>
-<td style="text-align: right;">-0.0107372</td>
-<td style="text-align: right;">0.7913516</td>
+<td style="text-align: right;">-0.0161858</td>
+<td style="text-align: right;">-0.0173876</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.8223966</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7776109</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7913547</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Time.to.Charge.EV..hours.at.240v.</td>
-<td style="text-align: right;">0.1614652</td>
-<td style="text-align: right;">0.1511497</td>
-<td style="text-align: right;">-0.3716804</td>
-<td style="text-align: right;">0.7654137</td>
-<td style="text-align: right;">0.6979852</td>
-<td style="text-align: right;">0.7479145</td>
-<td style="text-align: right;">0.2055067</td>
-<td style="text-align: right;">0.1954473</td>
-<td style="text-align: right;">0.2026605</td>
+<td style="text-align: left;">Engine Cylinders</td>
+<td style="text-align: right;">0.0336928</td>
+<td style="text-align: right;">0.0501838</td>
+<td style="text-align: right;">0.7331933</td>
+<td style="text-align: right;">-0.6771928</td>
+<td style="text-align: right;">-0.6468990</td>
+<td style="text-align: right;">-0.6825224</td>
+<td style="text-align: right;">-0.0231218</td>
+<td style="text-align: right;">-0.0056200</td>
+<td style="text-align: right;">-0.0161858</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9381108</td>
-<td style="text-align: right;">0.7645547</td>
-<td style="text-align: right;">0.2252672</td>
-<td style="text-align: right;">0.7666908</td>
-<td style="text-align: right;">0.2323011</td>
+<td style="text-align: right;">0.9051909</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0496963</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0577003</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0574926</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Range..for.EV.</td>
-<td style="text-align: right;">0.1382317</td>
-<td style="text-align: right;">0.1282967</td>
-<td style="text-align: right;">-0.3325076</td>
-<td style="text-align: right;">0.7708772</td>
-<td style="text-align: right;">0.7097269</td>
-<td style="text-align: right;">0.7555525</td>
-<td style="text-align: right;">-0.0124041</td>
-<td style="text-align: right;">-0.0143998</td>
-<td style="text-align: right;">-0.0132608</td>
-<td style="text-align: right;">0.9381108</td>
+<td style="text-align: left;">Engine Displacement</td>
+<td style="text-align: right;">-0.0031998</td>
+<td style="text-align: right;">0.0034894</td>
+<td style="text-align: right;">0.7837093</td>
+<td style="text-align: right;">-0.7115445</td>
+<td style="text-align: right;">-0.7063142</td>
+<td style="text-align: right;">-0.7267671</td>
+<td style="text-align: right;">-0.0248593</td>
+<td style="text-align: right;">-0.0059665</td>
+<td style="text-align: right;">-0.0173876</td>
+<td style="text-align: right;">0.9051909</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.8107187</td>
-<td style="text-align: right;">-0.0059698</td>
-<td style="text-align: right;">0.8102122</td>
-<td style="text-align: right;">-0.0062021</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0602166</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0629302</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0634886</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">City.Range..for.EV…Fuel.Type.1.</td>
-<td style="text-align: right;">0.1074000</td>
-<td style="text-align: right;">0.1004172</td>
-<td style="text-align: right;">-0.2723553</td>
-<td style="text-align: right;">0.6592621</td>
-<td style="text-align: right;">0.6054500</td>
-<td style="text-align: right;">0.6452749</td>
-<td style="text-align: right;">-0.0101579</td>
-<td style="text-align: right;">-0.0117922</td>
-<td style="text-align: right;">-0.0108594</td>
-<td style="text-align: right;">0.7645547</td>
-<td style="text-align: right;">0.8107187</td>
-<td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">-0.0048888</td>
-<td style="text-align: right;">0.9956729</td>
-<td style="text-align: right;">-0.0050790</td>
+<td style="text-align: left;">Time to Charge EV (hours at 120v)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">City.Range..for.EV…Fuel.Type.2.</td>
-<td style="text-align: right;">0.0858150</td>
-<td style="text-align: right;">0.0811604</td>
-<td style="text-align: right;">-0.1585631</td>
-<td style="text-align: right;">0.0717256</td>
-<td style="text-align: right;">0.0462902</td>
-<td style="text-align: right;">0.0644328</td>
-<td style="text-align: right;">0.7992768</td>
-<td style="text-align: right;">0.7391603</td>
-<td style="text-align: right;">0.7776072</td>
-<td style="text-align: right;">0.2252672</td>
-<td style="text-align: right;">-0.0059698</td>
-<td style="text-align: right;">-0.0048888</td>
+<td style="text-align: left;">Time to Charge EV (hours at 240v)</td>
+<td style="text-align: right;">0.1053588</td>
+<td style="text-align: right;">0.0994659</td>
+<td style="text-align: right;">-0.1859223</td>
+<td style="text-align: right;">0.1414919</td>
+<td style="text-align: right;">0.0712719</td>
+<td style="text-align: right;">0.1153313</td>
+<td style="text-align: right;">0.8300337</td>
+<td style="text-align: right;">0.7991680</td>
+<td style="text-align: right;">0.8223966</td>
+<td style="text-align: right;">-0.0496963</td>
+<td style="text-align: right;">-0.0602166</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">-0.0048338</td>
-<td style="text-align: right;">0.9960187</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.8812479</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.9089379</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Hwy.Range..for.EV…Fuel.Type.1.</td>
-<td style="text-align: right;">0.1056849</td>
-<td style="text-align: right;">0.0988138</td>
-<td style="text-align: right;">-0.2692831</td>
-<td style="text-align: right;">0.6437660</td>
-<td style="text-align: right;">0.5981820</td>
-<td style="text-align: right;">0.6334629</td>
-<td style="text-align: right;">-0.0100436</td>
-<td style="text-align: right;">-0.0116595</td>
-<td style="text-align: right;">-0.0107372</td>
-<td style="text-align: right;">0.7666908</td>
-<td style="text-align: right;">0.8102122</td>
-<td style="text-align: right;">0.9956729</td>
-<td style="text-align: right;">-0.0048338</td>
-<td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">-0.0050219</td>
+<td style="text-align: left;">Range (for EV)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Hwy.Range..for.EV…Fuel.Type.2.</td>
-<td style="text-align: right;">0.0894127</td>
-<td style="text-align: right;">0.0845336</td>
-<td style="text-align: right;">-0.1621287</td>
-<td style="text-align: right;">0.0705480</td>
-<td style="text-align: right;">0.0455276</td>
-<td style="text-align: right;">0.0634469</td>
-<td style="text-align: right;">0.8100185</td>
-<td style="text-align: right;">0.7559879</td>
-<td style="text-align: right;">0.7913516</td>
-<td style="text-align: right;">0.2323011</td>
-<td style="text-align: right;">-0.0062021</td>
-<td style="text-align: right;">-0.0050790</td>
-<td style="text-align: right;">0.9960187</td>
-<td style="text-align: right;">-0.0050219</td>
+<td style="text-align: left;">City Range (for EV - Fuel Type 1)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City Range (for EV - Fuel Type 2)</td>
+<td style="text-align: right;">0.0876606</td>
+<td style="text-align: right;">0.0827633</td>
+<td style="text-align: right;">-0.1727049</td>
+<td style="text-align: right;">0.1530046</td>
+<td style="text-align: right;">0.0801444</td>
+<td style="text-align: right;">0.1256720</td>
+<td style="text-align: right;">0.7992789</td>
+<td style="text-align: right;">0.7391649</td>
+<td style="text-align: right;">0.7776109</td>
+<td style="text-align: right;">-0.0577003</td>
+<td style="text-align: right;">-0.0629302</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.8812479</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.9960186</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hwy Range (for EV - Fuel Type 1)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hwy Range (for EV - Fuel Type 2)</td>
+<td style="text-align: right;">0.0913331</td>
+<td style="text-align: right;">0.0862010</td>
+<td style="text-align: right;">-0.1766306</td>
+<td style="text-align: right;">0.1510883</td>
+<td style="text-align: right;">0.0792459</td>
+<td style="text-align: right;">0.1242627</td>
+<td style="text-align: right;">0.8100197</td>
+<td style="text-align: right;">0.7559922</td>
+<td style="text-align: right;">0.7913547</td>
+<td style="text-align: right;">-0.0574926</td>
+<td style="text-align: right;">-0.0634886</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.9089379</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.9960186</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">1.0000000</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cor_melted <span class="ot">&lt;-</span> <span class="fu">melt</span>(cor_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The melt generic in data.table has been passed a matrix and will
-attempt to redirect to the relevant reshape2 method; please note that reshape2
-is superseded and is no longer actively developed, and this redirection is now
-deprecated. To continue using melt methods from reshape2 while both libraries
-are attached, e.g. melt.list, you can prepend the namespace, i.e.
-reshape2::melt(cor_matrix). In the next version, this warning will become an
-error.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cor_melted, <span class="fu">aes</span>(Var1, Var2, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">high =</span> <span class="st">"red"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">midpoint =</span> <span class="dv">0</span>, <span class="at">limit =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">space =</span> <span class="st">"Lab"</span>, </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name=</span><span class="st">"Pearson</span><span class="sc">\n</span><span class="st">Correlation"</span>) <span class="sc">+</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">8</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">''</span>, <span class="at">y =</span> <span class="st">''</span>, <span class="at">title =</span> <span class="st">'Correlation Matrix Heatmap'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cor_melted <span class="ot">&lt;-</span> <span class="fu">melt</span>(cor_matrix)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#plot</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> cor_melted, <span class="fu">aes</span>(Var1, Var2, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">high =</span> <span class="st">"red"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">midpoint =</span> <span class="dv">0</span>, <span class="at">limit =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">space =</span> <span class="st">"Lab"</span>, </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name=</span><span class="st">"Pearson</span><span class="sc">\n</span><span class="st">Correlation"</span>) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">8</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">''</span>, <span class="at">y =</span> <span class="st">''</span>, <span class="at">title =</span> <span class="st">'Correlation Matrix Heatmap'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

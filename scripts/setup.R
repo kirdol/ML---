@@ -22,7 +22,9 @@ packages_loaded <- c(
   "summarytools",
   "visdat",
   "factoextra",
-  "FactoMineR"
+  "FactoMineR",
+  "skimr",
+  "DataExplorer"
 )
 
 # Function that install the packages if not already installed on your computer

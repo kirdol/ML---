@@ -1,20 +1,74 @@
-EDA: 
+---
+format:
+  html:
+    code-fold: true
+    fig-align: center
+---
 
-```{r Packages, echo = FALSE, message = FALSE}
+***EDA:***
 
+```{r Packages, echo = FALSE, message = FALSE, warning=FALSE}
 source(here::here("scripts","setup.R"))
-data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"), na = c(""))
-
+# data <- read.csv(here("data", "Vehicle_MPG_1984_to_2023_renamed.csv"), na = c(""))
+#a voir pk fonctionne pas
+data <- read_csv("/Users/stefanfavre/Documents/GitHub/ML_Project/data/Vehicle_MPG_1984_to_2023_renamed.csv")
 ```
 
+**Columns description**
 
+To begin with our EDA, let's have a look at our dataset and in particular the characteristics of the columns.
 
 ```{r}
-library(DataExplorer)
-summary(data)
-plot_histogram(data)
-plot_correlation(data) #drop time charge EV 120V
-create_report(data)
+#to get a detailed summary
+skim(data)
+```
+
+The dataset that we are working with contains approx. 46'000 rows and 26 columns. We can see that most of our features are concerning the consumption of the cars. In addition, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will be handle these in the section "data cleaning".
+
+**Exploration of the distribution**
+Here are more details about the distribution of the numerical features.
+```{r, fig.height= 10, fig.width=10}
+#  melt.data <- melt(data)
+# 
+#  ggplot(data = melt.data, aes(x = value)) + 
+# stat_density() + 
+# facet_wrap(~variable, scales = "free")
+
+plot_histogram(data)# Time.to.Charge.EV..hours.at.120v. not appearing because all observations = 0 
+```
+```{r, cache=TRUE}
+#tentative boxplots
+
+# data_long <- data %>%
+#   select_if(is.numeric) %>%
+#   pivot_longer(cols = c("ID",                                             
+#   "Model.Year",                                     
+#  "Estimated.Annual.Petrolum.Consumption..Barrels.",
+#  "City.MPG..Fuel.Type.1.",                         
+#  "Highway.MPG..Fuel.Type.1." ,                     
+#  "Combined.MPG..Fuel.Type.1.",                     
+#  "City.MPG..Fuel.Type.2." ,                        
+#  "Highway.MPG..Fuel.Type.2.",                      
+#  "Combined.MPG..Fuel.Type.2."   ,                  
+# "Time.to.Charge.EV..hours.at.120v." ,             
+#  "Time.to.Charge.EV..hours.at.240v." ,             
+# "Range..for.EV.",                                 
+# "City.Range..for.EV...Fuel.Type.1.",              
+# "City.Range..for.EV...Fuel.Type.2.",              
+# "Hwy.Range..for.EV...Fuel.Type.1." ,              
+# "Hwy.Range..for.EV...Fuel.Type.2." ), names_to = "variable", values_to = "value")
+# 
+# ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
+#   geom_boxplot() +
+#   facet_wrap(~ variable, scales = "free_y") +  # Each variable gets its own y-axis
+#   theme_minimal() +
+#   labs(title = "Boxplots of Variables with Different Scales", x = "", y = "Value")
+```
+
+```{r}
+#Now 
+# plot_correlation(data) #drop time charge EV 120V
+# create_report(data)
 #nb cars per brand
 ```
 
@@ -56,11 +110,10 @@ ggplot(nb_model_per_make, aes(x = Models_Per_Make, y = Make, fill = Make)) +
 **Correlation matrix for numerical features**
 ```{r,plot.new(); dev.off()}
 library(corrplot)
-
+library(reshape2) 
 #select only numerical columns, drop Time.to.Charge.EV..hours.at.120v. because NAs
 data_corrplot <- data %>%
-  select_if(is.numeric) %>%
-  select(-c(Time.to.Charge.EV..hours.at.120v.))
+  select_if(is.numeric)
 
 
 #correlation transformation for plot
