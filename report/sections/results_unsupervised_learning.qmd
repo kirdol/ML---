@@ -14,15 +14,15 @@ data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
 ## PCA
 
 ```{r, message = F, warning = F}
-data_processed <- data_cleaned %>%
+# Assuming your data frame is named data_cleaned
+data_prepared <- data_cleaned %>%
   mutate(across(where(is.character), as.factor)) %>%
-  model.matrix(~ . - 1, data = .) %>% # Create dummy variables excluding intercept
-  scale() # Standardize the resulting numeric matrix
+  mutate(across(where(is.factor), as.numeric)) %>%
+  scale()  # Standardizes numeric data including converted factors
 
-# Perform PCA
-pca_results <- PCA(data_processed, graph = FALSE, scale.unit = TRUE)
+pca_results <- PCA(data_prepared, graph = FALSE)
+summary(pca_results)
 
-# Create a biplot
 fviz_pca_biplot(pca_results,
                 geom.ind = "point",  # To show data points
                 geom.var = c("arrow", "text"),  # To show variable vectors and labels
@@ -31,6 +31,7 @@ fviz_pca_biplot(pca_results,
                 repel = TRUE  # Avoid text overlapping
 )
 ```
+
 
 
 
