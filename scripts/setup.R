@@ -24,7 +24,9 @@ packages_loaded <- c(
   "factoextra",
   "FactoMineR",
   "skimr",
-  "DataExplorer"
+  "DataExplorer",
+  "keras",
+  "neuralnet"
 )
 
 # Function that install the packages if not already installed on your computer

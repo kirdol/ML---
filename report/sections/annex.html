@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -45,1337 +45,546 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+
 <section id="sec-Annex" class="level1">
 <h1>Annex</h1>
 <section id="data-summary" class="level2">
 <h2 class="anchored" data-anchor-id="data-summary">Data Summary</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div class="container st-container">
-<h3 class="anchored">Data Frame Summary</h3>
-<h4 class="anchored">data</h4>
-<strong>Dimensions</strong>: 45896 x 26
-  <br><strong>Duplicates</strong>: 0
-<br>
-
-<table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline table-sm small" data-quarto-postprocess="true">
+<section id="data-frame-summary" class="level3">
+<h3 class="anchored" data-anchor-id="data-frame-summary">Data Frame Summary</h3>
+<section id="data" class="level4">
+<h4 class="anchored" data-anchor-id="data">data</h4>
+<p><strong>Dimensions:</strong> 45896 x 26<br>
+<strong>Duplicates:</strong> 0</p>
+<table class="table">
 <colgroup>
+<col style="width: 3%">
+<col style="width: 31%">
+<col style="width: 20%">
 <col style="width: 14%">
 <col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>No</strong></th>
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Variable</strong></th>
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Stats / Values</strong></th>
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Freqs (% of Valid)</strong></th>
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Graph</strong></th>
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Valid</strong></th>
-<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Missing</strong></th>
+<th>No</th>
+<th>Variable</th>
+<th>Stats / Values</th>
+<th>Freqs (% of Valid)</th>
+<th>Graph</th>
+<th>Valid</th>
+<th>Missing</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">ID [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 23102.1 (13403.1)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 23090.5 ≤ 46332</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 23276.5 (0.6)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">45896 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy1JUXjqAAABgElEQVR42u3dQW6CUBRAUWncY/fQrsfuoau0sxZSyffYJnyTe0YoTyNXIYYBLNdTxMvRH+DZFAwVDJ3XDz4OP6C9L7+fu1xHE/f4y7usX3rernr9XvocLo8nfPr2Bo4nbsfYTqzf5WfN3vRe0vNpWj+pRxPbL2ac+oTTaxMHe9Q9m/3o9BMGuxx8nH26YPqL+G/9rUAFQ5PtkkcfocYmC3b0EWqsXRIVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDE12aeV5bK6KvbrdRcF27F0Vu10SFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDC3r82TH31R4Tm+rE4hLjUy7JCoYKhj6Ai89Nfj1b7rLAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>1</td>
+<td>ID<br>
+[integer]</td>
+<td>Mean (sd) : 23102.1 (13403.1)<br>
+min &lt; med &lt; max:<br>
+1 &lt; 23090.5 &lt; 46332<br>
+IQR (CV) : 23276.5 (0.6)</td>
+<td>45896 distinct values</td>
+<td><img src="/tmp/ds0089.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">2</td>
-<td style="text-align: left;">Model.Year [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2003.6 (12.2)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1984 ≤ 2005 ≤ 2023</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 23 (0)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">40 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAAByUlEQVR42u3c0U3DMBgAYYKyIzvAPOkOnbI8YkeNlWvt2L+57wlUiaQn20kJZnl8iPjsfQLRGAwyGLSm39x2C9rP0vv0xpBmWfOXvpKv773Pc0hOSchgkMEgg0EGgwwGGQwyGGQwyGCQwSCDQQaDDAYZDDIYZDDIYJDBIINBBoMMBhkMMhhkMMhgkMEgg0EGgwwGGQwyGGQwyGCQwSCDQQaDDAYZDDIYZDDIYJDBIINB6/s/Ioqtyl69fxRsv1dvK+zePo45dbCtuKE9z3d24+PUwVrs/3TRhyYbYVvz/ypRDJYfPsYO8NabsIvBRtkBXueGoI4Xp2T7t5Af4fwNQWsgWOkttPB3hPvhK+SGoA4QrPWJ9Rw35w11lRxlzSypFCzi9fQ1lYJFGBt1eKcPGQzquujHuC7mOl8l4619TkmoyQib+SajSbDjiRZx1cpdvobFW7VyFwSLP6pSFwSLPqZyXiUhg0EGgwwGGQwyGGQwyGDQUA9BxrH7dJL8+sBgTx1/OnFKQgaDDAYZDDIYZDDIYJDBIINBBoMMBhkMMhhkMMhgkMEgg0EGgwwGGQwyGLSkz5NuU/3pWz3fyWO2xUaMUxIyGGQw6BdzZzrQKZG/GgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>2</td>
+<td>Model.Year<br>
+[integer]</td>
+<td>Mean (sd) : 2003.6 (12.2)<br>
+min &lt; med &lt; max:<br>
+1984 &lt; 2005 &lt; 2023<br>
+IQR (CV) : 23 (0)</td>
+<td>40 distinct values</td>
+<td><img src="/tmp/ds0090.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: left;">Make [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Chevrolet</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Ford</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. GMC</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Dodge</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Toyota</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. BMW</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. Mercedes-Benz</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. Nissan</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">9. Porsche</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">10. Volkswagen</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">[ 131 others ]</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">4333</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">9.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">3692</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">8.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2724</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.9%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2677</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2326</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2315</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1822</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">4.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1605</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1389</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1286</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">2.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">21727</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">47.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFQAAAELCAQAAADtzWncAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABvUlEQVR42u3dQUrEUBBF0UR6jy7C9egeXKVOk25/4qB+8grOnYkIB8rf8Ea9/iw9ersbAHpXj+0PX4f/sB/r1bgt57H/1fvwj76vVj7V5vSgoOmBgqYHCpoeKGh6baBPU+TuwTFu3Q6oy9fbSVtbm9O3ge7+Rz+Hu/76TX8IHe36hCfW5vSgoOmBgqYHCpoeKGh6baB2fUV2/cxOd/39i/4P6Ouuz3lcbU4PCpoeKGh6oKDpgYKm1wZq11dk18/Mrq+uzelBQdMDBU0PFDQ9UND0zOWKzGXQ5WTXp2z6F+h+12d9ArQ5PShoeqCg6YGCpgcKmp5dX5FdPzNzubo2pwcFTQ8UND1Q0PRAQdNrA7XrK7LrZ3aw65NW/cGuT3tWbU4PCpoeKGh6oKDpgYKm1wZq11dk189suOuzVv1w1+c9qjanBwVNDxQ0PVDQ9EBB02sDtesrsutnNtj1aat+sOsTn1Sb04OCpgcKmh4oaHqgoOm1gdr1Fdn1M7Prq2tzelDQ9EBB0wMFTQ8UND1zuSJzGXT5x9fH3drm0Zx8fdyd7T+B2pweFDQ9UND0QEHTAwVNr+euT67N6UGr+wUdbUEZaDKmhQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>3</td>
+<td>Make<br>
+[character]</td>
+<td>1. Chevrolet<br>
+2. Ford<br>
+3. GMC<br>
+4. Dodge<br>
+5. Toyota<br>
+6. BMW<br>
+7. Mercedes-Benz<br>
+8. Nissan<br>
+9. Porsche<br>
+10. Volkswagen<br>
+[ 131 others ]</td>
+<td>4333 ( 9.4%)<br>
+3692 ( 8.0%)<br>
+2724 ( 5.9%)<br>
+2677 ( 5.8%)<br>
+2326 ( 5.1%)<br>
+2315 ( 5.0%)<br>
+1822 ( 4.0%)<br>
+1605 ( 3.5%)<br>
+1389 ( 3.0%)<br>
+1286 ( 2.8%)<br>
+21727 (47.3%)</td>
+<td><img src="/tmp/ds0091.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">4</td>
-<td style="text-align: left;">Model [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. F150 Pickup 2WD</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. F150 Pickup 4WD</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Camaro</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Mustang</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Jetta</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. Truck 2WD</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. Ranger Pickup 2WD</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. Accord</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">9. Civic</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">10. Sierra 1500 2WD</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">[ 4752 others ]</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">233</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">215</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">214</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">208</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">200</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">187</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">169</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">164</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">152</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">149</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">44005</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">95.9%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJwAAAELCAQAAACGpSeJAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAACk0lEQVR42u3aQUrDUBhG0USyxy7C9egeusp2+uJAfZcHqXjOLAgSLn8p+Lk/Noq3q1/grxIuEi46xofPx7a971e/0usavw9cXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRctI8DhJ3me8aaBYSLTuE+/CPJr7m4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLjIrjrBrrqAcJFdNXJxkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRXXWCXXUB4SK7auTiIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIvPgBPPgAsJFwkV21cjFRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRXbVCXbVBYSLzIORi4uEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi+yqE+yqCwgX2VUjFxcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJF9lVJ9hVFxAusqtGLi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLrKrTrCrLiBcZFeNXFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXGRXnWBXXUC4yK4aubhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLjIPDjBPLiAcJFw0TE+2FV/MHwJHOef3K5+tRd2Pz35qEbCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRV/+Anxvv+Uf2s0MjY9qJFwkXPQEXFgsecdBhvgAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>4</td>
+<td>Model<br>
+[character]</td>
+<td>1. F150 Pickup 2WD<br>
+2. F150 Pickup 4WD<br>
+3. Camaro<br>
+4. Mustang<br>
+5. Jetta<br>
+6. Truck 2WD<br>
+7. Ranger Pickup 2WD<br>
+8. Accord<br>
+9. Civic<br>
+10. Sierra 1500 2WD<br>
+[ 4752 others ]</td>
+<td>233 ( 0.5%)<br>
+215 ( 0.5%)<br>
+214 ( 0.5%)<br>
+208 ( 0.5%)<br>
+200 ( 0.4%)<br>
+187 ( 0.4%)<br>
+169 ( 0.4%)<br>
+164 ( 0.4%)<br>
+152 ( 0.3%)<br>
+149 ( 0.3%)<br>
+44005 (95.9%)</td>
+<td><img src="/tmp/ds0092.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">Estimated.Annual.Petrolum.Consumption..Barrels. [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 15.3 (4.3)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 14.9 ≤ 42.5</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 4.6 (0.3)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">284 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABr0lEQVR42u3dTVYCMRAAYcfHHbmDngfuwClhaYcFUMxkuhvrW+nGwTLJ/BAfy/VLxHf2C+jGYJDBoEP8Zpl0kNPdQvk760CTxJd/ePunIMfw9SX791/FKQkZDDIYZDDIYJDBIINBBoMMBhkMMhhkMMhgkMEgg0EGgwwGGQwyGGQwyGCQwSCDQQaDDAYZDDIYZDDIYJDBIINBBoMMBhkMMhg0bY/r6UP/Y2LipuC/jcC9twGPdtpFPYqjr9sW9JRgnceeiz5kMMhgkMEgg0EGgwwGbXod9qm3Q9HGF66dL0lf45SEDAYZDDIYZDAo5fFO1O3ZWHqwbhciTknIYJDBIINBBoMMBhkMMhhkMMhgkMEgg0EGgwwGGQwyGGQwyGCQwSCDQQaDDAYZDDIYZDAo/Z3vaNzBWHPjQKlgHT7XYWWw/7CrdbR6hHUYFVty0YcMBhkMKnWWHNXcm1g4WM29iU5JyGCQwaDCa1hU5wTQJFidE8AQrPvnQO7hboS9cmeYfcOdOz3fmpK5EyT36J4loYcjLHvyPbf/M9olHvFcPlCOn/CHWGzEuIZBBoMMBt0AxzYs5776BngAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>5</td>
+<td>Estimated.Annual.Petrolum.Consumption..Barrels.<br>
+[numeric]</td>
+<td>Mean (sd) : 15.3 (4.3)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 14.9 &lt; 42.5<br>
+IQR (CV) : 4.6 (0.3)</td>
+<td>284 distinct values</td>
+<td><img src="/tmp/ds0093.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">6</td>
-<td style="text-align: left;">Fuel.Type.1 [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Diesel</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Electricity</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Midgrade Gasoline</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Natural Gas</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Premium Gasoline</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. Regular Gasoline</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1254</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">2.7%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">484</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">155</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">60</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">14138</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">30.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">29805</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">64.9%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAG4AAACVCAQAAAATBweqAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABOElEQVR42u3csQ3CMAAFURtlR4ZgnrADU4YCCTmBChFb932vQzQ5YSg+kutWcl1GP4Bxxn1a2hf39xfwVkc/2K/a35Bl/9a1lFLKY/QT/kn0sTSOyjgq46iMozKOyjgq46iMo4qOO8wMKQPDS20HFewq1Gh7oo/lPHHrtkb9dTDPJ5fGOCrjqIyjMo7KOCrjqIyjMo7KOCp3S6p54rJWy5k+uTTGURlHZRyVcVTGURlHZRyVcVTGUblbUs0T524JYhyVcVTGURlHZRyVcVTGURlHZRxVdJy7JVV03O5uhnN3y/53Zn693/IMI660iD6WxlEZR2UclXFUxlEZR2UclXFU0XHeb0nibpmg427ZSfPd6rZb9rH/QYw+lsZRGUdlHJVxVMZRGUdlHJVxVNFx8+yWaaKPpXFUT9lgHw8lHMX7AAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>6</td>
+<td>Fuel.Type.1<br>
+[character]</td>
+<td>1. Diesel<br>
+2. Electricity<br>
+3. Midgrade Gasoline<br>
+4. Natural Gas<br>
+5. Premium Gasoline<br>
+6. Regular Gasoline</td>
+<td>1254 ( 2.7%)<br>
+484 ( 1.1%)<br>
+155 ( 0.3%)<br>
+60 ( 0.1%)<br>
+14138 (30.8%)<br>
+29805 (64.9%)</td>
+<td><img src="/tmp/ds0094.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: left;">City.MPG..Fuel.Type.1. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 19.1 (10.3)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6 ≤ 17 ≤ 150</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 6 (0.5)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">131 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABUklEQVR42u3dMY7CMBRAQYy4I3dYzsPeYU8JbRZHgkcTQWa6SC7CixyaL2fcDhTHrW/g0wgWCRadlhdjZcF15SV3GYddWSY4PV9+frj+2/r+N2VLRoJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFL5xQN5uP+dvPIX9vBdvzIX+2ZCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRY9G965+qTzE89jDudpwWvjTLtZ2Lsrfmw2Twx9q0Jx/J3/dqSq34Wj3po1PiXjASLBIvu+KMUefckXp0AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>7</td>
+<td>City.MPG..Fuel.Type.1.<br>
+[integer]</td>
+<td>Mean (sd) : 19.1 (10.3)<br>
+min &lt; med &lt; max:<br>
+6 &lt; 17 &lt; 150<br>
+IQR (CV) : 6 (0.5)</td>
+<td>131 distinct values</td>
+<td><img src="/tmp/ds0095.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">8</td>
-<td style="text-align: left;">Highway.MPG..Fuel.Type.1. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 25.2 (9.4)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">9 ≤ 24 ≤ 140</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 8 (0.4)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">116 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABVUlEQVR42u3cQW6CUBRAUTHs0T2066F76Cp1StOflEusRjxnhglEbvgM/PFN1xPF+dlf4NUIFgkWzeuDaeNJy/DF97n19Jezvt153yUuvz75fvZdPYglGQkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkW/TlVYDFr5ocNYxjed+TCiCUZCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFu0c3j0y2pA73gT0OwZ7j+04SzISLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiy642/6I8fbGPnnYMfbGJnWj8CXf64NfazWxKRR46UfCRYJFt0A2BgSe0HBc8wAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>8</td>
+<td>Highway.MPG..Fuel.Type.1.<br>
+[integer]</td>
+<td>Mean (sd) : 25.2 (9.4)<br>
+min &lt; med &lt; max:<br>
+9 &lt; 24 &lt; 140<br>
+IQR (CV) : 8 (0.4)</td>
+<td>116 distinct values</td>
+<td><img src="/tmp/ds0096.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">9</td>
-<td style="text-align: left;">Combined.MPG..Fuel.Type.1. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 21.3 (9.8)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7 ≤ 20 ≤ 142</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 6 (0.5)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">122 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABT0lEQVR42u3dwW2DMABA0TjKjt0hmYfu0CmbKy1IyY8iodbv3ZA4wEc2Bywzvk8U56Mv4K8RLBIsuqwPxs4Jy84kdxunqawTXB6f/vHr+Ovo6z+UIRkJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRY98eV7a7t8YJ7FAy8Fm3nxgCEZCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRa9tEPd1jyb/L0p2Dyb/BmSkWCRYJFg0Y9Jf3njT7//63tzrO/r01/Sd11Xj3po1JjDIsEiwaI7q1cTeQwRZDkAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>9</td>
+<td>Combined.MPG..Fuel.Type.1.<br>
+[integer]</td>
+<td>Mean (sd) : 21.3 (9.8)<br>
+min &lt; med &lt; max:<br>
+7 &lt; 20 &lt; 142<br>
+IQR (CV) : 6 (0.5)</td>
+<td>122 distinct values</td>
+<td><img src="/tmp/ds0097.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">10</td>
-<td style="text-align: left;">Fuel.Type.2 [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. (Empty string)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. E85</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Electricity</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Natural Gas</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Propane</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">44059</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">96.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1513</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">296</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">20</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">8</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJwAAAB9CAQAAAD9qcLhAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABcElEQVR42u3bUWrCQBRA0U5xj92DrifuwVXqp4lQay6BVDznyyCE4TKTgA/H9Yvie+8FvCvhIuGiw/zi7IH31HHcPx+WX/3svbZ/7LK4clQj4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4aKHX4Av7S4faMzHDCPf5jPMWzmqkXCRcNHi5TDNDvHJA++pX+aq3q5/cVQj4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIgPpyEB6BQPpDQgXLcJN18k/Vl9kx0XCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCReaqK5irbkC46GGuuvdy3ocdFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXCRcJFwkXmauuYK66AeEic9XIjouEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4SLhIuEi4b5TGPHRcJFwkU3GaQYnWMYNckAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>10</td>
+<td>Fuel.Type.2<br>
+[character]</td>
+<td>1. (Empty string)<br>
+2. E85<br>
+3. Electricity<br>
+4. Natural Gas<br>
+5. Propane</td>
+<td>44059 (96.0%)<br>
+1513 ( 3.3%)<br>
+296 ( 0.6%)<br>
+20 ( 0.0%)<br>
+8 ( 0.0%)</td>
+<td><img src="/tmp/ds0098.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">11</td>
-<td style="text-align: left;">City.MPG..Fuel.Type.2. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 0.8 (6.5)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 145</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (7.6)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">82 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABOElEQVR42u3dsQ3CMBRAQYKyIzvAPGQHpoQ2kEjwKoO466y4sJ5it3+6HyiOow/wawSLBIvm9WLZfdAu0+hDjrbOMj9/Om0230af9su4kpFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYNH8fst1Mwj2n4fAfhDsdQzsfw+Bnda/z2JK+q7z6kZNGjUe/UiwSLDoAYVCDN/tG1RjAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>11</td>
+<td>City.MPG..Fuel.Type.2.<br>
+[integer]</td>
+<td>Mean (sd) : 0.8 (6.5)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 145<br>
+IQR (CV) : 0 (7.6)</td>
+<td>82 distinct values</td>
+<td><img src="/tmp/ds0099.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">12</td>
-<td style="text-align: left;">Highway.MPG..Fuel.Type.2. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 1 (6.6)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 121</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (6.6)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">77 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABNUlEQVR42u3dsQ3CMBBAUYyyIzvAPGQHpoSSIAWJXxnEe10UF9aXzu2N+4HiOPsCv0awSLBo2X6sbx60y5h9zbm2WZbXX6ed47fZ9/0qRjISLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsWj45dN3dbPqfe00/Cmav6ZORjMZ22lZb0nedN4/P0KgxkpFgkWDRAxDEDN82SuQaAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>12</td>
+<td>Highway.MPG..Fuel.Type.2.<br>
+[integer]</td>
+<td>Mean (sd) : 1 (6.6)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 121<br>
+IQR (CV) : 0 (6.6)</td>
+<td>77 distinct values</td>
+<td><img src="/tmp/ds0100.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">13</td>
-<td style="text-align: left;">Combined.MPG..Fuel.Type.2. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 0.9 (6.4)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 133</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (7.1)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">82 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABNElEQVR42u3dsQ3CMBBAUYKyIzvAPGQHpoTWiEjwK4N4r4viwvrSub3lfqA4zr7ArxEsEixax49t90G7LLMvOduYZX3+dXo5fJt92y9jJCPBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsGi9f2R685e0//davpBMFtNR0YyWsZ522xJ33UeHqBFo8ZIRoJFgkUPGxgM30PMTFUAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>13</td>
+<td>Combined.MPG..Fuel.Type.2.<br>
+[integer]</td>
+<td>Mean (sd) : 0.9 (6.4)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 133<br>
+IQR (CV) : 0 (7.1)</td>
+<td>82 distinct values</td>
+<td><img src="/tmp/ds0101.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">14</td>
-<td style="text-align: left;">Engine.Cylinders [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 5.7 (1.8)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2 ≤ 6 ≤ 16</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.3)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">63</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.1%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">378</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.8%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">17859</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">39.3%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">5</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">776</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">1.7%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">6</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">15666</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.5%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">8</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">9737</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">21.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">10</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">196</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">12</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">714</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">1.6%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">16</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">20</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.0%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEgAAADcCAQAAAB5Ey+ZAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABS0lEQVR42u3cUQqCQBSG0THaY4toPS2iVdrrWOZgCf8tzteTBHEYFbwMNs2tVqc0AGh3c/e5hS6o3lBuhYCAgIDSAQEBAaUD+jnQ1D/XTyFEbyi3QrVBtzk1mb0BVQgICAgoHRAQEFA6oJ8DmctGlQOd+4PYVNZdK+flN5eA5r44KnfKgICAgNIBAQEBpSsHenqEvX/2KwdmLhtVDrQyl11TZ6619rJCiblsE5QPCAgIKB0QEBBQuuogc1lrzVy2r8h+2dbkF9gv275xyp0yICAgoHRAQEBA6cqB7JetZS7b08Fz2fd7bYfOZUfcEuVOGRAQEFA6ICAgoHTGoLWMQf8Dyv/rR/UVqhAQEBBQOiAgIKB05UDmslFAo7xfthOUDwgICCgdEBAQUDqvc61lLvsYZHsKCAgICAgICCgfENC3TQWe6xeVWyGgUQ9jXTghWLP72gAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45409 (98.9%)</td>
-<td style="text-align: center;">487 (1.1%)</td>
+<td>14</td>
+<td>Engine.Cylinders<br>
+[integer]</td>
+<td>Mean (sd) : 5.7 (1.8)<br>
+min &lt; med &lt; max:<br>
+2 &lt; 6 &lt; 16<br>
+IQR (CV) : 2 (0.3)</td>
+<td>2 : 63 ( 0.1%)<br>
+3 : 378 ( 0.8%)<br>
+4 : 17859 (39.3%)<br>
+5 : 776 ( 1.7%)<br>
+6 : 15666 (34.5%)<br>
+8 : 9737 (21.4%)<br>
+10 : 196 ( 0.4%)<br>
+12 : 714 ( 1.6%)<br>
+16 : 20 ( 0.0%)</td>
+<td><img src="/tmp/ds0102.png" class="img-fluid"></td>
+<td>45409<br>
+(98.9%)</td>
+<td>487<br>
+(1.1%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">15</td>
-<td style="text-align: left;">Engine.Displacement [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.3 (1.4)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 3 ≤ 8.4</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.4)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">66 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABq0lEQVR42u3cza3CMBAAYYLokR6gntADVcKFQzAS0YB/dq35bjmAHqM4cRY9lsdBxHH0H5CNwSCDQaftwYJfvn5cAq/8TcLbfsjTz+/ycn47uo/+bM25JCGDQQaDDAYZDDIYZDDIYJDBIINBBoMMBhkMMhhkMOjveVipHCnONlCsHmz2gaJLEjIYZDDIYJDBIINBBoMMBhkMMhhkMMhgkMEgg0HVxzul2eZjzYPNNh9zSUIGgwwGGQwyGGQwyGCQwSCDQQaDDAYZDDIYZDDIYFDzedh3+f6jd3CwfANGlyRkMMhgkMEgg0EGgwwGGQzqvnFdk/9gWfdg2Xb2JZckZDDIYJDBoOHjnT3RJmbhg0W7r7okIYNBBoMMBhkMCneXjP5wHi7YuTgevY0ohQtG9d7Ypg/We2ObMNjYq1zCYGMfldxWQAaDDAYZDIIX/ej78PbwXTLWOK8/lyRkMMhgkMGghI9Ge9r+UsaEwdrex12SkMEgg0EGgwwGGQwyGDThPqxUdyP7Ndgc06+6G9mdMyz699D9LduT6DbFGVXfZbOIFxsx3iUhg0EGg541uSvtjcbsNwAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45411 (98.9%)</td>
-<td style="text-align: center;">485 (1.1%)</td>
+<td>15</td>
+<td>Engine.Displacement<br>
+[numeric]</td>
+<td>Mean (sd) : 3.3 (1.4)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 3 &lt; 8.4<br>
+IQR (CV) : 2 (0.4)</td>
+<td>66 distinct values</td>
+<td><img src="/tmp/ds0103.png" class="img-fluid"></td>
+<td>45411<br>
+(98.9%)</td>
+<td>485<br>
+(1.1%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">16</td>
-<td style="text-align: left;">Drive [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. (Empty string)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 2-Wheel Drive</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. 4-Wheel Drive</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. 4-Wheel or All-Wheel Driv</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. All-Wheel Drive</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. Front-Wheel Drive</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. Part-time 4-Wheel Drive</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. Rear-Wheel Drive</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1186</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">2.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">507</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2134</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">4.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">6645</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">14.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">4775</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">10.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">15204</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">33.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">452</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">14993</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">32.7%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAD4AAADECAQAAABtwVqwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABGElEQVR42u3bUQqCQBQF0DHaY4toPbWHVlkfUowSljb6jHfun/RxkOfAnQd19xKXQ6CdGD/WD9fXB3Du1gLrb+w4/OlUSinlttGb5505HA6Hw+Hw/8dHNWqrAtWnqwvdaq2xSu3lnfkAv9wvm17d9vPmcDgcDofD4fBvo7eHZHBXG7f29bbub/Dnvr3P+pfGvDOHw+FwOBzeJFbeIcmLT/b2qbTo9BO9fSptTkXemcPhcDgcDm8SvT0kefFZvb31/n1Gb29/EvLOHA6Hw+FweJPo7SHJiy/ety9O9WEt3LcvzfA05Z05HA6Hw+HwJtHbQ7If3F9D4XA4HA6Hw+GforeHxMo7JHA4HA6Hw+E/ZT/79q2Td+ah+ANdIC4LMAajagAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>16</td>
+<td>Drive<br>
+[character]</td>
+<td>1. (Empty string)<br>
+2. 2-Wheel Drive<br>
+3. 4-Wheel Drive<br>
+4. 4-Wheel or All-Wheel Driv<br>
+5. All-Wheel Drive<br>
+6. Front-Wheel Drive<br>
+7. Part-time 4-Wheel Drive<br>
+8. Rear-Wheel Drive</td>
+<td>1186 ( 2.6%)<br>
+507 ( 1.1%)<br>
+2134 ( 4.6%)<br>
+6645 (14.5%)<br>
+4775 (10.4%)<br>
+15204 (33.1%)<br>
+452 ( 1.0%)<br>
+14993 (32.7%)</td>
+<td><img src="/tmp/ds0104.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">17</td>
-<td style="text-align: left;">Engine.Description [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. (Empty string)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. (FFS)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. SIDI</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. (FFS) CA model</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. SIDI &amp; PFI</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. (FFS) (MPFI)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. FFV</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. (FFS,TRBO)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">9. (350 V8) (FFS)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">10. (GUZZLER) (FFS)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">[ 580 others ]</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">17031</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">37.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">8827</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">19.2%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">7991</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">17.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">926</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">2.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">737</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">734</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">706</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">666</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">1.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">411</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.9%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">366</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">0.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">7501</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">16.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEQAAAELCAQAAADKY+g0AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABfUlEQVR42u3dwW3CQBRF0XGUHukhqYf0QJVka0bGVjwj/xfp3B0bcpTPgqegsDxbRh/VAJB3fa4f/Fz8gvla3kBau13IeLw8ijkNCAgICAgICEh1MZDureLj3LNMaFm/X15OP8251j875jQxkJfXyH1g13wP3nXSrhl/kcecBgQEBAQEBASkuhiIXdOaXbPfhF0zumg2IGd2zayXd8xpQEBAQEBAQECqi4HYNa3ZNftt7po5S+Vvdb+R26WfRNuB1AUCAgICAgICUp050Zo58U8gG7umYtVs7JqqYk4DAgICAgICAlJdB7FrYk9TlzlxAKkLBAQEBAQEBKS6VIhdE3uauuyaA0hdICAgICAgICDVpULsmtjT1GXXHEDqAgEBAQEBAQGpLhVi18SeJgRyf478g+WJkMpAQEBAQEBAQKoDiYXYNX2ZELsGBAQEBAQEBCQgkD5zog+kb/BrY+Z9Zm3oa2Nm/iky5jQgICAgICAgINVl/nvlymJOA9L3C5uxPG6ANP7HAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>17</td>
+<td>Engine.Description<br>
+[character]</td>
+<td>1. (Empty string)<br>
+2. (FFS)<br>
+3. SIDI<br>
+4. (FFS) CA model<br>
+5. SIDI &amp; PFI<br>
+6. (FFS) (MPFI)<br>
+7. FFV<br>
+8. (FFS,TRBO)<br>
+9. (350 V8) (FFS)<br>
+10. (GUZZLER) (FFS)<br>
+[ 580 others ]</td>
+<td>17031 (37.1%)<br>
+8827 (19.2%)<br>
+7991 (17.4%)<br>
+926 ( 2.0%)<br>
+737 ( 1.6%)<br>
+734 ( 1.6%)<br>
+706 ( 1.5%)<br>
+666 ( 1.5%)<br>
+411 ( 0.9%)<br>
+366 ( 0.8%)<br>
+7501 (16.3%)</td>
+<td><img src="/tmp/ds0105.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">18</td>
-<td style="text-align: left;">Transmission [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Automatic 4-spd</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Manual 5-spd</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Automatic (S6)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Automatic 3-spd</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Manual 6-spd</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. Automatic (S8)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. Automatic 5-spd</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. Automatic 6-spd</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">9. Manual 4-spd</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">10. Automatic (variable gear</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">[ 31 others ]</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">11048</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">24.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">8389</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">18.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">3310</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">7.2%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">3151</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">6.9%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">3013</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">6.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2790</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">6.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2203</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">4.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1742</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1483</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.2%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1012</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">2.2%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">7755</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">16.9%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAADEAAAELCAQAAADaA6boAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABQ0lEQVR42u3cQW6CYBSFUTDu0T3oeto9uEo7LGoLN/w/Ql7OnTnxpD6SfiPGx7D1TpsLRYjz9MN3t8Ncx3+IYbh0Ae5Pn2rcAoFAIBCIZC//WO/rvmV247QIxtVf87rptxa8xdfKjrrN/sIdOmrpEalxCwQCgUAgkumocEfpqFvTLxh0VOsjUOMWCAQCgUAk01HhjtFRbRUVdFT7A1DjFggEAoEoQIiccDUIHYVAIBAIRMfpqHBHiJzWxFmMnB7nr3ELBAKBQCCS6ahwe3dUe0O9Ec8d1ev0NW6BQCAQCEQyHRVuz47q01BvxG9H9Tx7jVsgEAgEApFMR4XTUeFq3AKBQCAQiGQ6KtxeHdWvof74Ky6dXpM5Q2wxBAKBQCCSiZxwNYjml2QuN1fjSzKTJ7DGLRAIBAJRgPh0R22zGrf4APEDLe9AMFObtXsAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>18</td>
+<td>Transmission<br>
+[character]</td>
+<td>1. Automatic 4-spd<br>
+2. Manual 5-spd<br>
+3. Automatic (S6)<br>
+4. Automatic 3-spd<br>
+5. Manual 6-spd<br>
+6. Automatic (S8)<br>
+7. Automatic 5-spd<br>
+8. Automatic 6-spd<br>
+9. Manual 4-spd<br>
+10. Automatic (variable gear<br>
+[ 31 others ]</td>
+<td>11048 (24.1%)<br>
+8389 (18.3%)<br>
+3310 ( 7.2%)<br>
+3151 ( 6.9%)<br>
+3013 ( 6.6%)<br>
+2790 ( 6.1%)<br>
+2203 ( 4.8%)<br>
+1742 ( 3.8%)<br>
+1483 ( 3.2%)<br>
+1012 ( 2.2%)<br>
+7755 (16.9%)</td>
+<td><img src="/tmp/ds0106.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">19</td>
-<td style="text-align: left;">Vehicle.Class [character]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Compact Cars</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Subcompact Cars</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Midsize Cars</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Large Cars</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Two Seaters</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. Standard Pickup Trucks</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. Sport Utility Vehicle - 4</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. Small Station Wagons</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">9. Sport Utility Vehicle - 2</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">10. Minicompact Cars</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">[ 24 others ]</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">6276</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">13.7%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">5557</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">12.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">5497</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">12.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2550</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2360</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2354</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">5.1%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">2078</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">4.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1720</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.7%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1627</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.5%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">1542</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">3.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">14335</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">31.2%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAADsAAAELCAQAAADNITYhAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABRUlEQVR42u3dwU0DMRCGURalR4qgHtIDVSZHnERabCcza5j33xBSntAY6TvBdnk7Yu+HqMXYU/vFufvQn9s41X746fZbH10f8P30T1vrtlgsFovFYuN3FzXP50rftjasJrpsYK1U+LZfXZ0808i7bE8nv+bR1botFovFYrHY+OnkhK1wW50cMywWi8Visf+W1ckJW+G2j538iib+lb3v5LgHVuu2WCwWi8WWYgVrwmqxu50cVcm7nRz5qmvdFovFYrHYUqxOTtgKtxWsWCwWi8VisUPTyQlb4bY6GYvFYrFYLHZoOjlhK9y27eS4Rn5gfzo5+mnVui0Wi8Visdj46eSErXBbnYzFYrFYLBY7NJ2csBVuq5OxWCwWi8X+VVawJqwWO/GHjKfXPJ2pf4w3s9vfkVq3xWKxWCy2FLtCJ+et1m0PYq/iv0EZBB3ccgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>19</td>
+<td>Vehicle.Class<br>
+[character]</td>
+<td>1. Compact Cars<br>
+2. Subcompact Cars<br>
+3. Midsize Cars<br>
+4. Large Cars<br>
+5. Two Seaters<br>
+6. Standard Pickup Trucks<br>
+7. Sport Utility Vehicle - 4<br>
+8. Small Station Wagons<br>
+9. Sport Utility Vehicle - 2<br>
+10. Minicompact Cars<br>
+[ 24 others ]</td>
+<td>6276 (13.7%)<br>
+5557 (12.1%)<br>
+5497 (12.0%)<br>
+2550 ( 5.6%)<br>
+2360 ( 5.1%)<br>
+2354 ( 5.1%)<br>
+2078 ( 4.5%)<br>
+1720 ( 3.7%)<br>
+1627 ( 3.5%)<br>
+1542 ( 3.4%)<br>
+14335 (31.2%)</td>
+<td><img src="/tmp/ds0107.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">20</td>
-<td style="text-align: left;">Time.to.Charge.EV..hours.at.120v. [integer]</td>
-<td style="text-align: left;">1 distinct value</td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">0</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">45896</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">100.0%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAKIAAAAfCAQAAADOr947AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAAAhklEQVRo3u3ZQQqAIBQA0X54x+7QgbqDp6yl2Sp0QMp5K0UQGdCNcS7qtY4+wB8YEWBEQLpPDh/I1/Yo41QvbaPP9hG5mnmdAUYEGBFgRIARAUYEGBFgRIARAUYEGBFgRIARAUYEGBFgRIARAUYEGBFgRMDjoyq37TK58Je0n9cZYESAEQEXDzcF6kj4F1QAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>20</td>
+<td>Time.to.Charge.EV..hours.at.120v.<br>
+[integer]</td>
+<td>1 distinct value</td>
+<td>0 : 45896 (100.0%)</td>
+<td><img src="/tmp/ds0108.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">21</td>
-<td style="text-align: left;">Time.to.Charge.EV..hours.at.240v. [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 0.1 (1)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 15.3</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (8.9)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">71 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABKklEQVR42u3dsQ3CMBBA0RhlR4ZgHtiBKaE1Ic2vDNJ7neUUpy857Y3XRnFZPcC/ESwSLNrnw+Pkh3Ybq0dcb86yf15dD58+V8/6czzJSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsOiwI/d7J+7d5vRtmxYrDz0aTzISLBIsegP0Bwkdc+yaMwAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>21</td>
+<td>Time.to.Charge.EV..hours.at.240v.<br>
+[numeric]</td>
+<td>Mean (sd) : 0.1 (1)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 15.3<br>
+IQR (CV) : 0 (8.9)</td>
+<td>71 distinct values</td>
+<td><img src="/tmp/ds0109.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">22</td>
-<td style="text-align: left;">Range..for.EV. [integer]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.4 (25)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 520</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (10.6)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">174 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABLUlEQVR42u3dwQnCQBBAUSPp0SKsR3uwSr2uQgLfyyp577YsgeHD5jrL80Rxnj3AvxEsEixax8N954d2XWaPOs+YZX2/umx88pg988/wJCPBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsGijx2527twb0feoD4sVF6O3OEbnmQkWCRY9ALevwkdlUnM4gAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>22</td>
+<td>Range..for.EV.<br>
+[integer]</td>
+<td>Mean (sd) : 2.4 (25)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 520<br>
+IQR (CV) : 0 (10.6)</td>
+<td>174 distinct values</td>
+<td><img src="/tmp/ds0110.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">23</td>
-<td style="text-align: left;">City.Range..for.EV...Fuel.Type.1. [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 1.6 (20.9)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 520.8</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (12.9)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">203 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABLUlEQVR42u3dwQnCQBBAUSPp0SKsR3uwSr2uQgLfyyp577YsgeHD5jrL80Rxnj3AvxEsEixax8N954d2XWaPOs+YZX2/umx88pg988/wJCPBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsGijx2527twb0feoD4sVF6O3OEbnmQkWCRY9ALevwkdlUnM4gAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>23</td>
+<td>City.Range..for.EV…Fuel.Type.1.<br>
+[numeric]</td>
+<td>Mean (sd) : 1.6 (20.9)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 520.8<br>
+IQR (CV) : 0 (12.9)</td>
+<td>203 distinct values</td>
+<td><img src="/tmp/ds0111.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">24</td>
-<td style="text-align: left;">City.Range..for.EV...Fuel.Type.2. [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 0.2 (2.7)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 135.3</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (15.8)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">149 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABKElEQVR42u3dsQ3CMBBAUYyyI0MwD+yQKUNrIM2vDNJ7neUUpy857Y3jQnFdPcC/ESwSLNrmw/P0h3Yfq4dcbc6yvV/dvj7eV0/7YzzJSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsOhjR+7ZRtyH3enTWuWhRuNJRoJFgkUv7rUJHeY6X0AAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>24</td>
+<td>City.Range..for.EV…Fuel.Type.2.<br>
+[numeric]</td>
+<td>Mean (sd) : 0.2 (2.7)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 135.3<br>
+IQR (CV) : 0 (15.8)</td>
+<td>149 distinct values</td>
+<td><img src="/tmp/ds0112.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">25</td>
-<td style="text-align: left;">Hwy.Range..for.EV...Fuel.Type.1. [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 1.5 (19.7)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 520.5</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (13.1)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">199 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABLUlEQVR42u3dwQnCQBBAUSPp0SKsR3uwSr2uQgLfyyp577YsgeHD5jrL80Rxnj3AvxEsEixax8N954d2XWaPOs+YZX2/umx88pg988/wJCPBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsGijx2527twb0feoD4sVF6O3OEbnmQkWCRY9ALevwkdlUnM4gAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>25</td>
+<td>Hwy.Range..for.EV…Fuel.Type.1.<br>
+[numeric]</td>
+<td>Mean (sd) : 1.5 (19.7)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 520.5<br>
+IQR (CV) : 0 (13.1)</td>
+<td>199 distinct values</td>
+<td><img src="/tmp/ds0113.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">26</td>
-<td style="text-align: left;">Hwy.Range..for.EV...Fuel.Type.2. [numeric]</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 0.2 (2.5)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">0 ≤ 0 ≤ 114.8</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (15.3)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle;">142 distinct values</td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoBQkSNy7QWClQAAABKUlEQVR42u3dsQ3CMBBAUYyyI0MwD+zAlFCBnHS/cpDeq2ylOX3JaW+8LxTX1QP8G8EiwaJtvjx3P7T7WD3cWcxZtv2n2+/0Wj3lSXmSkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYNFhR+68GfdhZ/rXtF55qNJ4kpFgkWDRBwQMCR1GI0YWAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">45896 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
+<td>26</td>
+<td>Hwy.Range..for.EV…Fuel.Type.2.<br>
+[numeric]</td>
+<td>Mean (sd) : 0.2 (2.5)<br>
+min &lt; med &lt; max:<br>
+0 &lt; 0 &lt; 114.8<br>
+IQR (CV) : 0 (15.3)</td>
+<td>142 distinct values</td>
+<td><img src="/tmp/ds0114.png" class="img-fluid"></td>
+<td>45896<br>
+(100.0%)</td>
+<td>0<br>
+(0.0%)</td>
 </tr>
 </tbody>
 </table>
-
-<p>Generated by <a href="https://github.com/dcomtois/summarytools">summarytools</a> 1.0.1 (<a href="https://www.r-project.org/">R</a> version 4.3.1)<br>2024-05-09</p>
-</div>
-</div>
-</div>
+</section>
+</section>
 </section>
 </section>
 
@@ -1460,10 +669,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1473,8 +699,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1486,7 +721,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1530,6 +888,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1555,6 +914,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1615,6 +1000,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

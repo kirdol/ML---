@@ -1,0 +1,94 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
+```{r Loading R packages NN, echo= FALSE, message = FALSE, output = FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+```{python Loading python Librairies NN, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(caret)
+library(neuralnet)
+```
+
+```{r}
+# Load the data
+data <- read.csv(here("data","data_cleaned.csv"))
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(caret)
+library(neuralnet)
+library(here)
+
+# Load the data
+data <- read.csv(here("data","data_cleaned.csv"))
+
+# Convert categorical variables to factors
+categorical_vars <- c('make', 'vehicle_class', 'drive', 'engine_cylinders', 
+                      'engine_displacement', 'transmission', 'fuel_type_1', 'fuel_type_2')
+data[categorical_vars] <- lapply(data[categorical_vars], as.factor)
+
+# Normalize numeric columns
+num_cols <- sapply(data, is.numeric)
+data[num_cols] <- scale(data[num_cols])
+
+# One-hot encode the categorical variables, except for the target variable 'make'
+dummy_vars <- dummyVars(" ~ . -make", data = data)
+data_transformed <- data.frame(predict(dummy_vars, newdata = data))
+
+# Add the target variable back to the data
+data_transformed$make <- data$make
+
+# Split the data into training and testing sets
+set.seed(123)
+trainIndex <- createDataPartition(data_transformed$make, p = .8, list = FALSE, times = 1)
+trainData <- data_transformed[trainIndex,]
+testData  <- data_transformed[-trainIndex,]
+
+# One-hot encode the 'make' column in both training and testing sets
+make_train <- model.matrix(~ make - 1, data = trainData)
+make_test <- model.matrix(~ make - 1, data = testData)
+trainData <- cbind(trainData[ , !(names(trainData) %in% 'make')], make_train)
+testData <- cbind(testData[ , !(names(testData) %in% 'make')], make_test)
+
+# Adjust column names to remove spaces
+colnames(trainData) <- make.names(colnames(trainData))
+colnames(testData) <- make.names(colnames(testData))
+output_cols <- colnames(make_train)
+
+# Create the formula for the neural network
+input_cols <- names(trainData)[!names(trainData) %in% output_cols]
+formula <- as.formula(paste(paste(output_cols, collapse=" + "), "~", paste(input_cols, collapse = " + ")))
+
+# Train the neural network
+nn <- neuralnet(formula, data=trainData, hidden=c(5,3), linear.output=FALSE)
+
+# Make predictions
+predictions <- compute(nn, testData[,input_cols])$net.result
+
+# Determine the predicted class (one-hot to factor levels)
+predicted_classes <- apply(predictions, 1, function(x) output_cols[which.max(x)])
+predicted_classes <- factor(predicted_classes, levels=output_cols)
+
+# Evaluate the model
+actual_classes <- apply(testData[, output_cols], 1, function(x) output_cols[which.max(x)])
+actual_classes <- factor(actual_classes, levels=output_cols)
+
+confusionMatrix(predicted_classes, actual_classes)
+
+```
+

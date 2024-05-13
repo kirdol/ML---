@@ -1,0 +1,124 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
+```{r Loading R packages NN, echo= FALSE, message = FALSE, output = FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+```{python Loading python Librairies NN, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
+```
+
+# Test
+
+
+```{python}
+import pandas as pd
+import numpy as np
+from pyprojroot.here import here
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Input
+from tensorflow.keras.utils import to_categorical
+
+# Load the data
+data = pd.read_csv(here("data/data_cleaned.csv"))
+
+# Display the structure of the data
+print(data.info())
+
+# Display the first few rows of the data
+print(data.head())
+
+# Identify categorical and numerical columns
+categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+numerical_cols = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
+
+# Remove the target column 'make' from the features list
+if 'make' in categorical_cols:
+    categorical_cols.remove('make')
+if 'make' in numerical_cols:
+    numerical_cols.remove('make')
+
+print(f"Categorical columns: {categorical_cols}")
+print(f"Numerical columns: {numerical_cols}")
+
+# Define the preprocessing steps for numerical and categorical columns
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), numerical_cols),
+        ('cat', OneHotEncoder(sparse_output=False), categorical_cols)  # Set sparse_output to False
+    ])
+
+# Split data into features and target
+X = data.drop('make', axis=1)
+y = data['make']
+
+# Apply preprocessing and split data into training and testing sets
+X_preprocessed = preprocessor.fit_transform(X)
+
+# Encode the target variable
+y_encoded = pd.get_dummies(y).values
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y_encoded, test_size=0.2, random_state=123)
+
+# Define the neural network model
+model = Sequential([
+    Input(shape=(X_train.shape[1],)),
+    Dense(128, activation='relu'),
+    Dropout(0.2),
+    Dense(64, activation='relu'),
+    Dropout(0.2),
+    Dense(y_train.shape[1], activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+history = model.fit(X_train, y_train, epochs=500, batch_size=32, validation_split=0.2)
+
+# Evaluate the model
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f'Test accuracy: {accuracy}')
+
+# Make predictions
+predictions = np.argmax(model.predict(X_test), axis=1)
+
+# Print predictions
+print(predictions)
+
+# Plot the accuracy and loss
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+
+# Plot training & validation accuracy values
+axs[0].plot(history.history['accuracy'])
+axs[0].plot(history.history['val_accuracy'])
+axs[0].set_title('Model accuracy')
+axs[0].set_ylabel('Accuracy')
+axs[0].set_xlabel('Epoch')
+axs[0].legend(['Train', 'Validation'], loc='upper left')
+
+# Plot training & validation loss values
+axs[1].plot(history.history['loss'])
+axs[1].plot(history.history['val_loss'])
+axs[1].set_title('Model loss')
+axs[1].set_ylabel('Loss')
+axs[1].set_xlabel('Epoch')
+axs[1].legend(['Train', 'Validation'], loc='upper left')
+
+plt.tight_layout()
+plt.show()
+```
+

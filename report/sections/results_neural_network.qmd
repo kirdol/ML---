@@ -4,8 +4,6 @@ format:
     code-fold: true
 ---
 
-# Neural Network
-
 ```{r Loading R packages NN, echo= FALSE, message = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
 ```
@@ -17,129 +15,110 @@ from pyprojroot.here import here
 open(here("scripts/setup.py"))
 ```
 
-First, we load the necessary packages and the dataset. We then prepare the data by handling missing values and encoding categorical variables. We select a subset of features for modeling and split the data into training and testing sets. Finally, we fit a Neural Network model and evaluate its performance on the train and test sets.
+# Neural Network
 
-We can first load the necessary modules for the Decision Tree model. We also import our dataset from a csv file.
 
-```{python, output = FALSE}
-import sys
-from pyprojroot.here import here
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.utils import to_categorical
-import matplotlib.pyplot as plt
+```{python}
 import pandas as pd
+import numpy as np
+from pyprojroot.here import here
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Input
+from tensorflow.keras.utils import to_categorical
 
-# Load the dataset
-file_path = here("data/Vehicle MPG - 1984 to 2023.csv")
-data = pd.read_csv(file_path)
-```
+# Load the data
+data = pd.read_csv(here("data/data_cleaned.csv"))
 
-We can then concentrate on dealing with missing values and encoding categorical variables. We will select the necessary columns for our model and split the data into training and testing sets.
+# Display the structure of the data
+print(data.info())
 
-```{python, output = FALSE}
-# Drop the 'Model' column
-data_dropped = data.drop('Model', axis=1)
+# Display the first few rows of the data
+print(data.head())
 
-# Check for missing values
-missing_data_summary = data_dropped.isnull().sum()
+# Identify categorical and numerical columns
+categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+numerical_cols = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
 
-# Determine the types of each column to identify categorical vs numeric columns
-column_types = data_dropped.dtypes
+# Remove the target column 'make' from the features list
+if 'make' in categorical_cols:
+    categorical_cols.remove('make')
+if 'make' in numerical_cols:
+    numerical_cols.remove('make')
 
-missing_data_summary, column_types
-```
+print(f"Categorical columns: {categorical_cols}")
+print(f"Numerical columns: {numerical_cols}")
 
-```{python, output = FALSE}
-# Drop the specified columns
-data_cleaned = data_dropped.drop(['Fuel Type 2', 'Engine Description'], axis=1)
+# Define the preprocessing steps for numerical and categorical columns
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), numerical_cols),
+        ('cat', OneHotEncoder(sparse_output=False), categorical_cols)  # Set sparse_output to False
+    ])
 
-# Fill missing values for 'Engine Cylinders' and 'Engine Displacement' with their median
-# since these are numerical and median is a robust measure for central tendency
-for column in ['Engine Cylinders', 'Engine Displacement']:
-    median_value = data_cleaned[column].median()
-    data_cleaned[column].fillna(median_value, inplace=True)
+# Split data into features and target
+X = data.drop('make', axis=1)
+y = data['make']
 
-# Drop rows with any remaining missing values (mostly in 'Drive' and 'Transmission' columns)
-data_cleaned.dropna(inplace=True)
+# Apply preprocessing and split data into training and testing sets
+X_preprocessed = preprocessor.fit_transform(X)
 
-# Check again for missing values to ensure clean dataset
-final_missing_data_summary = data_cleaned.isnull().sum()
-final_missing_data_summary
-```
+# Encode the target variable
+y_encoded = pd.get_dummies(y).values
 
-```{python, output = FALSE}
-# Select categorical columns for one-hot encoding
-categorical_columns = ['Make', 'Fuel Type 1', 'Drive', 'Transmission', 'Vehicle Class']
-one_hot_encoder = OneHotEncoder()
-encoded_categorical = one_hot_encoder.fit_transform(data_cleaned[categorical_columns]).toarray()
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y_encoded, test_size=0.2, random_state=123)
 
-# Create a DataFrame from the encoded categorical data
-encoded_categorical_df = pd.DataFrame(encoded_categorical, columns=one_hot_encoder.get_feature_names_out(categorical_columns))
-encoded_categorical_df.index = data_cleaned.index  # To align indices
-
-# Carefully select and verify the numeric columns
-numeric_columns = [col for col in data_cleaned.columns if col not in categorical_columns and data_cleaned[col].dtype in ['int64', 'float64']]
-scaler = StandardScaler()
-normalized_numeric = scaler.fit_transform(data_cleaned[numeric_columns])
-
-# Create a DataFrame from the normalized numeric data
-normalized_numeric_df = pd.DataFrame(normalized_numeric, columns=numeric_columns)
-normalized_numeric_df.index = data_cleaned.index  # To align indices
-
-# Combine the encoded and normalized data
-final_preprocessed_data = pd.concat([encoded_categorical_df, normalized_numeric_df], axis=1)
-final_preprocessed_data.head()
-```
-We then split our data into training and testing sets using an 80-20 split ratio. We build a neural network model with two hidden layers and compile it with the Adam optimizer and categorical cross-entropy loss function. Here is a summary of the model architecture:
-
-```{python, warning = FALSE}
-# Prepare the target data (y) and feature data (X)
-X = final_preprocessed_data.drop([col for col in final_preprocessed_data.columns if 'Make_' in col], axis=1)
-y = final_preprocessed_data[[col for col in final_preprocessed_data.columns if 'Make_' in col]]
-
-# Split data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Build the neural network model
+# Define the neural network model
 model = Sequential([
-    Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
+    Input(shape=(X_train.shape[1],)),
+    Dense(128, activation='relu'),
+    Dropout(0.2),
     Dense(64, activation='relu'),
+    Dropout(0.2),
     Dense(y_train.shape[1], activation='softmax')
 ])
 
 # Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Overview of the model
-model.summary()
-```
-We can now train the model. We fit the model to the training data for 10 epochs with a batch size of 32.
-
-```{python, output=FALSE}
 # Train the model
-history = model.fit(X_train, y_train, epochs=10, validation_split=0.2, batch_size=32)
-```
-We can now plot the training and validation accuracy and loss values to visualize the model's performance.
+history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
 
-```{python}
+# Evaluate the model
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f'Test accuracy: {accuracy}')
+
+# Make predictions
+predictions = np.argmax(model.predict(X_test), axis=1)
+
+# Print predictions
+print(predictions)
+
+# Plot the accuracy and loss
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+
 # Plot training & validation accuracy values
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('Model Accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
-plt.show()
+axs[0].plot(history.history['accuracy'])
+axs[0].plot(history.history['val_accuracy'])
+axs[0].set_title('Model accuracy')
+axs[0].set_ylabel('Accuracy')
+axs[0].set_xlabel('Epoch')
+axs[0].legend(['Train', 'Validation'], loc='upper left')
 
 # Plot training & validation loss values
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Model Loss')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
+axs[1].plot(history.history['loss'])
+axs[1].plot(history.history['val_loss'])
+axs[1].set_title('Model loss')
+axs[1].set_ylabel('Loss')
+axs[1].set_xlabel('Epoch')
+axs[1].legend(['Train', 'Validation'], loc='upper left')
+
+plt.tight_layout()
 plt.show()
 ```
+
