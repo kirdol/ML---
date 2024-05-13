@@ -1,0 +1,87 @@
+EDA: 
+
+```{r Packages, echo = FALSE, message = FALSE}
+
+source(here::here("scripts","setup.R"))
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"), na = c(""))
+
+```
+
+
+
+```{r}
+library(DataExplorer)
+summary(data)
+plot_histogram(data)
+plot_correlation(data) #drop time charge EV 120V
+create_report(data)
+#nb cars per brand
+```
+
+
+**number of models per make**
+```{r}
+
+#Number of occurences/model per make 
+nb_model_per_make <- data %>%
+  group_by(Make, Model) %>%
+  summarise(Number = n(), .groups = 'drop') %>%
+  group_by(Make) %>%
+  summarise(Models_Per_Make = n(), .groups = 'drop') %>%
+  arrange(desc(Models_Per_Make))
+
+#table
+datatable(nb_model_per_make,
+          rownames = FALSE,
+          options = list(pageLength = 10,
+                         class = "hover",
+                         searchHighlight = TRUE))
+
+# Reordering the Make variable within the plotting code to make it ordered by Models_Per_Make descending
+nb_model_per_make$Make <- factor(nb_model_per_make$Make, levels = nb_model_per_make$Make[order(-nb_model_per_make$Models_Per_Make)])
+
+# Bar Plot
+ggplot(nb_model_per_make, aes(x = Models_Per_Make, y = Make, fill = Make)) +
+  geom_bar(stat = "identity", color = "black", show.legend = FALSE) +
+  labs(title = "Bar Plot of Models per Make",
+       x = "Make",
+       y = "Number of Models") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x labels for better visibility
+
+
+```
+
+
+**Correlation matrix for numerical features**
+```{r,plot.new(); dev.off()}
+library(corrplot)
+
+#select only numerical columns, drop Time.to.Charge.EV..hours.at.120v. because NAs
+data_corrplot <- data %>%
+  select_if(is.numeric) %>%
+  select(-c(Time.to.Charge.EV..hours.at.120v.))
+
+
+#correlation transformation for plot
+cor_matrix <- cor(data_corrplot, use = "complete.obs")
+print(cor_matrix)
+kable(cor_matrix)
+cor_melted <- melt(cor_matrix)
+
+
+#plot
+ggplot(data = cor_melted, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
+                       name="Pearson\nCorrelation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 8, hjust = 1),
+        axis.text.y = element_text(size = 8)) +
+  coord_fixed() +
+  labs(x = '', y = '', title = 'Correlation Matrix Heatmap')
+
+```
+
+
