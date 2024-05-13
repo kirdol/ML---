@@ -32,7 +32,7 @@ from pathlib import Path
 from pyprojroot.here import here
 
 # Load the dataset
-file_path = here("data/Vehicle MPG - 1984 to 2023.csv")
+file_path = here("data/data_cleaned.csv")
 data = pd.read_csv(file_path)
 ```
 
@@ -40,20 +40,19 @@ Now, that we have loaded the data, we can prepare it by handling missing values 
 
 ```{python Preparing the data}
 # Handle missing values: dropping rows where specific required columns are missing
-required_columns = ['Engine Displacement', 'Drive', 'Transmission', 'Vehicle Class', 
-                    'Fuel Type 1', 'Model Year']
+required_columns = ['make', 'model_year', 'vehicle_class', 'drive', 'engine_cylinders', 'engine_displacement', 'transmission', 'fuel_type_1', 'city_mpg_fuel_type_1', 'highway_mpg_fuel_type_1', 'fuel_type_2', 'city_mpg_fuel_type_2', 'highway_mpg_fuel_type_2', 'range_ev_city_fuel_type_1', 'range_ev_highway_fuel_type_1', 'range_ev_city_fuel_type_2', 'range_ev_highway_fuel_type_2', 'charge_time_240v']
 data_clean = data.dropna(subset=required_columns)
 
 # Encode categorical variables
-categorical_features = ['Fuel Type 1', 'Drive', 'Transmission', 'Vehicle Class']
+categorical_features = ['vehicle_class', 'drive', 'engine_cylinders', 'engine_displacement', 'transmission', 'fuel_type_1', 'fuel_type_2']
 data_clean = pd.get_dummies(data_clean, columns=categorical_features, drop_first=True)
 
 # Label encoding for 'Make' column
 le = LabelEncoder()
-data_clean['Make'] = le.fit_transform(data_clean['Make'])
+data_clean['make'] = le.fit_transform(data_clean['make'])
 
 # Selecting a subset of features for modeling
-features = data_clean[['Engine Displacement', 'Model Year']]
+features = data_clean[['make', 'model_year', 'vehicle_class', 'drive', 'engine_cylinders', 'engine_displacement', 'transmission', 'fuel_type_1', 'city_mpg_fuel_type_1', 'highway_mpg_fuel_type_1', 'fuel_type_2', 'city_mpg_fuel_type_2', 'highway_mpg_fuel_type_2', 'range_ev_city_fuel_type_1', 'range_ev_highway_fuel_type_1', 'range_ev_city_fuel_type_2', 'range_ev_highway_fuel_type_2', 'charge_time_240v']]
 features = pd.concat([features, data_clean.filter(like='Fuel Type 1_'), 
                       data_clean.filter(like='Drive_'), data_clean.filter(like='Transmission_'), 
                       data_clean.filter(like='Vehicle Class_')], axis=1)
