@@ -14,7 +14,9 @@ data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
 
 In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities accross instances and combine features in fewer dimensions.
 
-## PCA
+# Principal Component Analysis
+
+## Biplot
 
 ```{r, message = F, warning = F}
 # Assuming your data frame is named data_cleaned
@@ -35,11 +37,13 @@ fviz_pca_biplot(pca_results,
 )
 ```
 
-The biplot shows several information. - The colored dots represent the numerical observations of the dataset. - The cos2 gradient shows the representation of the feature by the dimension, so the higher the cos2 (tending to red), the better the representation of the observation in the dimension. - The arrows represent the features in the form of the circle of correlation. Here, we have 2 dimensions which represent almost 49% of the observations. - Looking at the arrows, it shows that most of variables are stongly linked to dimension 2. We can also see that the arrows that go in opposite directions (such as fuel_type_1 and highway_mpg_fuel_type_1) are negatively correlated. From another view, fuel_type_1 and fuel_type_2 are uncorrelated.
+The biplot shows several information. First, the two dimensions epxlain almost 50% of the total variance of the data. Then, each point represents an observation and its color represent the quality of the representation of the variables. Looking at the cos2 gradient, the redder the dot, the better the quality of representation. Then, the arrows (or vectors) represent the features. The vectors pointing in similar directions represent some positive correlations, whereas the ones going opposite represent negative correlations. Orthogonal variables are not correlated.
+
+Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g. fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g. fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 seem to be lin
 
 ## Screeplot
 
-```{r}
+```{r, message = F, warning = F}
 # Generating the scree plot from PCA results
 fviz_eig(pca_results, 
          addlabels = TRUE,  # Adds labels to the plot indicating the percentage of variance
@@ -51,9 +55,9 @@ fviz_eig(pca_results,
 
 Taking the screeplot into account, 6 dimensions are needed to reach at least 75%, meaning the features might be relatively independent. It is alredy shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. To check further the correlation, we can use a heatmap.
 
-## Heatmap
+## Heatmap ???
 
-```{r}
+```{r, message = F, warning = F}
 library(reshape2)
 
 # Assuming data_prepared has been previously defined and standardized
@@ -77,4 +81,64 @@ ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
        title = 'Correlations Heatmap of Variables')  # Adjust the title and labels as needed
 ```
 
-This heatmap indicates the correlation between the variables. It shows that the correlations aren't that strong between variables, expect for a few such as mighway_mpg_fuel and city_mpg_fuel.
+This heatmap indicates the correlation between the variables. 
+
+# Clustering
+
+```{r, warning = F, message = F}
+# Extract PCA coordinates for clustering
+pca_coords <- pca_results$ind$coord
+
+# Using the Elbow Method to determine the number of clusters
+set.seed(123)  # Ensure reproducibility
+wss <- sapply(1:15, function(k) {
+  kmeans(pca_coords, centers = k, nstart = 25)$tot.withinss
+})
+plot(1:15, wss, type = "b", pch = 20, frame = FALSE, 
+     xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
+
+# Assuming the optimal number of clusters from the plot is, e.g., 2
+k <- 4
+
+# Perform k-means clustering using PCA-transformed data
+set.seed(123)  # For reproducibility
+km_result <- kmeans(pca_coords, centers = k, nstart = 25)
+
+# Add cluster results and observation names to the PCA coordinates data frame
+pca_coords_df <- as.data.frame(pca_coords)
+pca_coords_df$cluster <- factor(km_result$cluster)
+pca_coords_df$name <- rownames(data_cleaned)  # Assuming rownames are the observation names
+
+# Visualize the clusters using PCA and label points with observation names
+ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = cluster, label = name)) +
+  geom_point() +
+  geom_text(check_overlap = TRUE, vjust = 1.5, size = 3) +  # Adjust size and vjust as needed
+  labs(title = "Cluster Plot", x = "Dim1 (20%)", y = "Dim2 (20%)") +
+  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen", "lightgrey")) +  # Adjust colors as needed
+  theme_minimal() +
+  theme(legend.position = "right")  # Adjust legend position if necessary
+
+
+## BIPLOT + CLUSTER
+# Calculate cluster centers for labeling
+cluster_centers <- aggregate(pca_coords_df[, 1:2], by = list(cluster = pca_coords_df$cluster), FUN = mean)
+
+# Visualize the PCA biplot with cluster annotations
+fviz_pca_biplot(pca_results,
+                geom.ind = "point",  # To show data points
+                geom.var = c("arrow", "text"),  # To show variable vectors and labels
+                col.ind = factor(km_result$cluster),  # Color by cluster (as a factor)
+                palette = c("lightblue", "lightpink", "lightgreen", "lightgrey"),  # Adjust colors as needed
+                addEllipses = TRUE,  # Add concentration ellipses
+                ellipse.level = 0.95,  # Confidence level for ellipses
+                repel = TRUE,  # Avoid text overlapping
+                legend.title = "Cluster") +
+  geom_text(data = cluster_centers, aes(x = Dim.1, y = Dim.2, label = paste("Cluster", cluster)), 
+            color = "black", size = 5, vjust = -1) +
+  labs(title = "PCA - Biplot",
+       x = paste("Dim1 (", round(pca_results$eig[1,2], 1), "%)", sep = ""),
+       y = paste("Dim2 (", round(pca_results$eig[2,2], 1), "%)", sep = ""))
+
+```
+
+Using a clustering methods allow us to see the number of clusters that share similarities. Here, the elbow indicates that the optimal number of clusters should be 4. When comparing it with the biplot (last graph), we clearly notice that cluster 1 refers to the characteristics (range and mpg) for fuel 1 and same for fuel 4. Cluster 2 and 3 are packed towards the center and it is harder to see which features are similar, which is explainable with the fact that we would need around 6 dimensions to explain the total variance. We can suppose that cluster 2 refers to the class and the vehicle transmission, whereas cluster 3 focuses on engines and cylinders.
