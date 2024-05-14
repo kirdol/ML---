@@ -251,9 +251,9 @@ data_cleaned <- data_cleaning4 %>%
          fuel_type_2 = Fuel.Type.2,
          city_mpg_fuel_type_2 = City.MPG..Fuel.Type.2.,
          highway_mpg_fuel_type_2 = Highway.MPG..Fuel.Type.2.,
-         range_ev_city_fuel_type_1 = City.MPG..Fuel.Type.1.,
+         range_ev_city_fuel_type_1 = City.Range..for.EV...Fuel.Type.1.,
          range_ev_highway_fuel_type_1 = Hwy.Range..for.EV...Fuel.Type.1.,
-         range_ev_city_fuel_type_2 = City.MPG..Fuel.Type.2.,
+         range_ev_city_fuel_type_2 = City.Range..for.EV...Fuel.Type.2.,
          range_ev_highway_fuel_type_2 = Hwy.Range..for.EV...Fuel.Type.2.,
          charge_time_240v = Time.to.Charge.EV..hours.at.240v.)
 

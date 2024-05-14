@@ -1,0 +1,79 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+```{r Packages and data loading, echo = FALSE, message = FALSE, warning=FALSE}
+source(here::here("scripts","setup.R"))
+# data <- read.csv(here("data", "Vehicle_MPG_1984_to_2023_renamed.csv"), na = c(""))
+#a voir pk fonctionne pas
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"), na = c(""))
+```
+
+```{r}
+data_initial_underscores <- data %>%
+  select(ID,
+        make = Make,
+         model_year = Model.Year,
+         model = Model,
+         estimated_Annual_Petrolum_Consumption_Barrels = Estimated.Annual.Petrolum.Consumption..Barrels.,
+         vehicle_class = Vehicle.Class,
+         drive = Drive,
+         engine_cylinders = Engine.Cylinders,
+         engine_displacement = Engine.Displacement,
+         transmission = Transmission,
+         fuel_type_1 = Fuel.Type.1,
+         highway_mpg_fuel_type_1 = Highway.MPG..Fuel.Type.1.,
+         fuel_type_2 = Fuel.Type.2,
+         highway_mpg_fuel_type_2 = Highway.MPG..Fuel.Type.2.,
+         range_ev_city_fuel_type_1 = City.Range..for.EV...Fuel.Type.1.,
+         range_ev_highway_fuel_type_1 = Hwy.Range..for.EV...Fuel.Type.1.,
+         range_ev_city_fuel_type_2 = City.Range..for.EV...Fuel.Type.2.,
+         range_ev_highway_fuel_type_2 = Hwy.Range..for.EV...Fuel.Type.2.,
+         charge_time_240v = Time.to.Charge.EV..hours.at.240v.,
+         combined_MPG_Fuel_Type_1=Combined.MPG..Fuel.Type.1.,
+         combined_MPG_Fuel_Type_2=Combined.MPG..Fuel.Type.2.,
+         engine_Description=Engine.Description,
+         time_to_Charge_EV_hours_at_120v_=Time.to.Charge.EV..hours.at.120v.,
+         range_for_EV=Range..for.EV.,
+        City_MPG_Fuel_Type_1=City.MPG..Fuel.Type.1.,
+        City_MPG_Fuel_Type_2=City.MPG..Fuel.Type.2.
+         )
+
+data_initial_underscores <- data_initial_underscores %>%
+    select(ID,
+model_year,
+make,
+model,
+estimated_Annual_Petrolum_Consumption_Barrels,
+fuel_type_1,
+City_MPG_Fuel_Type_1,
+highway_mpg_fuel_type_1,
+combined_MPG_Fuel_Type_1,
+fuel_type_2,
+City_MPG_Fuel_Type_2,
+highway_mpg_fuel_type_2,
+combined_MPG_Fuel_Type_2,
+engine_cylinders,
+engine_displacement,
+drive,
+engine_Description,
+transmission,
+vehicle_class,
+time_to_Charge_EV_hours_at_120v_,
+charge_time_240v,
+range_for_EV,
+range_ev_city_fuel_type_1,
+range_ev_city_fuel_type_2,
+range_ev_highway_fuel_type_1,
+range_ev_highway_fuel_type_2
+)
+                                  
+
+
+# Save the cleaned dataset
+write_csv(data_initial_underscores, here("data","data_initial_underscores.csv"))
+
+
+```
