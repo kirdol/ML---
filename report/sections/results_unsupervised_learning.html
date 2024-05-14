@@ -102,16 +102,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities accross instances and combine features in fewer dimensions.</p>
 <section id="principal-component-analysis" class="level1">
 <h1>Principal Component Analysis</h1>
-<section id="biplot" class="level2">
-<h2 class="anchored" data-anchor-id="biplot">Biplot</h2>
+<section id="data-standardization" class="level2">
+<h2 class="anchored" data-anchor-id="data-standardization">Data Standardization</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_prepared <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), as.factor)) <span class="sc">%&gt;%</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.factor), as.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>()  <span class="co"># Standardizes numeric data including converted factors</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pca_results <span class="ot">&lt;-</span> <span class="fu">PCA</span>(data_prepared, <span class="at">graph =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pca_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>()  <span class="co"># Standardizes numeric data including converted factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="heatmap" class="level2">
+<h2 class="anchored" data-anchor-id="heatmap">Heatmap</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data_prepared)  <span class="co"># Calculate correlation matrix</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Melt the correlation matrix for ggplot2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>melted_cor_matrix <span class="ot">&lt;-</span> <span class="fu">melt</span>(cor_matrix)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Heatmap with all correlation coefficients displayed</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(melted_cor_matrix, <span class="fu">aes</span>(Var1, Var2, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span>  <span class="co"># Add white lines to distinguish the tiles</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.2f"</span>, value)), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span>  <span class="co"># Always display labels</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"lightblue"</span>, <span class="at">high =</span> <span class="st">"darkblue"</span>, <span class="at">mid =</span> <span class="st">"blue"</span>, <span class="at">midpoint =</span> <span class="dv">0</span>, <span class="at">limit =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="st">"Spearman</span><span class="sc">\n</span><span class="st">Correlation"</span>) <span class="sc">+</span>  <span class="co"># Use gradient2 for a diverging color scheme</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),  <span class="co"># Center the title</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Variables'</span>, <span class="at">y =</span> <span class="st">'Variables'</span>, </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">'Correlations Heatmap of Variables'</span>)  <span class="co"># Adjust the title and labels as needed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We used this heatmap to check the correlation between the variables. As we can see, some variables seem to be strongly correlated, but most of them don’t seem to be too strongly correlated, whether positively or negatively. Let’s now look into the link between the features using a biplot, which combines the observations as well as the features.</p>
+</section>
+<section id="biplot" class="level2">
+<h2 class="anchored" data-anchor-id="biplot">Biplot</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pca_results <span class="ot">&lt;-</span> <span class="fu">PCA</span>(data_prepared, <span class="at">graph =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pca_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -120,125 +151,95 @@ PCA(X = data_prepared, graph = FALSE)
 
 Eigenvalues
                        Dim.1   Dim.2   Dim.3   Dim.4   Dim.5   Dim.6   Dim.7
-Variance               4.844   3.900   2.106   1.222   0.993   0.866   0.855
-% of var.             26.913  21.666  11.700   6.790   5.519   4.811   4.750
-Cumulative % of var.  26.913  48.579  60.279  67.069  72.588  77.399  82.149
+Variance               4.616   3.735   2.126   1.292   1.019   0.988   0.856
+% of var.             25.644  20.748  11.809   7.177   5.660   5.490   4.753
+Cumulative % of var.  25.644  46.392  58.201  65.378  71.038  76.527  81.280
                        Dim.8   Dim.9  Dim.10  Dim.11  Dim.12  Dim.13  Dim.14
-Variance               0.827   0.725   0.539   0.460   0.309   0.179   0.131
-% of var.              4.595   4.028   2.996   2.557   1.718   0.992   0.729
-Cumulative % of var.  86.744  90.773  93.769  96.326  98.044  99.036  99.765
+Variance               0.827   0.765   0.549   0.510   0.349   0.193   0.137
+% of var.              4.594   4.250   3.047   2.834   1.941   1.071   0.759
+Cumulative % of var.  85.875  90.124  93.172  96.005  97.946  99.017  99.777
                       Dim.15  Dim.16  Dim.17  Dim.18
-Variance               0.034   0.008   0.000   0.000
-% of var.              0.188   0.047   0.000   0.000
-Cumulative % of var.  99.953 100.000 100.000 100.000
+Variance               0.027   0.008   0.003   0.002
+% of var.              0.150   0.045   0.018   0.011
+Cumulative % of var.  99.926  99.971  99.989 100.000
 
 Individuals (the 10 first)
                                  Dist    Dim.1    ctr   cos2    Dim.2    ctr
-1                            |  3.335 | -1.044  0.001  0.098 |  0.068  0.000
-2                            |  3.410 | -1.208  0.001  0.125 |  0.197  0.000
-3                            |  3.544 | -1.448  0.001  0.167 |  0.268  0.000
-4                            |  2.789 | -1.245  0.001  0.199 |  0.155  0.000
-5                            |  2.742 | -1.166  0.001  0.181 |  0.112  0.000
-6                            |  2.742 | -1.166  0.001  0.181 |  0.112  0.000
-7                            |  2.855 | -1.129  0.001  0.156 |  0.029  0.000
-8                            |  2.903 | -1.317  0.001  0.206 |  0.126  0.000
-9                            |  4.943 | -2.152  0.002  0.190 |  0.605  0.000
-10                           |  3.448 | -2.115  0.002  0.376 |  0.596  0.000
+1                            |  3.334 | -1.087  0.001  0.106 |  0.065  0.000
+2                            |  3.387 | -0.907  0.000  0.072 | -0.079  0.000
+3                            |  3.522 | -1.153  0.001  0.107 | -0.031  0.000
+4                            |  2.761 | -1.068  0.001  0.150 |  0.012  0.000
+5                            |  2.713 | -0.991  0.001  0.133 | -0.022  0.000
+6                            |  2.713 | -0.991  0.001  0.133 | -0.022  0.000
+7                            |  2.847 | -1.039  0.001  0.133 | -0.066  0.000
+8                            |  2.876 | -1.151  0.001  0.160 | -0.019  0.000
+9                            |  4.850 | -1.810  0.002  0.139 |  0.346  0.000
+10                           |  3.313 | -1.686  0.001  0.259 |  0.231  0.000
                                cos2    Dim.3    ctr   cos2  
-1                             0.000 | -0.285  0.000  0.007 |
-2                             0.003 |  2.415  0.007  0.502 |
-3                             0.006 |  2.351  0.006  0.440 |
-4                             0.003 |  0.439  0.000  0.025 |
-5                             0.002 |  0.407  0.000  0.022 |
-6                             0.002 |  0.407  0.000  0.022 |
-7                             0.000 |  0.239  0.000  0.007 |
-8                             0.002 |  0.285  0.000  0.010 |
-9                             0.015 | -0.393  0.000  0.006 |
-10                            0.030 |  1.207  0.002  0.123 |
+1                             0.000 |  0.018  0.000  0.000 |
+2                             0.001 |  2.589  0.007  0.584 |
+3                             0.000 |  2.603  0.008  0.546 |
+4                             0.000 |  0.658  0.000  0.057 |
+5                             0.000 |  0.609  0.000  0.050 |
+6                             0.000 |  0.609  0.000  0.050 |
+7                             0.001 |  0.490  0.000  0.030 |
+8                             0.000 |  0.546  0.000  0.036 |
+9                             0.005 | -0.005  0.000  0.000 |
+10                            0.005 |  1.551  0.003  0.219 |
 
 Variables (the 10 first)
                                 Dim.1    ctr   cos2    Dim.2    ctr   cos2  
-make                         |  0.129  0.345  0.017 | -0.135  0.469  0.018 |
-model_year                   |  0.375  2.900  0.141 | -0.003  0.000  0.000 |
-vehicle_class                | -0.176  0.643  0.031 |  0.098  0.244  0.010 |
-drive                        | -0.048  0.047  0.002 |  0.013  0.004  0.000 |
-engine_cylinders             |  0.007  0.001  0.000 |  0.000  0.000  0.000 |
-engine_displacement          |  0.025  0.013  0.001 | -0.017  0.007  0.000 |
-transmission                 | -0.494  5.028  0.244 |  0.110  0.310  0.012 |
-fuel_type_1                  | -0.391  3.149  0.153 |  0.247  1.568  0.061 |
-city_mpg_fuel_type_1         |  0.868 15.542  0.753 | -0.397  4.047  0.158 |
-highway_mpg_fuel_type_1      |  0.838 14.497  0.702 | -0.409  4.284  0.167 |
+make                         |  0.106  0.242  0.011 | -0.092  0.229  0.009 |
+model_year                   |  0.347  2.605  0.120 |  0.032  0.028  0.001 |
+vehicle_class                | -0.141  0.428  0.020 |  0.051  0.071  0.003 |
+drive                        | -0.038  0.031  0.001 |  0.003  0.000  0.000 |
+engine_cylinders             |  0.077  0.130  0.006 | -0.073  0.141  0.005 |
+engine_displacement          |  0.125  0.338  0.016 | -0.104  0.292  0.011 |
+transmission                 | -0.498  5.376  0.248 |  0.069  0.128  0.005 |
+fuel_type_1                  | -0.419  3.802  0.175 |  0.223  1.328  0.050 |
+city_mpg_fuel_type_1         |  0.837 15.173  0.700 | -0.308  2.532  0.095 |
+highway_mpg_fuel_type_1      |  0.800 13.860  0.640 | -0.313  2.630  0.098 |
                               Dim.3    ctr   cos2  
-make                         -0.445  9.407  0.198 |
-model_year                   -0.033  0.053  0.001 |
-vehicle_class                 0.431  8.813  0.186 |
-drive                         0.148  1.044  0.022 |
-engine_cylinders              0.772 28.267  0.595 |
-engine_displacement           0.877 36.535  0.769 |
-transmission                 -0.129  0.795  0.017 |
-fuel_type_1                  -0.282  3.771  0.079 |
-city_mpg_fuel_type_1         -0.116  0.634  0.013 |
-highway_mpg_fuel_type_1      -0.221  2.326  0.049 |</code></pre>
+make                         -0.472 10.475  0.223 |
+model_year                   -0.120  0.679  0.014 |
+vehicle_class                 0.474 10.568  0.225 |
+drive                         0.158  1.172  0.025 |
+engine_cylinders              0.755 26.797  0.570 |
+engine_displacement           0.851 34.040  0.724 |
+transmission                 -0.018  0.016  0.000 |
+fuel_type_1                  -0.170  1.358  0.029 |
+city_mpg_fuel_type_1         -0.242  2.753  0.059 |
+highway_mpg_fuel_type_1      -0.351  5.790  0.123 |</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_biplot</span>(pca_results,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.ind =</span> <span class="st">"point"</span>,  </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.var =</span> <span class="fu">c</span>(<span class="st">"arrow"</span>, <span class="st">"text"</span>), </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">col.ind =</span> <span class="st">"cos2"</span>,  </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">gradient.cols =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),  </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">repel =</span> <span class="cn">TRUE</span> </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>The biplot shows several information. First, the two dimensions epxlain almost 50% of the total variance of the data. Then, each point represents an observation and its color represent the quality of the representation of the variables. Looking at the cos2 gradient, the redder the dot, the better the quality of representation. Then, the arrows (or vectors) represent the features. The vectors pointing in similar directions represent some positive correlations, whereas the ones going opposite represent negative correlations. Orthogonal variables are not correlated.</p>
-<p>Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g.&nbsp;fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g.&nbsp;fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 seem to be lin</p>
-</section>
-<section id="screeplot" class="level2">
-<h2 class="anchored" data-anchor-id="screeplot">Screeplot</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use PCA results to generate the screeplot</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_eig</span>(pca_results, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">addlabels =</span> <span class="cn">TRUE</span>,  </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>),  </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">barfill =</span> <span class="st">"lightblue"</span>,  </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">barcolor =</span> <span class="st">"black"</span>,  </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">"Scree Plot of PCA"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Taking the screeplot into account, 6 dimensions are needed to reach at least 75%, meaning the features might be relatively independent. It is alredy shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. To check further the correlation, we can use a heatmap.</p>
-</section>
-<section id="heatmap" class="level2">
-<h2 class="anchored" data-anchor-id="heatmap">Heatmap ???</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming data_prepared has been previously defined and standardized</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data_prepared)  <span class="co"># Calculate correlation matrix</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Melt the correlation matrix for ggplot2</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>melted_cor_matrix <span class="ot">&lt;-</span> <span class="fu">melt</span>(cor_matrix)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Heatmap with all correlation coefficients displayed</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(melted_cor_matrix, <span class="fu">aes</span>(Var1, Var2, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span>  <span class="co"># Add white lines to distinguish the tiles</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.2f"</span>, value)), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span>  <span class="co"># Always display labels</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"lightblue"</span>, <span class="at">high =</span> <span class="st">"darkblue"</span>, <span class="at">mid =</span> <span class="st">"blue"</span>, <span class="at">midpoint =</span> <span class="dv">0</span>, <span class="at">limit =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="st">"Spearman</span><span class="sc">\n</span><span class="st">Correlation"</span>) <span class="sc">+</span>  <span class="co"># Use gradient2 for a diverging color scheme</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),  <span class="co"># Center the title</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>) <span class="sc">+</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Variables'</span>, <span class="at">y =</span> <span class="st">'Variables'</span>, </span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">'Correlations Heatmap of Variables'</span>)  <span class="co"># Adjust the title and labels as needed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_biplot</span>(pca_results,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.ind =</span> <span class="st">"point"</span>,  </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.var =</span> <span class="fu">c</span>(<span class="st">"arrow"</span>, <span class="st">"text"</span>), </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">col.ind =</span> <span class="st">"cos2"</span>,  </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">gradient.cols =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),  </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">repel =</span> <span class="cn">TRUE</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>This heatmap indicates the correlation between the variables.</p>
+<p>The biplot shows several information. First, the two dimensions epxlain almost 50% of the total variance of the data. Then, each point represents an observation and its color represent the quality of the representation of the variables. Looking at the cos2 gradient, the redder the dot, the better the quality of representation. Then, the arrows (or vectors) represent the features. The vectors pointing in similar directions represent some positive correlations, whereas the ones going opposite represent negative correlations. Orthogonal variables are not correlated.</p>
+<p>Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g.&nbsp;fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g.&nbsp;fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 is uncorrelated to fuel type 2, which makes sense.</p>
+</section>
+<section id="screeplot" class="level2">
+<h2 class="anchored" data-anchor-id="screeplot">Screeplot</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use PCA results to generate the screeplot</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_eig</span>(pca_results, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">addlabels =</span> <span class="cn">TRUE</span>,  </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>),  </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">barfill =</span> <span class="st">"lightblue"</span>,  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">barcolor =</span> <span class="st">"black"</span>,  </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">"Scree Plot of PCA"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Taking the screeplot into account, 7 dimensions are needed to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. As a result of the biplot, we will try to provide a clustering in order to potentially see the different clusters of features similarities.</p>
 </section>
 </section>
 <section id="clustering" class="level1">
@@ -246,69 +247,69 @@ highway_mpg_fuel_type_1      -0.221  2.326  0.049 |</code></pre>
 <section id="clusters" class="level2">
 <h2 class="anchored" data-anchor-id="clusters">Clusters</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract PCA coordinates for clustering</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pca_coords <span class="ot">&lt;-</span> pca_results<span class="sc">$</span>ind<span class="sc">$</span>coord</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the Elbow Method to determine the number of clusters</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>wss <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, <span class="cf">function</span>(k) {</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kmeans</span>(pca_coords, <span class="at">centers =</span> k, <span class="at">nstart =</span> <span class="dv">25</span>)<span class="sc">$</span>tot.withinss</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Elbow Plot</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, wss, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of clusters K"</span>, <span class="at">ylab =</span> <span class="st">"Total within-clusters sum of squares"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimal number of cluster according to Elbow</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract PCA coordinates for clustering</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pca_coords <span class="ot">&lt;-</span> pca_results<span class="sc">$</span>ind<span class="sc">$</span>coord</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>km_result <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(pca_coords, <span class="at">centers =</span> k, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add cluster results and observation names to the PCA coordinates data frame</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>pca_coords_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_coords)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>pca_coords_df<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="fu">factor</span>(km_result<span class="sc">$</span>cluster)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>pca_coords_df<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="fu">rownames</span>(data_cleaned) </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the clusters using PCA and label points with observation names</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pca_coords_df, <span class="fu">aes</span>(<span class="at">x =</span> Dim<span class="fl">.1</span>, <span class="at">y =</span> Dim<span class="fl">.2</span>, <span class="at">color =</span> cluster, <span class="at">label =</span> name)) <span class="sc">+</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">check_overlap =</span> <span class="cn">TRUE</span>, <span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>  </span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Cluster Plot"</span>, <span class="at">x =</span> <span class="st">"Dim1 (20%)"</span>, <span class="at">y =</span> <span class="st">"Dim2 (20%)"</span>) <span class="sc">+</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightpink"</span>, <span class="st">"lightgreen"</span>, <span class="st">"lightgrey"</span>)) <span class="sc">+</span>  </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the Elbow Method to determine the number of clusters</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>wss <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kmeans</span>(pca_coords, <span class="at">centers =</span> k, <span class="at">nstart =</span> <span class="dv">25</span>)<span class="sc">$</span>tot.withinss</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Elbow Plot</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, wss, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of clusters K"</span>, <span class="at">ylab =</span> <span class="st">"Total within-clusters sum of squares"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
+<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimal number of cluster according to Elbow</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>km_result <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(pca_coords, <span class="at">centers =</span> k, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add cluster results and observation names to the PCA coordinates data frame</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>pca_coords_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_coords)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>pca_coords_df<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="fu">factor</span>(km_result<span class="sc">$</span>cluster)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>pca_coords_df<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="fu">rownames</span>(data_cleaned) </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the clusters using PCA and label points with observation names</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pca_coords_df, <span class="fu">aes</span>(<span class="at">x =</span> Dim<span class="fl">.1</span>, <span class="at">y =</span> Dim<span class="fl">.2</span>, <span class="at">color =</span> cluster, <span class="at">label =</span> name)) <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">check_overlap =</span> <span class="cn">TRUE</span>, <span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>  </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Cluster Plot"</span>, <span class="at">x =</span> <span class="st">"Dim1 (20%)"</span>, <span class="at">y =</span> <span class="st">"Dim2 (20%)"</span>) <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightpink"</span>, <span class="st">"lightgreen"</span>, <span class="st">"lightgrey"</span>)) <span class="sc">+</span>  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 <section id="biplot-clusters" class="level2">
 <h2 class="anchored" data-anchor-id="biplot-clusters">Biplot &amp; Clusters</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Cluster Centers</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cluster_centers <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(pca_coords_df[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">by =</span> <span class="fu">list</span>(<span class="at">cluster =</span> pca_coords_df<span class="sc">$</span>cluster), <span class="at">FUN =</span> mean)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Biplot with clusters</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_biplot</span>(pca_results,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.ind =</span> <span class="st">"point"</span>, </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.var =</span> <span class="fu">c</span>(<span class="st">"arrow"</span>, <span class="st">"text"</span>),  </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">col.ind =</span> <span class="fu">factor</span>(km_result<span class="sc">$</span>cluster), </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightpink"</span>, <span class="st">"lightgreen"</span>, <span class="st">"lightgrey"</span>), </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">addEllipses =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">ellipse.level =</span> <span class="fl">0.95</span>, </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">repel =</span> <span class="cn">TRUE</span>,  </span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">legend.title =</span> <span class="st">"Cluster"</span>) <span class="sc">+</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> cluster_centers, <span class="fu">aes</span>(<span class="at">x =</span> Dim<span class="fl">.1</span>, <span class="at">y =</span> Dim<span class="fl">.2</span>, <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"Cluster"</span>, cluster)), </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PCA - Biplot"</span>,</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">paste</span>(<span class="st">"Dim1 ("</span>, <span class="fu">round</span>(pca_results<span class="sc">$</span>eig[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"%)"</span>, <span class="at">sep =</span> <span class="st">""</span>),</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">paste</span>(<span class="st">"Dim2 ("</span>, <span class="fu">round</span>(pca_results<span class="sc">$</span>eig[<span class="dv">2</span>,<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"%)"</span>, <span class="at">sep =</span> <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Cluster Centers</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cluster_centers <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(pca_coords_df[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">by =</span> <span class="fu">list</span>(<span class="at">cluster =</span> pca_coords_df<span class="sc">$</span>cluster), <span class="at">FUN =</span> mean)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Biplot with clusters</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_biplot</span>(pca_results,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.ind =</span> <span class="st">"point"</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom.var =</span> <span class="fu">c</span>(<span class="st">"arrow"</span>, <span class="st">"text"</span>),  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">col.ind =</span> <span class="fu">factor</span>(km_result<span class="sc">$</span>cluster), </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightpink"</span>, <span class="st">"lightgreen"</span>, <span class="st">"lightgrey"</span>), </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">addEllipses =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">ellipse.level =</span> <span class="fl">0.95</span>, </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">repel =</span> <span class="cn">TRUE</span>,  </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">legend.title =</span> <span class="st">"Cluster"</span>) <span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> cluster_centers, <span class="fu">aes</span>(<span class="at">x =</span> Dim<span class="fl">.1</span>, <span class="at">y =</span> Dim<span class="fl">.2</span>, <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"Cluster"</span>, cluster)), </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PCA - Biplot"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">paste</span>(<span class="st">"Dim1 ("</span>, <span class="fu">round</span>(pca_results<span class="sc">$</span>eig[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"%)"</span>, <span class="at">sep =</span> <span class="st">""</span>),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">paste</span>(<span class="st">"Dim2 ("</span>, <span class="fu">round</span>(pca_results<span class="sc">$</span>eig[<span class="dv">2</span>,<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"%)"</span>, <span class="at">sep =</span> <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="results_unsupervised_learning_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Using a clustering methods allow us to see the number of clusters that share similarities. Here, the elbow indicates that the optimal number of clusters should be 4. When comparing it with the biplot (last graph), we clearly notice that cluster 1 refers to the characteristics (range and mpg) for fuel 1 and same for fuel 4. Cluster 2 and 3 are packed towards the center and it is harder to see which features are similar, which is explainable with the fact that we would need around 6 dimensions to explain the total variance. We can suppose that cluster 2 refers to the class and the vehicle transmission, whereas cluster 3 focuses on engines and cylinders.</p>
