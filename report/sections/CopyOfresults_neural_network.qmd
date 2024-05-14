@@ -1,0 +1,314 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
+```{r Loading R packages NN, echo= FALSE, message = FALSE, output = FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+```{python Loading python Librairies NN, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
+import pandas as pd
+import numpy as np
+from pyprojroot.here import here
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Input
+from tensorflow.keras.utils import to_categorical
+from keras.optimizers import Adam
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+```
+
+# Neural Network
+
+In this section, we will build a neural network model to predict the make of a car based on the features at our disposal. We will preprocess the data, split it into training and testing sets, define the neural network architecture, compile the model, train it and evaluate its performance.
+
+## Preprocessing and splitting the data
+
+The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and separate these two types of columns. Separating numerical and categorical columns is an essential step in data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.
+
+
+```{python}
+# Load the data
+data = pd.read_csv(here("data/data_cleaned.csv"))
+
+# Identify categorical and numerical columns
+categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+numerical_cols = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
+
+# Remove the target column 'make' from the features list
+if 'make' in categorical_cols:
+    categorical_cols.remove('make')
+if 'make' in numerical_cols:
+    numerical_cols.remove('make')
+
+# Define the preprocessing steps for numerical and categorical columns
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), numerical_cols),
+        ('cat', OneHotEncoder(sparse_output=False), categorical_cols)])
+
+# Split data into features and target
+X = data.drop('make', axis=1)
+y = data['make']
+
+# Apply preprocessing
+X_preprocessed = preprocessor.fit_transform(X)
+
+# Encode the target variable
+y_encoded = pd.get_dummies(y).values
+```
+
+The data is split into two parts: training and testing. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.
+
+```{python}
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y_encoded, test_size=0.2, random_state=123)
+```
+
+### Building the neural network models and training them
+
+#### Base Neural Network
+We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. In the end, the output layer predicts the probability of each car manufacturer.
+
+```{python}
+# Define the neural network model
+model_no_dropout = Sequential([
+    Input(shape=(X_train.shape[1],)),
+    Dense(128, activation='relu'),
+    Dense(64, activation='relu'),
+    Dense(y_train.shape[1], activation='softmax')
+])
+
+# Compile the model
+model_no_dropout.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=5, batch_size=32, validation_split=0.2)
+
+# Evaluate the model
+loss_no_dropout, accuracy_no_dropout = model_no_dropout.evaluate(X_test, y_test)
+print(f'Test accuracy without Dropout: {accuracy_no_dropout}')
+
+# Make predictions
+predictions_no_dropout = np.argmax(model_no_dropout.predict(X_test), axis=1)
+
+# Print predictions
+print(predictions_no_dropout)
+```
+
+```{python, echo = FALSE}
+# Plot the accuracy and loss for the model without Dropout
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+
+# Plot training & validation accuracy values
+axs[0].plot(history_no_dropout.history['accuracy'])
+axs[0].plot(history_no_dropout.history['val_accuracy'])
+axs[0].set_title('Model accuracy without Dropout')
+axs[0].set_ylabel('Accuracy')
+axs[0].set_xlabel('Epoch')
+axs[0].legend(['Train', 'Validation'], loc='upper left')
+
+# Plot training & validation loss values
+axs[1].plot(history_no_dropout.history['loss'])
+axs[1].plot(history_no_dropout.history['val_loss'])
+axs[1].set_title('Model loss without Dropout')
+axs[1].set_ylabel('Loss')
+axs[1].set_xlabel('Epoch')
+axs[1].legend(['Train', 'Validation'], loc='upper left')
+
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo = FALSE}
+# Extract the final training and validation accuracy from the history_no_dropout
+final_training_accuracy = history_no_dropout.history['accuracy'][-1]
+final_validation_accuracy = history_no_dropout.history['val_accuracy'][-1]
+```
+
+We see that we have a case of overfitting. The model performs well on the training data but not as well on the testing data.
+
+```{python, echo = FALSE}
+# Print the accuracies with nice formatting
+print(f"Final Training Accuracy: {final_training_accuracy:.4f}")
+print(f"Final Validation Accuracy: {final_validation_accuracy:.4f}")
+print(f"Test Accuracy: {accuracy_no_dropout:.4f}")
+```
+
+Overall, the performance of the model is still good. However the quality can be inproved. To address this issue, we can introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model's performance later.
+
+#### Neural Network with Dropout
+
+Dropout layers randomly set a fraction of input units to zero during training, which helps prevent overfitting by forcing the model to learn more robust features. We will tune the dropout rate to find the optimal value that balances training and validation accuracy and that insure to reduce overfitting.
+
+```{python}
+# Split the data into training and validation sets
+X_train_split, X_val, y_train_split, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
+
+# Function to create and compile the model
+def create_model(dropout_rate=0.0):
+    model = Sequential([
+        Input(shape=(X_train.shape[1],)),
+        Dense(128, activation='relu'),
+        Dropout(dropout_rate),
+        Dense(64, activation='relu'),
+        Dropout(dropout_rate),
+        Dense(y_train.shape[1], activation='softmax')
+    ])
+    model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+```
+
+
+```{python}
+# Define the dropout rates to test
+dropout_rates = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
+
+# Initialize lists to store accuracies
+training_accuracies = []
+validation_accuracies = []
+test_accuracies = []
+
+# Iterate over the dropout rates
+for rate in dropout_rates:
+    print(f"Testing model with dropout rate: {rate}")
+    model = create_model(dropout_rate=rate)
+    
+    # Train the model and collect training accuracy
+    history = model.fit(X_train_split, y_train_split, epochs=5, batch_size=32, verbose=0)
+    
+    # Evaluate the model on the validation set
+    val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
+    
+    # Evaluate the model on the test set
+    test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+    
+    # Store the last epoch's training accuracy, validation accuracy, and test accuracy
+    training_accuracy = history.history['accuracy'][-1]
+    training_accuracies.append(training_accuracy)
+    validation_accuracies.append(val_accuracy)
+    test_accuracies.append(test_accuracy)
+    
+    # Print rounded accuracy values
+    print(f"Training accuracy: {round(training_accuracy, 2)}, Validation accuracy: {round(val_accuracy, 2)}, Test accuracy: {round(test_accuracy, 2)}")
+
+# Plot the accuracies
+plt.figure(figsize=(10, 6))
+plt.plot(dropout_rates, training_accuracies, label='Training Accuracy')
+plt.plot(dropout_rates, validation_accuracies, label='Validation Accuracy')
+plt.plot(dropout_rates, test_accuracies, label='Test Accuracy')
+plt.xlabel('Dropout Rate')
+plt.ylabel('Accuracy')
+plt.title('Accuracy vs Dropout Rate')
+plt.legend()
+plt.show()
+```
+
+
+We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate to train the final model with droopout layers.
+
+```{python}
+#| code-fold: false
+
+# Out best dropout rate used for the following model.
+dropout_rate_to_plot = 0.2
+```
+
+
+```{python, echo = FALSE}
+# Train the model with the specified dropout rate
+model = create_model(dropout_rate=dropout_rate_to_plot)
+
+# Train the model and collect training accuracy
+history = model.fit(X_train_split, y_train_split, epochs=5, batch_size=32, validation_data=(X_val, y_val), verbose=0)
+
+# Extract accuracy data
+training_accuracy = history.history['accuracy']
+validation_accuracy = history.history['val_accuracy']
+
+# Plot the accuracies
+epochs = range(1, len(training_accuracy) + 1)
+plt.figure(figsize=(10, 5))
+plt.plot(epochs, training_accuracy, 'b', label='Training accuracy')
+plt.plot(epochs, validation_accuracy, 'r', label='Validation accuracy')
+plt.title('Training and Validation Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+```
+
+```{python}
+# Helper function to calculate metrics from confusion matrix
+def calculate_metrics(cm):
+    # True Positive, False Positive, False Negative, True Negative
+    tp = cm[1, 1]
+    fp = cm[0, 1]
+    fn = cm[1, 0]
+    tn = cm[0, 0]
+    
+    sensitivity = tp / (tp + fn)  # True Positive Rate (Recall)
+    specificity = tn / (tn + fp)  # True Negative Rate
+    balanced_accuracy = (sensitivity + specificity) / 2
+    return sensitivity, specificity, balanced_accuracy
+
+# Define the dropout rate to use
+dropout_rate = 0.2
+
+# Train the model with the specified dropout rate
+print(f"Testing model with dropout rate: {dropout_rate}")
+model = create_model(dropout_rate=dropout_rate)
+
+# Train the model and collect training accuracy
+history = model.fit(X_train_split, y_train_split, epochs=5, batch_size=32, verbose=0, validation_data=(X_val, y_val))
+
+# Evaluate the model on the validation set
+val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
+
+# Evaluate the model on the test set
+test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+
+# Store the last epoch's training accuracy, validation accuracy, and test accuracy
+training_accuracy = history.history['accuracy'][-1]
+training_accuracies = [training_accuracy]
+validation_accuracies = [val_accuracy]
+test_accuracies = [test_accuracy]
+
+# Print rounded accuracy values
+print(f"Training accuracy: {round(training_accuracy, 2)}, Validation accuracy: {round(val_accuracy, 2)}, Test accuracy: {round(test_accuracy, 2)}")
+
+# Generate the confusion matrix and metrics
+y_pred = np.argmax(model.predict(X_test), axis=-1)
+y_true = np.argmax(y_test, axis=-1)
+
+cm = confusion_matrix(y_true, y_pred)
+
+# Convert confusion matrix to a DataFrame for better readability
+cm_df = pd.DataFrame(cm, index=[f'Actual {i}' for i in range(cm.shape[0])],
+                     columns=[f'Predicted {i}' for i in range(cm.shape[1])])
+
+# Print the confusion matrix as a table
+print(f'Confusion Matrix for Dropout Rate {dropout_rate}')
+print(cm_df)
+
+# Calculate and print sensitivity, specificity, and balanced accuracy
+sensitivity, specificity, balanced_accuracy = calculate_metrics(cm)
+print(f"Sensitivity: {sensitivity:.2f}, Specificity: {specificity:.2f}, Balanced Accuracy: {balanced_accuracy:.2f}")
+```
+
+
+
+
+
+The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.
+
