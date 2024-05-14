@@ -26,43 +26,44 @@ skim(data)
 The dataset that we are working with contains approx. 46'000 rows and 26 columns. We can see that most of our features are concerning the consumption of the cars. In addition, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will be handle these in the section "data cleaning".
 
 **Exploration of the distribution**
+
 Here are more details about the distribution of the numerical features.
-```{r, fig.height= 10, fig.width=10}
+
+```{r, fig.height= 5, fig.width=5}
 #  melt.data <- melt(data)
 # 
 #  ggplot(data = melt.data, aes(x = value)) + 
 # stat_density() + 
 # facet_wrap(~variable, scales = "free")
-
 plot_histogram(data)# Time.to.Charge.EV..hours.at.120v. not appearing because all observations = 0 
 ```
-```{r, cache=TRUE}
+
+We notice that most of our observations of our features are 0s because of the nature of the features. For instance, as most of our cars are not hybrids, they have a unique type of fuel and don't have any type 2, which results in a 0 in the concerned features. Also, some features are numerical discrete, as we can see on the plot of the column "Engine Cylinders".  
+
+**Outliers Detection**
+
+For each one of our numerical column, let's check thank to the boxplot the outliers per feature
+
+```{r, fig.height=10, fig.width=12}
 #tentative boxplots
 
-# data_long <- data %>%
-#   select_if(is.numeric) %>%
-#   pivot_longer(cols = c("ID",                                             
-#   "Model.Year",                                     
-#  "Estimated.Annual.Petrolum.Consumption..Barrels.",
-#  "City.MPG..Fuel.Type.1.",                         
-#  "Highway.MPG..Fuel.Type.1." ,                     
-#  "Combined.MPG..Fuel.Type.1.",                     
-#  "City.MPG..Fuel.Type.2." ,                        
-#  "Highway.MPG..Fuel.Type.2.",                      
-#  "Combined.MPG..Fuel.Type.2."   ,                  
-# "Time.to.Charge.EV..hours.at.120v." ,             
-#  "Time.to.Charge.EV..hours.at.240v." ,             
-# "Range..for.EV.",                                 
-# "City.Range..for.EV...Fuel.Type.1.",              
-# "City.Range..for.EV...Fuel.Type.2.",              
-# "Hwy.Range..for.EV...Fuel.Type.1." ,              
-# "Hwy.Range..for.EV...Fuel.Type.2." ), names_to = "variable", values_to = "value")
-# 
-# ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
-#   geom_boxplot() +
-#   facet_wrap(~ variable, scales = "free_y") +  # Each variable gets its own y-axis
-#   theme_minimal() +
-#   labs(title = "Boxplots of Variables with Different Scales", x = "", y = "Value")
+data_long <- data %>%
+  select_if(is.numeric) %>%
+  pivot_longer(cols = c("ID", "Model Year", "Estimated Annual Petrolum Consumption (Barrels)", 
+                        "City MPG (Fuel Type 1)", "Highway MPG (Fuel Type 1)", "Combined MPG (Fuel Type 1)", 
+                        "City MPG (Fuel Type 2)", "Highway MPG (Fuel Type 2)", "Combined MPG (Fuel Type 2)", 
+                        "Time to Charge EV (hours at 120v)", "Time to Charge EV (hours at 240v)", 
+                        "Range (for EV)", "City Range (for EV - Fuel Type 1)", "City Range (for EV - Fuel Type 2)", 
+                        "Hwy Range (for EV - Fuel Type 1)", "Hwy Range (for EV - Fuel Type 2)"), names_to = "variable", values_to = "value")
+
+ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
+  geom_boxplot(outlier.size = 0.5) +  # Make outlier points smaller
+  facet_wrap(~ variable, scales = "free_y") +  # Each variable gets its own y-axis
+  theme_minimal() +
+  theme(legend.position = "none",  # Hide the legend
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 0),strip.text = element_text(size = 7)) +  # Rotate x-axis labels
+  labs(title = "Boxplots of Variables with Different Scales", x = "", y = "Value")
+
 ```
 
 ```{r}
@@ -73,7 +74,11 @@ plot_histogram(data)# Time.to.Charge.EV..hours.at.120v. not appearing because al
 ```
 
 
+
 **number of models per make**
+
+Now let's check how many models per make we have in our dataset. In order to have a clear plot, we have decided to keep the top 20 brands among all the make on the graph. All the remaining makes are accessible on the table just below. 
+
 ```{r}
 
 #Number of occurences/model per make 
@@ -91,44 +96,69 @@ datatable(nb_model_per_make,
                          class = "hover",
                          searchHighlight = TRUE))
 
+
+# Option to limit to top 20 makes for better readability
+top_n_makes <- nb_model_per_make %>% top_n(20, Models_Per_Make)
+
 # Reordering the Make variable within the plotting code to make it ordered by Models_Per_Make descending
-nb_model_per_make$Make <- factor(nb_model_per_make$Make, levels = nb_model_per_make$Make[order(-nb_model_per_make$Models_Per_Make)])
-
-# Bar Plot
-ggplot(nb_model_per_make, aes(x = Models_Per_Make, y = Make, fill = Make)) +
-  geom_bar(stat = "identity", color = "black", show.legend = FALSE) +
-  labs(title = "Bar Plot of Models per Make",
-       x = "Make",
-       y = "Number of Models") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x labels for better visibility
-
+# nb_model_per_make$Make <- factor(nb_model_per_make$Make, levels = nb_model_per_make$Make[order(-nb_model_per_make$Models_Per_Make)])
 
 ```
 
+```{r}
+ggplot(top_n_makes, aes(x = reorder(Make, Models_Per_Make), y = Models_Per_Make)) +
+  geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
+  labs(title = "Models per Make (Top 20)",
+       x = "Make",
+       y = "Number of Models") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        axis.text.y = element_text(hjust = 1, size = 10),
+        plot.title = element_text(size = 14)) +
+  coord_flip()  # Flip coordinates for better readability
+
+```
+
+Therefore, we can see that Mercendes-Benz and BMW have significantly more models in our dataset, which means that we are dealing with some imbalances in categories. Therefore, we need to be careful when doing predictions, as will may encounter bias toward these two majority classes. Therefore, there are few technics that can be used to deal with this problem, such as resampling technics, Ensemble Methods (RF, Boosting), tuning probability threshold
+
+https://chatgpt.com/c/09a66e4e-80c6-4fbd-bf4e-73a2b3e44afd
+
+
 
 **Correlation matrix for numerical features**
+
+
 ```{r,plot.new(); dev.off()}
-library(corrplot)
-library(reshape2) 
-#select only numerical columns, drop Time.to.Charge.EV..hours.at.120v. because NAs
+#Here I encounter some problems with some of the variables. 
+
+#check NAs
+# colSums(is.na(data))
+
 data_corrplot <- data %>%
   select_if(is.numeric)
 
+# Identify constant columns (columns with zero standard deviation)
+constant_columns <- sapply(data_corrplot, function(x) sd(x, na.rm = TRUE) == 0)
 
-#correlation transformation for plot
+# Print constant columns for inspection
+print("Constant columns (standard deviation is zero):")
+print(names(data_corrplot)[constant_columns])
+
+# Remove constant columns
+data_corrplot <- data_corrplot[, !constant_columns]
+
+# Correlation transformation for plot using complete observations
 cor_matrix <- cor(data_corrplot, use = "complete.obs")
-print(cor_matrix)
-kable(cor_matrix)
+
+# Melt correlation matrix for plotting
 cor_melted <- melt(cor_matrix)
 
-
-#plot
+# Plot correlation matrix heatmap using ggplot2
 ggplot(data = cor_melted, aes(Var1, Var2, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
-                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
-                       name="Pearson\nCorrelation") +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                       midpoint = 0, limit = c(-1, 1), space = "Lab",
+                       name = "Pearson\nCorrelation") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 8, hjust = 1),
         axis.text.y = element_text(size = 8)) +

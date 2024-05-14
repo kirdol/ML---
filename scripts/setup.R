@@ -26,7 +26,9 @@ packages_loaded <- c(
   "skimr",
   "DataExplorer",
   "keras",
-  "neuralnet"
+  "neuralnet", 
+  "corrplot",
+  "reshape2"
 )
 
 # Function that install the packages if not already installed on your computer
