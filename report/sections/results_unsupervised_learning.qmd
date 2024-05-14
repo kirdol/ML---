@@ -16,50 +16,18 @@ In order to see the link between the features, we can use a dimension reduction 
 
 # Principal Component Analysis
 
-## Biplot
+## Data Standardization
 
 ```{r, message = F, warning = F}
 data_prepared <- data_cleaned %>%
   mutate(across(where(is.character), as.factor)) %>%
   mutate(across(where(is.factor), as.numeric)) %>%
   scale()  # Standardizes numeric data including converted factors
-
-pca_results <- PCA(data_prepared, graph = FALSE)
-summary(pca_results)
-
-fviz_pca_biplot(pca_results,
-                geom.ind = "point",  
-                geom.var = c("arrow", "text"), 
-                col.ind = "cos2",  
-                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),  
-                repel = TRUE 
-)
 ```
 
-The biplot shows several information. First, the two dimensions epxlain almost 50% of the total variance of the data. Then, each point represents an observation and its color represent the quality of the representation of the variables. Looking at the cos2 gradient, the redder the dot, the better the quality of representation. Then, the arrows (or vectors) represent the features. The vectors pointing in similar directions represent some positive correlations, whereas the ones going opposite represent negative correlations. Orthogonal variables are not correlated.
-
-Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g. fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g. fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 seem to be lin
-
-## Screeplot
+## Heatmap
 
 ```{r, message = F, warning = F}
-# Use PCA results to generate the screeplot
-fviz_eig(pca_results, 
-         addlabels = TRUE,  
-         ylim = c(0, 100),  
-         barfill = "lightblue",  
-         barcolor = "black",  
-         main = "Scree Plot of PCA") 
-```
-
-Taking the screeplot into account, 6 dimensions are needed to reach at least 75%, meaning the features might be relatively independent. It is alredy shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. To check further the correlation, we can use a heatmap.
-
-## Heatmap ???
-
-```{r, message = F, warning = F}
-library(reshape2)
-
-# Assuming data_prepared has been previously defined and standardized
 cor_matrix <- cor(data_prepared)  # Calculate correlation matrix
 
 # Melt the correlation matrix for ggplot2
@@ -80,7 +48,40 @@ ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
        title = 'Correlations Heatmap of Variables')  # Adjust the title and labels as needed
 ```
 
-This heatmap indicates the correlation between the variables. 
+We used this heatmap to check the correlation between the variables. As we can see, some variables seem to be strongly correlated, but most of them don't seem to be too strongly correlated, whether positively or negatively. Let's now look into the link between the features using a biplot, which combines the observations as well as the features.
+
+## Biplot
+
+```{r, message = F, warning = F}
+pca_results <- PCA(data_prepared, graph = FALSE)
+summary(pca_results)
+
+fviz_pca_biplot(pca_results,
+                geom.ind = "point",  
+                geom.var = c("arrow", "text"), 
+                col.ind = "cos2",  
+                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),  
+                repel = TRUE 
+)
+```
+
+The biplot shows several information. First, the two dimensions epxlain almost 50% of the total variance of the data. Then, each point represents an observation and its color represent the quality of the representation of the variables. Looking at the cos2 gradient, the redder the dot, the better the quality of representation. Then, the arrows (or vectors) represent the features. The vectors pointing in similar directions represent some positive correlations, whereas the ones going opposite represent negative correlations. Orthogonal variables are not correlated.
+
+Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g. fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g. fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 is uncorrelated to fuel type 2, which makes sense.
+
+## Screeplot
+
+```{r, message = F, warning = F}
+# Use PCA results to generate the screeplot
+fviz_eig(pca_results, 
+         addlabels = TRUE,  
+         ylim = c(0, 100),  
+         barfill = "lightblue",  
+         barcolor = "black",  
+         main = "Scree Plot of PCA") 
+```
+
+Taking the screeplot into account, 7 dimensions are needed to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. As a result of the biplot, we will try to provide a clustering in order to potentially see the different clusters of features similarities.
 
 # Clustering
 
