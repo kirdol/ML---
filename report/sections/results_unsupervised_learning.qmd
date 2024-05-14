@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r}
+```{r, message = F, warning = F}
 source(here::here("scripts","setup.R"))
 library(data.table)
 data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
