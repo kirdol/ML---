@@ -19,7 +19,6 @@ In order to see the link between the features, we can use a dimension reduction 
 ## Biplot
 
 ```{r, message = F, warning = F}
-# Assuming your data frame is named data_cleaned
 data_prepared <- data_cleaned %>%
   mutate(across(where(is.character), as.factor)) %>%
   mutate(across(where(is.factor), as.numeric)) %>%
@@ -29,11 +28,11 @@ pca_results <- PCA(data_prepared, graph = FALSE)
 summary(pca_results)
 
 fviz_pca_biplot(pca_results,
-                geom.ind = "point",  # To show data points
-                geom.var = c("arrow", "text"),  # To show variable vectors and labels
-                col.ind = "cos2",  # Color by the quality of representation
-                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),  # Colors
-                repel = TRUE  # Avoid text overlapping
+                geom.ind = "point",  
+                geom.var = c("arrow", "text"), 
+                col.ind = "cos2",  
+                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),  
+                repel = TRUE 
 )
 ```
 
@@ -44,13 +43,13 @@ Taking all of these into account, we can interpret this graph in the following w
 ## Screeplot
 
 ```{r, message = F, warning = F}
-# Generating the scree plot from PCA results
+# Use PCA results to generate the screeplot
 fviz_eig(pca_results, 
-         addlabels = TRUE,  # Adds labels to the plot indicating the percentage of variance
-         ylim = c(0, 100),  # Optional: Sets the limits of the y-axis to make the plot easier to interpret
-         barfill = "lightblue",  # Color of the bars
-         barcolor = "black",  # Color of the borders of bars
-         main = "Scree Plot of PCA")  # Title of the plot
+         addlabels = TRUE,  
+         ylim = c(0, 100),  
+         barfill = "lightblue",  
+         barcolor = "black",  
+         main = "Scree Plot of PCA") 
 ```
 
 Taking the screeplot into account, 6 dimensions are needed to reach at least 75%, meaning the features might be relatively independent. It is alredy shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. To check further the correlation, we can use a heatmap.
@@ -85,60 +84,65 @@ This heatmap indicates the correlation between the variables.
 
 # Clustering
 
+## Clusters
+
 ```{r, warning = F, message = F}
 # Extract PCA coordinates for clustering
 pca_coords <- pca_results$ind$coord
 
 # Using the Elbow Method to determine the number of clusters
-set.seed(123)  # Ensure reproducibility
+set.seed(123)  
 wss <- sapply(1:15, function(k) {
   kmeans(pca_coords, centers = k, nstart = 25)$tot.withinss
 })
+
+# Elbow Plot
 plot(1:15, wss, type = "b", pch = 20, frame = FALSE, 
      xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
 
-# Assuming the optimal number of clusters from the plot is, e.g., 2
+# Optimal number of cluster according to Elbow
 k <- 4
 
-# Perform k-means clustering using PCA-transformed data
-set.seed(123)  # For reproducibility
+# K-means
+set.seed(123) 
 km_result <- kmeans(pca_coords, centers = k, nstart = 25)
 
 # Add cluster results and observation names to the PCA coordinates data frame
 pca_coords_df <- as.data.frame(pca_coords)
 pca_coords_df$cluster <- factor(km_result$cluster)
-pca_coords_df$name <- rownames(data_cleaned)  # Assuming rownames are the observation names
+pca_coords_df$name <- rownames(data_cleaned) 
 
 # Visualize the clusters using PCA and label points with observation names
 ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = cluster, label = name)) +
   geom_point() +
-  geom_text(check_overlap = TRUE, vjust = 1.5, size = 3) +  # Adjust size and vjust as needed
+  geom_text(check_overlap = TRUE, vjust = 1.5, size = 3) +  
   labs(title = "Cluster Plot", x = "Dim1 (20%)", y = "Dim2 (20%)") +
-  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen", "lightgrey")) +  # Adjust colors as needed
+  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen", "lightgrey")) +  
   theme_minimal() +
-  theme(legend.position = "right")  # Adjust legend position if necessary
+  theme(legend.position = "right")  
+```
 
+## Biplot & Clusters
 
-## BIPLOT + CLUSTER
-# Calculate cluster centers for labeling
+```{r, warning = F, message = F}
+# Calculate Cluster Centers
 cluster_centers <- aggregate(pca_coords_df[, 1:2], by = list(cluster = pca_coords_df$cluster), FUN = mean)
 
-# Visualize the PCA biplot with cluster annotations
+# Biplot with clusters
 fviz_pca_biplot(pca_results,
-                geom.ind = "point",  # To show data points
-                geom.var = c("arrow", "text"),  # To show variable vectors and labels
-                col.ind = factor(km_result$cluster),  # Color by cluster (as a factor)
-                palette = c("lightblue", "lightpink", "lightgreen", "lightgrey"),  # Adjust colors as needed
-                addEllipses = TRUE,  # Add concentration ellipses
-                ellipse.level = 0.95,  # Confidence level for ellipses
-                repel = TRUE,  # Avoid text overlapping
+                geom.ind = "point", 
+                geom.var = c("arrow", "text"),  
+                col.ind = factor(km_result$cluster), 
+                palette = c("lightblue", "lightpink", "lightgreen", "lightgrey"), 
+                addEllipses = TRUE, 
+                ellipse.level = 0.95, 
+                repel = TRUE,  
                 legend.title = "Cluster") +
   geom_text(data = cluster_centers, aes(x = Dim.1, y = Dim.2, label = paste("Cluster", cluster)), 
             color = "black", size = 5, vjust = -1) +
   labs(title = "PCA - Biplot",
        x = paste("Dim1 (", round(pca_results$eig[1,2], 1), "%)", sep = ""),
        y = paste("Dim2 (", round(pca_results$eig[2,2], 1), "%)", sep = ""))
-
 ```
 
 Using a clustering methods allow us to see the number of clusters that share similarities. Here, the elbow indicates that the optimal number of clusters should be 4. When comparing it with the biplot (last graph), we clearly notice that cluster 1 refers to the characteristics (range and mpg) for fuel 1 and same for fuel 4. Cluster 2 and 3 are packed towards the center and it is harder to see which features are similar, which is explainable with the fact that we would need around 6 dimensions to explain the total variance. We can suppose that cluster 2 refers to the class and the vehicle transmission, whereas cluster 3 focuses on engines and cylinders.
