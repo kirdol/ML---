@@ -9,6 +9,8 @@ format:
 
 ```{r Packages and data loading, echo = FALSE, message = FALSE, warning=FALSE}
 source(here::here("scripts","setup.R"))
+# data <- read.csv(here("data", "Vehicle_MPG_1984_to_2023_renamed.csv"), na = c(""))
+#a voir pk fonctionne pas
 data <- read_csv(here("data","Vehicle_MPG_1984_to_2023_renamed.csv"))
 ```
 

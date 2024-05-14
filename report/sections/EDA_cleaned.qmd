@@ -9,7 +9,7 @@ format:
 
 ```{r Packages and data loading, echo = FALSE, message = FALSE, warning=FALSE}
 source(here::here("scripts","setup.R"))
-data <- read_csv(here("data","Vehicle_MPG_1984_to_2023_renamed.csv"))
+data <- read_csv(here("data","data_cleaned.csv"))
 ```
 
 **Columns description**
@@ -47,12 +47,9 @@ For each one of our numerical column, let's check thank to the boxplot the outli
 
 data_long <- data %>%
   select_if(is.numeric) %>%
-  pivot_longer(cols = c("ID", "Model Year", "Estimated Annual Petrolum Consumption (Barrels)", 
-                        "City MPG (Fuel Type 1)", "Highway MPG (Fuel Type 1)", "Combined MPG (Fuel Type 1)", 
-                        "City MPG (Fuel Type 2)", "Highway MPG (Fuel Type 2)", "Combined MPG (Fuel Type 2)", 
-                        "Time to Charge EV (hours at 120v)", "Time to Charge EV (hours at 240v)", 
-                        "Range (for EV)", "City Range (for EV - Fuel Type 1)", "City Range (for EV - Fuel Type 2)", 
-                        "Hwy Range (for EV - Fuel Type 1)", "Hwy Range (for EV - Fuel Type 2)"), names_to = "variable", values_to = "value")
+  pivot_longer(cols = c("model_year", "city_mpg_fuel_type_1", "highway_mpg_fuel_type_1", "city_mpg_fuel_type_2", "highway_mpg_fuel_type_2", "range_ev_city_fuel_type_1", "range_ev_highway_fuel_type_1", "range_ev_city_fuel_type_2", "range_ev_highway_fuel_type_2", "charge_time_240v"), names_to = "variable", values_to = "value")
+
+
 
 ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
   geom_boxplot(outlier.size = 0.5) +  # Make outlier points smaller
@@ -71,57 +68,9 @@ ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
 #nb cars per brand
 ```
 
-
-
 **number of models per make**
 
-Now let's check how many models per make we have in our dataset. In order to have a clear plot, we have decided to keep the top 20 brands among all the make on the graph. All the remaining makes are accessible on the table just below. 
-
-```{r}
-
-#Number of occurences/model per make 
-nb_model_per_make <- data %>%
-  group_by(Make, Model) %>%
-  summarise(Number = n(), .groups = 'drop') %>%
-  group_by(Make) %>%
-  summarise(Models_Per_Make = n(), .groups = 'drop') %>%
-  arrange(desc(Models_Per_Make))
-
-#table
-datatable(nb_model_per_make,
-          rownames = FALSE,
-          options = list(pageLength = 10,
-                         class = "hover",
-                         searchHighlight = TRUE))
-
-
-# Option to limit to top 20 makes for better readability
-top_n_makes <- nb_model_per_make %>% top_n(20, Models_Per_Make)
-
-# Reordering the Make variable within the plotting code to make it ordered by Models_Per_Make descending
-# nb_model_per_make$Make <- factor(nb_model_per_make$Make, levels = nb_model_per_make$Make[order(-nb_model_per_make$Models_Per_Make)])
-
-```
-
-```{r}
-ggplot(top_n_makes, aes(x = reorder(Make, Models_Per_Make), y = Models_Per_Make)) +
-  geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
-  labs(title = "Models per Make (Top 20)",
-       x = "Make",
-       y = "Number of Models") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-        axis.text.y = element_text(hjust = 1, size = 10),
-        plot.title = element_text(size = 14)) +
-  coord_flip()  # Flip coordinates for better readability
-
-```
-
-Therefore, we can see that Mercendes-Benz and BMW have significantly more models in our dataset, which means that we are dealing with some imbalances in categories. Therefore, we need to be careful when doing predictions, as will may encounter bias toward these two majority classes. Therefore, there are few technics that can be used to deal with this problem, such as resampling technics, Ensemble Methods (RF, Boosting), tuning probability threshold
-
-https://chatgpt.com/c/09a66e4e-80c6-4fbd-bf4e-73a2b3e44afd
-
-
+As we got rid of XXX, .....
 
 **Correlation matrix for numerical features**
 
