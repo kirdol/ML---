@@ -7,7 +7,7 @@ format:
 
 ***EDA:***
 
-```{r Packages and data loading, echo = FALSE, message = FALSE, warning=FALSE}
+```{r Packages and data loading cleaned, echo = FALSE, message = FALSE, warning=FALSE}
 source(here::here("scripts","setup.R"))
 data <- read_csv(here("data","data_cleaned.csv"))
 ```
@@ -75,7 +75,7 @@ As we got rid of XXX, .....
 **Correlation matrix for numerical features**
 
 
-```{r,plot.new(); dev.off()}
+```{r}
 #Here I encounter some problems with some of the variables. 
 
 #check NAs
