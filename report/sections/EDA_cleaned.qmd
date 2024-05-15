@@ -27,7 +27,7 @@ The dataset that we are working with contains approx. 46'000 rows and 26 columns
 
 Here are more details about the distribution of the numerical features.
 
-```{r, fig.height= 5, fig.width=5}
+```{r, fig.height= 5, fig.width=8}
 #  melt.data <- melt(data)
 # 
 #  ggplot(data = melt.data, aes(x = value)) + 
