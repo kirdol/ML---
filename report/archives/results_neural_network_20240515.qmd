@@ -111,7 +111,7 @@ The model is trained for 5 epochs with a batch size of 32. The validation split 
 model_no_dropout.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, verbose=0)
+history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2, verbose=0)
 
 # Evaluate the model
 loss_no_dropout, accuracy_no_dropout = model_no_dropout.evaluate(X_test, y_test)
@@ -163,7 +163,7 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
-By looking at the boxplot representing the distribution of the sensitivity and specificity for the classes, we see a clear sign of unbalanced classes. The sensitivity and specificity are not consistent across the classes. This is a sign that the model is not performing well on all classes. Some of the classe, having more vehicle models, the model automatically prefer to predict those vehicles models more than some rare one. We will use class weights to address this issue.
+By looking at the boxplot representing the distribution of the sensitivity and specificity for the classes, we see a clear sign of unbalanced classes. The sensitivity and specificity are not consistent across the classes. This is a sign that the model is not performing well on all classes. We will use class weights to address this issue.
 
 ##### Adding class weights to the model
 
@@ -172,7 +172,7 @@ By looking at the boxplot representing the distribution of the sensitivity and s
 model_no_dropout.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
+history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
 
 # Evaluate the model
 loss_no_dropout, accuracy_no_dropout = model_no_dropout.evaluate(X_test, y_test)
@@ -224,7 +224,7 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
-As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on. We can now look at the evolution of the accuracy during the training process with the following plot.
+As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. Let's now see how the accuracy evolved during the training process with the following plot.
 
 ```{python, echo = FALSE}
 # Plot the accuracy and loss for the model without Dropout
@@ -283,7 +283,6 @@ X_train_split, X_val, y_train_split, y_val = train_test_split(X_train, y_train, 
 * **epochs:** 5 (Corresponds to the number of times the model sees the entire dataset during training.)
 * **batch_size:** 32 (Corresponds to the number of samples that the model processes before updating the weights.)
 * **validation_split:** 0.2 (Corresponds to the fraction of the training data to be used as validation data.)
-* **dropout_rate:** varies (Corresponds to the fraction of neurons to drop during training.)
 
 We will try 5 different dropout rates in addition of the case of no dropout. We will train the model with each dropout rate and evaluate its performance on the validation and test sets. We will then plot the training, validation, and test accuracies for each dropout rate to find the optimal value.
 
@@ -319,7 +318,7 @@ for rate in dropout_rates:
     model = create_model(dropout_rate=rate)
     
     # Train the model and collect training accuracy
-    history = model.fit(X_train_split, y_train_split, epochs=100, batch_size=32, class_weight=class_weights_dict, verbose=0)
+    history = model.fit(X_train_split, y_train_split, epochs=20, batch_size=32, class_weight=class_weights_dict, verbose=0)
     
     # Evaluate the model on the validation set
     val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
@@ -350,19 +349,20 @@ plt.show()
 ```
 
 We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue.
-We will use this dropout rate of 0.2 to train the final model with dropout layers.
+We will use this dropout rate of 0.2 to train the final model with droopout layers.
 
 ```{python, echo = FALSE}
 # Out best dropout rate used for the following model.
 dropout_rate_to_plot = 0.2
 ```
 
+
 ```{python, echo = FALSE, output = FALSE}
 # Train the model with the specified dropout rate
 model = create_model(dropout_rate=dropout_rate_to_plot)
 
 # Train the model and collect training accuracy
-history = model.fit(X_train_split,y_train_split, epochs=100, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
+history = model.fit(X_train_split,y_train_split, epochs=10, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
 
 # Extract accuracy data
 training_accuracy = history.history['accuracy']
@@ -382,8 +382,95 @@ plt.legend()
 plt.show()
 ```
 
-We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.
+```{python}
+# Helper function to calculate metrics from confusion matrix
+def calculate_metrics(cm):
+    # True Positive, False Positive, False Negative, True Negative
+    tp = cm[1, 1]
+    fp = cm[0, 1]
+    fn = cm[1, 0]
+    tn = cm[0, 0]
+    
+    sensitivity = tp / (tp + fn)  # True Positive Rate
+    specificity = tn / (tn + fp)  # True Negative Rate
+    balanced_accuracy = (sensitivity + specificity) / 2
+    return sensitivity, specificity, balanced_accuracy
 
+# Define the dropout rate to use
+dropout_rate = 0.2
+
+# Train the model with the specified dropout rate
+print(f"Testing model with dropout rate: {dropout_rate}")
+model = create_model(dropout_rate=dropout_rate)
+
+# Train the model and collect training accuracy
+history = model.fit(X_train_split, y_train_split, epochs=5, batch_size=32, verbose=0, class_weight=class_weights_dict, validation_data=(X_val, y_val))
+
+# Evaluate the model on the validation set
+val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
+
+# Evaluate the model on the test set
+test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+
+# Store the last epoch's training accuracy, validation accuracy, and test accuracy
+training_accuracy = history.history['accuracy'][-1]
+training_accuracies = [training_accuracy]
+validation_accuracies = [val_accuracy]
+test_accuracies = [test_accuracy]
+
+# Print rounded accuracy values
+print(f"Training accuracy: {round(training_accuracy, 2)}, Validation accuracy: {round(val_accuracy, 2)}, Test accuracy: {round(test_accuracy, 2)}")
+
+# Generate the confusion matrix and metrics
+y_pred = np.argmax(model.predict(X_test), axis=-1)
+y_true = np.argmax(y_test, axis=-1)
+
+cm = confusion_matrix(y_true, y_pred)
+
+# Convert confusion matrix to a DataFrame for better readability
+cm_df = pd.DataFrame(cm, index=[f'Actual {i}' for i in range(cm.shape[0])],
+                     columns=[f'Predicted {i}' for i in range(cm.shape[1])])
+
+# Print the confusion matrix as a table
+print(f'Confusion Matrix for Dropout Rate {dropout_rate}')
+print(cm_df)
+
+# Calculate and print sensitivity, specificity, and balanced accuracy
+sensitivity, specificity, balanced_accuracy = calculate_metrics(cm)
+print(f"Sensitivity: {sensitivity:.2f}, Specificity: {specificity:.2f}, Balanced Accuracy: {balanced_accuracy:.2f}")
+```
+
+```{python}
+# Generate predictions on the test set
+y_pred = model.predict(X_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+y_true_classes = np.argmax(y_test, axis=1)
+
+# Compute confusion matrix
+cm = confusion_matrix(y_true_classes, y_pred_classes)
+
+# # Display the confusion matrix
+# disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=np.unique(y_true_classes))
+# disp.plot(cmap=plt.cm.Blues)
+# plt.title('Confusion Matrix')
+# plt.show()
+
+# Calculate specificity and sensitivity for each class
+tp = np.diag(cm)
+fp = cm.sum(axis=0) - np.diag(cm)
+fn = cm.sum(axis=1) - np.diag(cm)
+tn = cm.sum() - (fp + fn + tp)
+
+sensitivity = tp / (tp + fn)
+specificity = tn / (tn + fp)
+
+# Print specificity and sensitivity for each class
+unique_labels = np.unique(y_true_classes)
+for i, class_label in enumerate(unique_labels):
+    print(f"Class {class_label} - Sensitivity: {sensitivity[i]:.4f}, Specificity: {specificity[i]:.4f}")
+```
+
+The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.
 
 ```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
@@ -414,19 +501,6 @@ for i, class_label in enumerate(unique_labels):
     print(f"Class {class_label} - Sensitivity: {sensitivity[i]:.4f}, Specificity: {specificity[i]:.4f}")
 ```
 
-```{python, echo = FALSE}
-# Print the final accuracies
-# Extract the final epoch's accuracy for the training and validation sets
-final_training_accuracy = history.history['accuracy'][-1]
-final_validation_accuracy = history.history['val_accuracy'][-1]
-
-# Evaluate the model on the test set
-test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
-print(f"Final Training Accuracy: {final_training_accuracy * 100:.2f}%")
-print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
-print(f"Test Set Accuracy: {test_accuracy * 100:.2f}%")
-```
-
 ```{python, echo = FALSE, warning = FALSE}
 # Create boxplots
 data = [sensitivity, specificity]
@@ -436,4 +510,3 @@ ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
 plt.show()
 ```
-
