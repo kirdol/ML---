@@ -13,7 +13,7 @@ Let's have a look at the entire dataset and its missing values in grey.
 vis_dat(data, warn_large_data = FALSE)
 ```
 
-We can see that overall, we do not have many missing values in proportion with the size of our dataset. However, we can see that some columns have a lot of missing values. Let's have a look at the columns and rows with missing values more in details.
+We can see that overall, we do not have many missing values in proportion with the size of our dataset. However, we can see that some columns have a lot of missing values. Let's have a look at the columns and rows with missing values in more in details.
 
 ```{r echo = FALSE}
 data_with_missing_columns <- data %>%
