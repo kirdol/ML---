@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x356aaf200&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8c3b0&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8d010&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8cda0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x356a8c0b0&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8d490&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8db20&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8de20&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x3425e6810&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8d7f0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x343806150&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8e0f0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x356aafda0&gt;, &lt;matplotlib.lines.Line2D object at 0x356a8e390&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x343daddc0&gt;, &lt;matplotlib.lines.Line2D object at 0x37be94080&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95610&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95880&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37be94710&gt;, &lt;matplotlib.lines.Line2D object at 0x37be94920&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95f70&gt;, &lt;matplotlib.lines.Line2D object at 0x37be96240&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x343d62a50&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95a60&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37be95cd0&gt;, &lt;matplotlib.lines.Line2D object at 0x37be96510&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37be7f740&gt;, &lt;matplotlib.lines.Line2D object at 0x37be967e0&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -127,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h5 class="anchored" data-anchor-id="adding-class-weights-to-the-model">Adding class weights to the model</h5>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x37bba1a90&gt;, &lt;matplotlib.lines.Line2D object at 0x37bba2150&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc08080&gt;, &lt;matplotlib.lines.Line2D object at 0x37bba1640&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37bba23f0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bba3380&gt;, &lt;matplotlib.lines.Line2D object at 0x37bba2930&gt;, &lt;matplotlib.lines.Line2D object at 0x37bba2ea0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x37bba1c70&gt;, &lt;matplotlib.lines.Line2D object at 0x37bba3d10&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37bba37a0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc08050&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37bba3aa0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc08350&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x37ea384a0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea39130&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea392b0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea39700&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37ea38fe0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea38c80&gt;, &lt;matplotlib.lines.Line2D object at 0x37b5cfdd0&gt;, &lt;matplotlib.lines.Line2D object at 0x37e12c260&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x37ea389b0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea38170&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37ea387d0&gt;, &lt;matplotlib.lines.Line2D object at 0x37e1d1a90&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37ea383b0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea39670&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -151,13 +151,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>But, in the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 0.6627</code></pre>
+<pre><code>Final Training Accuracy: 0.7450</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 0.6514</code></pre>
+<pre><code>Final Validation Accuracy: 0.7054</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Accuracy: 0.6299</code></pre>
+<pre><code>Test Accuracy: 0.6893</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting and to improve the model performance, we will introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model’s performance later.</p>
@@ -211,18 +211,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 37.00%</code></pre>
+<pre><code>Final Training Accuracy: 55.21%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 42.82%</code></pre>
+<pre><code>Final Validation Accuracy: 58.26%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 42.38%</code></pre>
+<pre><code>Test Set Accuracy: 57.94%</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x396a49d00&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa4ef0&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa57f0&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa5af0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x396aa4920&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa4710&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa5df0&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa6090&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x396aa5040&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa55b0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x396aa42f0&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa6390&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x396aa53a0&gt;, &lt;matplotlib.lines.Line2D object at 0x396aa6630&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x37bc47230&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc47290&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc320&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc650&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37bc46330&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc45af0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc980&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdcc50&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x398926e10&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc080&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37bc47aa0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdcec0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37bc47dd0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdd130&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>

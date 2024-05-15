@@ -26,6 +26,7 @@ from tensorflow.keras.layers import Dense, Dropout, Input
 from tensorflow.keras.utils import to_categorical
 from keras.optimizers import Adam
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.model_selection import KFold
 ```
 
 # Neural Network
@@ -168,18 +169,25 @@ By looking at the boxplot representing the distribution of the sensitivity and s
 ##### Adding class weights to the model
 
 ```{python, echo = FALSE, output = FALSE}
+# Define the neural network model
+model_no_dropout2 = Sequential([
+    Input(shape=(X_train.shape[1],)),
+    Dense(128, activation='relu'),
+    Dense(64, activation='relu'),
+    Dense(y_train.shape[1], activation='softmax')])
+
 # Compile the model
-model_no_dropout.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model_no_dropout2.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
+history_no_dropout = model_no_dropout2.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
 
 # Evaluate the model
-loss_no_dropout, accuracy_no_dropout = model_no_dropout.evaluate(X_test, y_test)
+loss_no_dropout, accuracy_no_dropout = model_no_dropout2.evaluate(X_test, y_test)
 print(f'Test accuracy without Dropout: {accuracy_no_dropout}')
 
 # Make predictions
-predictions_no_dropout = np.argmax(model_no_dropout.predict(X_test), axis=1)
+predictions_no_dropout = np.argmax(model_no_dropout2.predict(X_test), axis=1)
 
 # Print predictions
 print(predictions_no_dropout)
@@ -187,7 +195,7 @@ print(predictions_no_dropout)
 
 ```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
-y_pred = model_no_dropout.predict(X_test)
+y_pred = model_no_dropout2.predict(X_test)
 y_pred_classes = np.argmax(y_pred, axis=1)
 y_true_classes = np.argmax(y_test, axis=1)
 
@@ -435,5 +443,47 @@ ax.boxplot(data, labels=["Sensitivity", "Specificity"])
 ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
 plt.show()
+```
+
+
+```{python}
+# Number of folds
+k = 5
+kfold = KFold(n_splits=k, shuffle=True, random_state=42)
+
+# Initialize lists to store accuracies
+training_accuracies = []
+validation_accuracies = []
+
+for train_index, val_index in kfold.split(X_train):
+    X_train_split, X_val_split = X_train[train_index], X_train[val_index]
+    y_train_split, y_val_split = y_train[train_index], y_train[val_index]
+    
+    # Create and train the model
+    model = create_model(dropout_rate=dropout_rate_to_plot)
+    history = model.fit(X_train_split, y_train_split, epochs=100, batch_size=32,
+                        class_weight=class_weights_dict, validation_data=(X_val_split, y_val_split), verbose=0)
+    
+    # Collect accuracy data
+    training_accuracy = history.history['accuracy'][-1]
+    validation_accuracy = history.history['val_accuracy'][-1]
+    
+    training_accuracies.append(training_accuracy)
+    validation_accuracies.append(validation_accuracy)
+    
+    # Evaluate on the test set
+    test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+
+# Calculate average accuracies
+average_training_accuracy = np.mean(training_accuracies)
+average_validation_accuracy = np.mean(validation_accuracies)
+average_test_accuracy = np.mean(test_accuracies)
+
+print(f'Average Training Accuracy: {average_training_accuracy:.4f}')
+print(f'Average Validation Accuracy: {average_validation_accuracy:.4f}')
+
+print(f'Average Training Accuracy: {average_training_accuracy:.4f}')
+print(f'Average Validation Accuracy: {average_validation_accuracy:.4f}')
+print(f'Average Test Accuracy: {average_test_accuracy:.4f}')
 ```
 
