@@ -104,12 +104,14 @@ for (i in 1:10) {
   wcss[i] <- sum(km$withinss)
 }
 
-# Elbow Graph
-elbow_plot <- plot_ly(x = 1:10, y = wcss, type = 'scatter', mode = 'lines+markers',
-                      marker = list(color = 'blue')) %>%
-  layout(title = "Elbow Method for Determining Optimal Number of Clusters",
-         xaxis = list(title = "Number of Clusters"),
-         yaxis = list(title = "Within-Cluster Sum of Squares (WCSS)"))
+# Elbow Plot
+elbow_data <- data.frame(Clusters = 1:10, WCSS = wcss)
+elbow_plot <- ggplot(elbow_data, aes(x = Clusters, y = WCSS)) +
+  geom_point() +
+  geom_line() +
+  ggtitle("Elbow Method for Determining Optimal Number of Clusters") +
+  xlab("Number of Clusters") +
+  ylab("Within-Cluster Sum of Squares (WCSS)")
 
 # Print the elbow plot
 elbow_plot
