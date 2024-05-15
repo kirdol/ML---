@@ -1,0 +1,38 @@
+---
+title: "Methods"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Methods
+
+A very important section describing in detail all the methods that are used in the report. This section explains how the study was conducted. It aims at giving relevant information and tools for others to be able to reproduce the study. It explains the global strategy of the study, and describes each tool used to achieve this goal. For a comprehensive and structured presentation, often it is important to give the general structure of the study, and then to drill down each step. The individual tools (e.g. machine learning methods, etc.) should be described in a concise and relevant way. This section is not a course. For example, one can give a brief definition and the important properties (important for the study), then refer to an external source for the details. In addition, the description should be balanced. Do not spend three pages on explaining the boxplots when a predictive model of random forest is explained in one-half page. It should describe and duly cite
+
+Statistical and machine learning methods to analyze the data
+Software, computer programs, function packages (typically for R).
+The sequence of analysis, the reason of each method.
+
+However,
+
+It does not include methods that are not used, even if you spent a lot of time on it. Except maybe if the fact that a particular method is not useful is of interest for the report.
+It is not a course about a method. It should contain all the relevant pieces of information, but it should also be stopped at some points. Clear references and well-chosen are of major importance here.
+
+## Supervised Learning
+
+### Classification Tree
+
+### Neural Network
+
+## Unsupervised Learning
+
+As we have seen several unsupervised learning tools in class, we have looked at our dataset and decided to start with a Principal Component Analysis, as we have some categorical variables as well as numerical ones. This technique allows to combine features in fewer dimensions according to their similarities. We then proceeded with a clustering method and combined both of them into a vizualisation in order to have a clearer result.
+
+To begin the method, it is crucial to standardize the data, meaning to transform the categorical variables into factors, which in turn is transformed into numerical. Then, to have a small idea of the link between the features before attacking the PCA, we will a correlation heatmap, showing which variable really seem to be somewhat correlated, whether positively and negatively. We will start with the PCA right after and then a screeplot, all of this in order to see the weight of the dimensions as well as the observations in the PCA graph. 
+
+Depending on the results of the PCA, we might consider proceeding with a clustering to have a clearer overview of the similarities in the observations and divide them into clusters
+
+To achieve this, the main aspect to consider is to take the results from the PCA. So, to begin with, we will take the PCA coordinates and then proceed with a K-means method. We will then perform an elbow method to check for the optimal number of clusters. Depending on the results, we might consider doing a silhouette plot to check for heterogeneity in the clusters. Finally, as we are doing the PCA right before the clustering, we plan to create a 3D biplot where both the features and the clustered observations can be seen in order to interpret the final results for the unsupervised learning part.
+
+The final aim is to see the link between the features as well as the similarities of the observations.

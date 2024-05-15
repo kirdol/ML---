@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Annex {#sec-Annex}
 
 ```{r echo = FALSE, output = FALSE}
@@ -11,3 +16,117 @@ data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 
 dfSummary(data, plain.ascii = FALSE, style = "grid", tmp.img.dir = "/tmp")
 ```
+
+## 3D Biplot for 6 clusters
+
+```{r child = paste0("sections/", c("results_unsupervised_learning.qmd"))}
+# Looking at Elbow, Optimal nb of clusters = 3
+optimal_clusters2 <- 6
+km_result <- kmeans(pca_coords_df[, 1:3], centers = optimal_clusters2)
+
+# Add cluster assignments to PCA coordinates
+pca_coords_df$cluster <- km_result$cluster
+
+# Cluster Plot
+cluster_plot2 <- ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = factor(cluster))) +
+  geom_point() +
+  ggtitle("2D Cluster Plot (Dim.1 vs Dim.2)") +
+  xlab(paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")) +
+  ylab(paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")) +
+  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen", "lightgrey", "beige", "cyan"))
+
+cluster_plot2
+
+# Calculate Cluster Centers
+cluster_centers <- aggregate(pca_coords_df[, 1:3], by = list(cluster = pca_coords_df$cluster), FUN = mean)
+
+# Get loadings for variables
+loadings <- data.frame(
+  variable = rownames(pca_results$var$coord),
+  pca_results$var$coord[, 1:3]
+)
+
+# Create the 3D scatter plot with clusters and loadings
+fig6 <- plot_ly() %>%
+  add_trace(
+    data = pca_coords_df,
+    x = ~Dim.1,
+    y = ~Dim.2,
+    z = ~Dim.3,
+    color = ~factor(km_result$cluster),
+    colors = c("lightblue", "lightpink", "lightgreen"),
+    type = 'scatter3d',
+    mode = 'markers',
+    marker = list(size = 6)
+  ) %>%
+  add_trace(
+    data = cluster_centers,
+    x = ~Dim.1,
+    y = ~Dim.2,
+    z = ~Dim.3,
+    text = ~paste("Cluster", cluster),
+    type = 'scatter3d',
+    mode = 'text',
+    textposition = 'top center',
+    textfont = list(color = 'black', size = 10)
+  )
+
+# Scale factor for loadings arrows
+scale.loads <- 10.0
+
+# Add loadings as arrows
+for (k in 1:nrow(loadings)) {
+  fig6 <- fig6 %>%
+    add_trace(
+      x = c(0, loadings$Dim.1[k]) * scale.loads,
+      y = c(0, loadings$Dim.2[k]) * scale.loads,
+      z = c(0, loadings$Dim.3[k]) * scale.loads,
+      type = 'scatter3d',
+      mode = 'lines+markers',
+      line = list(width = 4, color = 'blue'),
+      marker = list(size = 2, color = 'blue'),
+      showlegend = FALSE
+    ) %>%
+    add_trace(
+      x = loadings$Dim.1[k] * scale.loads,
+      y = loadings$Dim.2[k] * scale.loads,
+      z = loadings$Dim.3[k] * scale.loads,
+      text = loadings$variable[k],
+      type = 'scatter3d',
+      mode = 'text',
+      textposition = 'top center',
+      textfont = list(color = 'blue', size = 10),
+      showlegend = FALSE
+    )
+}
+
+# Layout
+fig6 <- fig6 %>%
+  layout(
+    title = "PCA - 3D Biplot with Features",
+    scene = list(
+      xaxis = list(title = paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")),
+      yaxis = list(title = paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")),
+      zaxis = list(title = paste("Dim3 (", round(pca_results$eig[3, 2], 1), "%)", sep = ""))
+    )
+  )
+
+# Display the plot
+fig6
+
+```
+
+Here, we can observe that it is possible to divide into 6 clusters. When comparing it to the 3D biplot in the 'results_unsupervised_learning' part, we clearly notice that one of the clusters could be divided into four smaller clusters, which indicates heterogeneity in this cluster when using only 3 clusters. However, with 6 clusters in hand, it is more difficult to interpret the 4 separated clusters. In addition to that, it explains the second elbow in the elbow method: at 3 clusters, we obtained optimality, but we get another steep curve between cluster 5 and 6, meaning that selecting 4 or 5 clusters would not be too much of a benefit, but adding a 6th cluster could be worth capturing. Stopping at 3 cluster still is significant for us and it makes our clustering anaylsis more interpretable than 6, that's why we selected 3 clusters for our analysis. Below is the code for the silhouette plot which isn't running as it exceeds the vector memory. It would have been interesting to check the heterogeneity of the cluster.
+
+```{r}
+# Compute the silhouette scores
+# ss <- silhouette(km_result$cluster, dist(pca_coords_df[, 1:3]))
+
+# Plot the silhouette plot for optimal clusters
+# fviz_silhouette(ss) + 
+ # ggtitle("Silhouette Plot for Optimal Clusters (k = 6)") + 
+  # theme_minimal()
+
+# > Error: vector memory exhausted (limit reached?)
+```
+

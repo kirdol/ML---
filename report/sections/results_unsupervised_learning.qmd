@@ -72,6 +72,8 @@ The biplot shows several information. First, the two dimensions epxlain almost 5
 
 Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g. fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g. fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 is uncorrelated to fuel type 2, which makes sense.
 
+Also, looking at the biplot, there seems to be 3 distinct "clusters" in the observations. Thus, we will proceed in a cluster analysis.
+
 ## Screeplot
 
 ```{r, message = F, warning = F}
@@ -84,11 +86,11 @@ fviz_eig(pca_results,
          main = "Scree Plot of PCA") 
 ```
 
-Taking the screeplot into account, 7 dimensions are needed to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. As a result of the biplot, we will try to provide a clustering in order to potentially see the different clusters of features similarities.
+Taking the screeplot into account, 7 dimensions are needed to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. 
 
 # Clustering
 
-## Clusters
+## Cluster Selection
 
 ```{r, message = F, warning = F}
 # Get PCA coordinates
@@ -109,26 +111,36 @@ elbow_data <- data.frame(Clusters = 1:10, WCSS = wcss)
 elbow_plot <- ggplot(elbow_data, aes(x = Clusters, y = WCSS)) +
   geom_point() +
   geom_line() +
-  ggtitle("Elbow Method for Determining Optimal Number of Clusters") +
+  ggtitle("Elbow Method for Optimality") +
   xlab("Number of Clusters") +
   ylab("Within-Cluster Sum of Squares (WCSS)")
 
 # Print the elbow plot
 elbow_plot
 
-# Looking at Elbow, Optimal nb of clusters = 5
-optimal_clusters <- 5
+# Looking at Elbow, Optimal nb of clusters = 3
+optimal_clusters <- 3
 km_result <- kmeans(pca_coords_df[, 1:3], centers = optimal_clusters)
+
+# Add cluster assignments to PCA coordinates
+pca_coords_df$cluster <- km_result$cluster
+
+# Cluster Plot
+cluster_plot <- ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = factor(cluster))) +
+  geom_point() +
+  ggtitle("2D Cluster Plot (Dim.1 vs Dim.2)") +
+  xlab(paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")) +
+  ylab(paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")) +
+  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen"))
+
+cluster_plot
 ```
 
-Using the Elbow method for clustering, we can see that the optimal number of cluster is 5, which makes sense regarding the link of our features in our PCA. To dive deeper and better see the clusters, we have decided to provide a 3D biplot, which includes the PCA and the clustering.
+Using the elbow method for clustering allows to show us the optimal number of cluster. In our case, we seem to have 2 elbows, so the first one indicates the optimality at 3 clusters. We will work with 3 clusters and see what the second elbow represents. Then, we will at the cluster plot which shows the 3 clusters. We will go deeper in the interpreatation by looking at the 3D version of the biplot, which includes both the PCA and the clustering.
 
 ## 3D Biplot
 
 ```{r, message = F, warning = F}
-# Add cluster assignments to PCA coordinates
-pca_coords_df$cluster <- km_result$cluster
-
 # Calculate Cluster Centers
 cluster_centers <- aggregate(pca_coords_df[, 1:3], by = list(cluster = pca_coords_df$cluster), FUN = mean)
 
@@ -146,10 +158,10 @@ fig <- plot_ly() %>%
     y = ~Dim.2,
     z = ~Dim.3,
     color = ~factor(km_result$cluster),
-    colors = c("lightblue", "lightpink", "lightgreen", "lightgrey", "beige"),
+    colors = c("lightblue", "lightpink", "lightgreen"),
     type = 'scatter3d',
     mode = 'markers',
-    marker = list(size = 5)
+    marker = list(size = 3)
   ) %>%
   add_trace(
     data = cluster_centers,
@@ -160,7 +172,7 @@ fig <- plot_ly() %>%
     type = 'scatter3d',
     mode = 'text',
     textposition = 'top center',
-    textfont = list(color = 'black', size = 12)
+    textfont = list(color = 'black', size = 10)
   )
 
 # Scale factor for loadings arrows
@@ -207,8 +219,8 @@ fig <- fig %>%
 fig
 ```
 
-To combine both PCA and clustering, we first started with assigning the PCA coordinates to the clusters, then calculate the centers. We wanted to have the biplot such that we can rotate the plot and see both the observations divided into 5 clusters as well as the features arrows.
+Looking at this 3D biplot, we can clearly see the 3 different clusters. Cluster 1 seems to englobe the observations from characteristics of the vehicle with fuel type 2, meaning the hybrid cars. Then, cluster 2 links observations from the different car characteristics such as the vehicle class, the engine displacement and cylinders, the drive, the make, the fuel types and the model year. Finally, cluster 3 englobes the characteristics of vehicles with fuel type 1, meaning normal gas cars.
 
-Looking at the plot, we can observe interesting features similarities. Let's have a look through each cluster. To begin with, cluster 1 seems to link the features regarding the range and mpg of fuel type 2. Then, cluster 2 seem to focus on the features regarding fuel type 1, as well as the drive and the transmission. Next is cluster 3 which seem to mainly link the range of fuel type 1, but also the charge time and moderatlely the mps. Then, cluster 4 englobes both engine displacement and cylinders as well as the vehicle class and the drive. Cluster 5 mainly considers make being moderately linked to mpg of fuel type 1, and somewhat to both fuel type 1 and fuel type 2. Model year seems to also be somewhat linked. 
+Finally, we can find in the Annex part our tentative for silhouette plots as well as the 3D biplot with 6 clusters instead of 3.
 
-In addition to that, looking at the dimensions, we can generalize by saying that dimension 1 links the features regarding fuel type 1, dimension 2 moderately the features regarding fuel type 2 and dimension 3 connects the technical car features (engine, class, make).
+To sum the unsupervised learning part, we can clearly say that there seems to be some factors that are linked together and some observations that can be linked into 3 clusters. These clusters being "Hybrid Vehicles", "Vehicle Characteristics" and "Normal Gas Vehicles" makes sense, as their observations are similar. As for the features, we need 7 dimensions to explain at least 80% of the total variance, meaning that not all the features are concretely linked together and the links are "moderately strong".

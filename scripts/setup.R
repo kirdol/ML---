@@ -28,7 +28,8 @@ packages_loaded <- c(
   "keras",
   "neuralnet", 
   "corrplot",
-  "reshape2"
+  "reshape2",
+  "cluster"
 )
 
 # Function that install the packages if not already installed on your computer
