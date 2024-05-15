@@ -98,7 +98,7 @@ model_no_dropout = Sequential([
 
 We used activation functions in the hidden layers to introduce non-linearity into the model. The ReLU activation function is used in the hidden layers because it is computationally efficient and helps the model learn complex patterns in the data. The Softmax activation function is used in the output layer because it converts the model's raw output into probabilities that sum to one. This allows us to interpret the model's output as the probability of each car manufacturer.
 
-###### We used the following hyperparameters:
+####### We used the following hyperparameters:
 
 * **epochs:** 5 (Corresponds to the number of times the model sees the entire dataset during training.)
 * **batch_size:** 32 (Corresponds to the number of samples that the model processes before updating the weights.)
@@ -124,7 +124,7 @@ predictions_no_dropout = np.argmax(model_no_dropout.predict(X_test), axis=1)
 print(predictions_no_dropout)
 ```
 
-```{python}
+```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
 y_pred = model_no_dropout.predict(X_test)
 y_pred_classes = np.argmax(y_pred, axis=1)
@@ -158,10 +158,15 @@ fig, ax = plt.subplots()
 ax.boxplot(data, labels=["Sensitivity", "Specificity"])
 ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
+```
+
+```{python, echo = FALSE}
 plt.show()
 ```
 
 By looking at the boxplot representing the distribution of the sensitivity and specificity for the classes, we see a clear sign of unbalanced classes. The sensitivity and specificity are not consistent across the classes. This is a sign that the model is not performing well on all classes. We will use class weights to address this issue.
+
+##### Adding class weights to the model
 
 ```{python, echo = FALSE, output = FALSE}
 # Compile the model
@@ -208,15 +213,16 @@ with np.errstate(divide='ignore', invalid='ignore'):
 unique_labels = np.unique(y_true_classes)
 for i, class_label in enumerate(unique_labels):
     print(f"Class {class_label} - Sensitivity: {sensitivity[i]:.4f}, Specificity: {specificity[i]:.4f}")
-```
 
-```{python}
 # Create boxplots
 data = [sensitivity, specificity]
 fig, ax = plt.subplots()
 ax.boxplot(data, labels=["Sensitivity", "Specificity"])
 ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
+```
+
+```{python, echo = FALSE}
 plt.show()
 ```
 

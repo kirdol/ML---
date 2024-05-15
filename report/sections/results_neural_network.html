@@ -110,160 +110,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate predictions on the test set</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model_no_dropout.predict(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m2s[0m 8ms/step
-[1m218/264[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m0s[0m 231us/step
-[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 229us/step</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y_pred_classes <span class="op">=</span> np.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_true_classes <span class="op">=</span> np.argmax(y_test, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute confusion matrix</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true_classes, y_pred_classes)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate specificity and sensitivity for each class</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>tp <span class="op">=</span> np.diag(cm)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> cm.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">-</span> np.diag(cm)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> cm.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">-</span> np.diag(cm)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>tn <span class="op">=</span> cm.<span class="bu">sum</span>() <span class="op">-</span> (fp <span class="op">+</span> fn <span class="op">+</span> tp)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Handle potential division by zero</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> np.errstate(divide<span class="op">=</span><span class="st">'ignore'</span>, invalid<span class="op">=</span><span class="st">'ignore'</span>):</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    sensitivity <span class="op">=</span> np.divide(tp, tp <span class="op">+</span> fn)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    specificity <span class="op">=</span> np.divide(tn, tn <span class="op">+</span> fp)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set sensitivities and specificities to 0 where division by zero occurred</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    sensitivity[np.isnan(sensitivity)] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    specificity[np.isnan(specificity)] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Print specificity and sensitivity for each class</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>unique_labels <span class="op">=</span> np.unique(y_true_classes)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, class_label <span class="kw">in</span> <span class="bu">enumerate</span>(unique_labels):</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Class </span><span class="sc">{</span>class_label<span class="sc">}</span><span class="ss"> - Sensitivity: </span><span class="sc">{</span>sensitivity[i]<span class="sc">:.4f}</span><span class="ss">, Specificity: </span><span class="sc">{</span>specificity[i]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Class 0 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 2 - Sensitivity: 0.6164, Specificity: 0.9981
-Class 3 - Sensitivity: 0.5500, Specificity: 0.9999
-Class 4 - Sensitivity: 0.2500, Specificity: 1.0000
-Class 5 - Sensitivity: 0.7941, Specificity: 0.9999
-Class 6 - Sensitivity: 0.7500, Specificity: 0.9939
-Class 8 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 10 - Sensitivity: 0.9093, Specificity: 0.9841
-Class 12 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 13 - Sensitivity: 0.9062, Specificity: 1.0000
-Class 14 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 16 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 17 - Sensitivity: 0.5000, Specificity: 0.9998
-Class 18 - Sensitivity: 0.5660, Specificity: 0.9977
-Class 19 - Sensitivity: 0.6036, Specificity: 0.9382
-Class 20 - Sensitivity: 0.3427, Specificity: 0.9934
-Class 21 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 22 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 24 - Sensitivity: 0.0833, Specificity: 0.9996
-Class 25 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 26 - Sensitivity: 0.6909, Specificity: 0.9727
-Class 28 - Sensitivity: 0.0250, Specificity: 1.0000
-Class 30 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 32 - Sensitivity: 0.0000, Specificity: 0.9998
-Class 33 - Sensitivity: 1.0000, Specificity: 0.9994
-Class 34 - Sensitivity: 0.8000, Specificity: 1.0000
-Class 36 - Sensitivity: 0.7798, Specificity: 0.9611
-Class 37 - Sensitivity: 0.2831, Specificity: 0.9755
-Class 38 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 39 - Sensitivity: 0.5217, Specificity: 0.9998
-Class 40 - Sensitivity: 0.3667, Specificity: 0.9976
-Class 44 - Sensitivity: 0.6725, Specificity: 0.9819
-Class 45 - Sensitivity: 0.4000, Specificity: 1.0000
-Class 46 - Sensitivity: 0.4031, Specificity: 0.9880
-Class 48 - Sensitivity: 0.5000, Specificity: 0.9998
-Class 49 - Sensitivity: 0.7576, Specificity: 0.9986
-Class 50 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 51 - Sensitivity: 0.2093, Specificity: 0.9988
-Class 52 - Sensitivity: 0.2857, Specificity: 1.0000
-Class 54 - Sensitivity: 0.6311, Specificity: 0.9969
-Class 55 - Sensitivity: 0.7240, Specificity: 0.9920
-Class 57 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 58 - Sensitivity: 0.5028, Specificity: 0.9913
-Class 62 - Sensitivity: 0.7857, Specificity: 0.9995
-Class 63 - Sensitivity: 0.8551, Specificity: 0.9984
-Class 64 - Sensitivity: 0.6718, Specificity: 0.9965
-Class 65 - Sensitivity: 0.4026, Specificity: 0.9958
-Class 68 - Sensitivity: 0.8182, Specificity: 0.9994
-Class 69 - Sensitivity: 0.2500, Specificity: 1.0000
-Class 70 - Sensitivity: 0.9574, Specificity: 0.9989
-Class 71 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 72 - Sensitivity: 0.8810, Specificity: 0.9996
-Class 73 - Sensitivity: 1.0000, Specificity: 0.9999
-Class 74 - Sensitivity: 0.5484, Specificity: 0.9896
-Class 75 - Sensitivity: 0.8000, Specificity: 1.0000
-Class 76 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 77 - Sensitivity: 0.9286, Specificity: 0.9967
-Class 78 - Sensitivity: 0.0000, Specificity: 0.9998
-Class 79 - Sensitivity: 0.5116, Specificity: 0.9841
-Class 80 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 81 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 82 - Sensitivity: 0.6946, Specificity: 0.9823
-Class 83 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 85 - Sensitivity: 0.0000, Specificity: 0.9996
-Class 87 - Sensitivity: 1.0000, Specificity: 0.9996
-Class 88 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 89 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 90 - Sensitivity: 0.1845, Specificity: 0.9929
-Class 91 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 95 - Sensitivity: 0.9556, Specificity: 0.9973
-Class 97 - Sensitivity: 0.9130, Specificity: 0.9994
-Class 98 - Sensitivity: 0.0000, Specificity: 0.9998
-Class 99 - Sensitivity: 1.0000, Specificity: 0.9995
-Class 102 - Sensitivity: 1.0000, Specificity: 0.9999
-Class 104 - Sensitivity: 1.0000, Specificity: 0.9994
-Class 105 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 106 - Sensitivity: 0.6901, Specificity: 0.9952
-Class 107 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 108 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 110 - Sensitivity: 0.6250, Specificity: 0.9980
-Class 111 - Sensitivity: 0.3636, Specificity: 0.9993
-Class 112 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 114 - Sensitivity: 0.7500, Specificity: 1.0000
-Class 115 - Sensitivity: 0.9206, Specificity: 0.9897
-Class 117 - Sensitivity: 0.4900, Specificity: 0.9941
-Class 118 - Sensitivity: 0.5000, Specificity: 1.0000
-Class 119 - Sensitivity: 1.0000, Specificity: 0.9992
-Class 121 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 123 - Sensitivity: 0.5602, Specificity: 0.9846
-Class 124 - Sensitivity: 1.0000, Specificity: 1.0000
-Class 125 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 126 - Sensitivity: 0.5649, Specificity: 0.9922
-Class 127 - Sensitivity: 0.8976, Specificity: 0.9975
-Class 128 - Sensitivity: 0.2500, Specificity: 0.9998</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create boxplots</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [sensitivity, specificity]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ax.boxplot(data, labels<span class="op">=</span>[<span class="st">"Sensitivity"</span>, <span class="st">"Specificity"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3507026f0&gt;, &lt;matplotlib.lines.Line2D object at 0x3506ad100&gt;, &lt;matplotlib.lines.Line2D object at 0x33b6ec6e0&gt;, &lt;matplotlib.lines.Line2D object at 0x3507033e0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3506ad490&gt;, &lt;matplotlib.lines.Line2D object at 0x3506ad790&gt;, &lt;matplotlib.lines.Line2D object at 0x3506accb0&gt;, &lt;matplotlib.lines.Line2D object at 0x3506ad040&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x33daadcd0&gt;, &lt;matplotlib.lines.Line2D object at 0x3506adfa0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3506ada90&gt;, &lt;matplotlib.lines.Line2D object at 0x3506ae2a0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3506add60&gt;, &lt;matplotlib.lines.Line2D object at 0x3506ae570&gt;], 'means': []}</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Sensitivity and Specificity for Each Class"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Proportion"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -272,24 +122,24 @@ Class 128 - Sensitivity: 0.2500, Specificity: 0.9998</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create boxplots</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [sensitivity, specificity]</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ax.boxplot(data, labels<span class="op">=</span>[<span class="st">"Sensitivity"</span>, <span class="st">"Specificity"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create boxplots</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [sensitivity, specificity]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ax.boxplot(data, labels<span class="op">=</span>[<span class="st">"Sensitivity"</span>, <span class="st">"Specificity"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3768fe150&gt;, &lt;matplotlib.lines.Line2D object at 0x3768feb40&gt;, &lt;matplotlib.lines.Line2D object at 0x3768fff20&gt;, &lt;matplotlib.lines.Line2D object at 0x3768fd1f0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3768ff050&gt;, &lt;matplotlib.lines.Line2D object at 0x3768ff320&gt;, &lt;matplotlib.lines.Line2D object at 0x3768fe000&gt;, &lt;matplotlib.lines.Line2D object at 0x3768fd610&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x3506b26c0&gt;, &lt;matplotlib.lines.Line2D object at 0x3768ffbf0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3768ff620&gt;, &lt;matplotlib.lines.Line2D object at 0x3768feae0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3768ff920&gt;, &lt;matplotlib.lines.Line2D object at 0x37696c200&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x36a1a2000&gt;, &lt;matplotlib.lines.Line2D object at 0x36a1a21e0&gt;, &lt;matplotlib.lines.Line2D object at 0x36a204590&gt;, &lt;matplotlib.lines.Line2D object at 0x36a1a1280&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x36a1a2300&gt;, &lt;matplotlib.lines.Line2D object at 0x36a1a3ad0&gt;, &lt;matplotlib.lines.Line2D object at 0x36a1a2fc0&gt;, &lt;matplotlib.lines.Line2D object at 0x36a1a33b0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x3690b6e10&gt;, &lt;matplotlib.lines.Line2D object at 0x36a204260&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x36a1a3c80&gt;, &lt;matplotlib.lines.Line2D object at 0x36a204560&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x36a1a3f80&gt;, &lt;matplotlib.lines.Line2D object at 0x36a204890&gt;], 'means': []}</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Sensitivity and Specificity for Each Class"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Proportion"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Sensitivity and Specificity for Each Class"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Proportion"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-9-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -299,7 +149,7 @@ Class 128 - Sensitivity: 0.2500, Specificity: 0.9998</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-9-5.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-10-6.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -308,13 +158,13 @@ Class 128 - Sensitivity: 0.2500, Specificity: 0.9998</code></pre>
 <p>In the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 0.6609</code></pre>
+<pre><code>Final Training Accuracy: 0.6611</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 0.6462</code></pre>
+<pre><code>Final Validation Accuracy: 0.6420</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Accuracy: 0.6250</code></pre>
+<pre><code>Test Accuracy: 0.6268</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address this issue, we can introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model’s performance later.</p>
@@ -324,38 +174,38 @@ Class 128 - Sensitivity: 0.2500, Specificity: 0.9998</code></pre>
 <h4 class="anchored" data-anchor-id="neural-network-with-dropout-layers">Neural Network with Dropout layers</h4>
 <p>Dropout layers randomly set a fraction of input units to zero during training, which helps prevent overfitting by forcing the model to learn more robust features. We will tune the dropout rate to find the optimal value that balances training and validation accuracy and that insure to reduce overfitting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create and compile the model</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_model(dropout_rate<span class="op">=</span><span class="fl">0.0</span>):</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> Sequential([</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        Input(shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        Dropout(dropout_rate),</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        Dropout(dropout_rate),</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        Dense(y_train.shape[<span class="dv">1</span>], activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(optimizer<span class="op">=</span>Adam(), loss<span class="op">=</span><span class="st">'categorical_crossentropy'</span>, metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create and compile the model</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_model(dropout_rate<span class="op">=</span><span class="fl">0.0</span>):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> Sequential([</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        Input(shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        Dropout(dropout_rate),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        Dropout(dropout_rate),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        Dense(y_train.shape[<span class="dv">1</span>], activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(optimizer<span class="op">=</span>Adam(), loss<span class="op">=</span><span class="st">'categorical_crossentropy'</span>, metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-15-7.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-16-8.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate to train the final model with droopout layers.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Out best dropout rate used for the following model.</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>dropout_rate_to_plot <span class="op">=</span> <span class="fl">0.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Out best dropout rate used for the following model.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dropout_rate_to_plot <span class="op">=</span> <span class="fl">0.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-18-9.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-19-10.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -363,266 +213,258 @@ Class 128 - Sensitivity: 0.2500, Specificity: 0.9998</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to calculate metrics from confusion matrix</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_metrics(cm):</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># True Positive, False Positive, False Negative, True Negative</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> cm[<span class="dv">1</span>, <span class="dv">1</span>]</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> cm[<span class="dv">0</span>, <span class="dv">1</span>]</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> cm[<span class="dv">1</span>, <span class="dv">0</span>]</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    tn <span class="op">=</span> cm[<span class="dv">0</span>, <span class="dv">0</span>]</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    sensitivity <span class="op">=</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)  <span class="co"># True Positive Rate</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    specificity <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fp)  <span class="co"># True Negative Rate</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    balanced_accuracy <span class="op">=</span> (sensitivity <span class="op">+</span> specificity) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sensitivity, specificity, balanced_accuracy</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dropout rate to use</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>dropout_rate <span class="op">=</span> <span class="fl">0.2</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model with the specified dropout rate</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Testing model with dropout rate: </span><span class="sc">{</span>dropout_rate<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to calculate metrics from confusion matrix</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_metrics(cm):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># True Positive, False Positive, False Negative, True Negative</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> cm[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> cm[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> cm[<span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    tn <span class="op">=</span> cm[<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    sensitivity <span class="op">=</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)  <span class="co"># True Positive Rate</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    specificity <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fp)  <span class="co"># True Negative Rate</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    balanced_accuracy <span class="op">=</span> (sensitivity <span class="op">+</span> specificity) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sensitivity, specificity, balanced_accuracy</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dropout rate to use</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>dropout_rate <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model with the specified dropout rate</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Testing model with dropout rate: </span><span class="sc">{</span>dropout_rate<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Testing model with dropout rate: 0.2</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> create_model(dropout_rate<span class="op">=</span>dropout_rate)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model and collect training accuracy</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train_split, y_train_split, epochs<span class="op">=</span><span class="dv">5</span>, batch_size<span class="op">=</span><span class="dv">32</span>, verbose<span class="op">=</span><span class="dv">0</span>, validation_data<span class="op">=</span>(X_val, y_val))</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the validation set</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>val_loss, val_accuracy <span class="op">=</span> model.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the test set</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>test_loss, test_accuracy <span class="op">=</span> model.evaluate(X_test, y_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the last epoch's training accuracy, validation accuracy, and test accuracy</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>training_accuracy <span class="op">=</span> history.history[<span class="st">'accuracy'</span>][<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>training_accuracies <span class="op">=</span> [training_accuracy]</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>validation_accuracies <span class="op">=</span> [val_accuracy]</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>test_accuracies <span class="op">=</span> [test_accuracy]</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Print rounded accuracy values</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training accuracy: </span><span class="sc">{</span><span class="bu">round</span>(training_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">, Validation accuracy: </span><span class="sc">{</span><span class="bu">round</span>(val_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">, Test accuracy: </span><span class="sc">{</span><span class="bu">round</span>(test_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> create_model(dropout_rate<span class="op">=</span>dropout_rate)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model and collect training accuracy</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train_split, y_train_split, epochs<span class="op">=</span><span class="dv">5</span>, batch_size<span class="op">=</span><span class="dv">32</span>, verbose<span class="op">=</span><span class="dv">0</span>, class_weight<span class="op">=</span>class_weights_dict, validation_data<span class="op">=</span>(X_val, y_val))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the validation set</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>val_loss, val_accuracy <span class="op">=</span> model.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the test set</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>test_loss, test_accuracy <span class="op">=</span> model.evaluate(X_test, y_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the last epoch's training accuracy, validation accuracy, and test accuracy</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>training_accuracy <span class="op">=</span> history.history[<span class="st">'accuracy'</span>][<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>training_accuracies <span class="op">=</span> [training_accuracy]</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>validation_accuracies <span class="op">=</span> [val_accuracy]</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>test_accuracies <span class="op">=</span> [test_accuracy]</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Print rounded accuracy values</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training accuracy: </span><span class="sc">{</span><span class="bu">round</span>(training_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">, Validation accuracy: </span><span class="sc">{</span><span class="bu">round</span>(val_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">, Test accuracy: </span><span class="sc">{</span><span class="bu">round</span>(test_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Training accuracy: 0.56, Validation accuracy: 0.62, Test accuracy: 0.6</code></pre>
+<pre><code>Training accuracy: 0.3, Validation accuracy: 0.36, Test accuracy: 0.36</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the confusion matrix and metrics</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.argmax(model.predict(X_test), axis<span class="op">=-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the confusion matrix and metrics</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.argmax(model.predict(X_test), axis<span class="op">=-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m5s[0m 19ms/step
-[1m214/264[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m0s[0m 236us/step
-[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 233us/step</code></pre>
+[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m4s[0m 18ms/step
+[1m218/264[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m0s[0m 231us/step
+[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 229us/step</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> np.argmax(y_test, axis<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true, y_pred)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert confusion matrix to a DataFrame for better readability</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>cm_df <span class="op">=</span> pd.DataFrame(cm, index<span class="op">=</span>[<span class="ss">f'Actual </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">0</span>])],</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                     columns<span class="op">=</span>[<span class="ss">f'Predicted </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">1</span>])])</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the confusion matrix as a table</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Confusion Matrix for Dropout Rate </span><span class="sc">{</span>dropout_rate<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> np.argmax(y_test, axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true, y_pred)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert confusion matrix to a DataFrame for better readability</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>cm_df <span class="op">=</span> pd.DataFrame(cm, index<span class="op">=</span>[<span class="ss">f'Actual </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">0</span>])],</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                     columns<span class="op">=</span>[<span class="ss">f'Predicted </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">1</span>])])</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the confusion matrix as a table</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Confusion Matrix for Dropout Rate </span><span class="sc">{</span>dropout_rate<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix for Dropout Rate 0.2</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cm_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cm_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>           Predicted 0  Predicted 1  ...  Predicted 92  Predicted 93
-Actual 0             0            0  ...             0             0
-Actual 1             0           41  ...             0             0
-Actual 2             0            0  ...             0             0
-Actual 3             0            0  ...             0             0
-Actual 4             0            0  ...             0             0
-...                ...          ...  ...           ...           ...
-Actual 89            0            0  ...             0             0
-Actual 90            0            0  ...             0             0
-Actual 91            0            0  ...             0             0
-Actual 92            0            0  ...             0             0
-Actual 93            0            0  ...             0             9
+<pre><code>            Predicted 0  Predicted 1  ...  Predicted 113  Predicted 114
+Actual 0              0            0  ...              0              0
+Actual 1              0            0  ...              0              0
+Actual 2              0            0  ...              0              0
+Actual 3              1            0  ...              0              0
+Actual 4              0            0  ...              0              0
+...                 ...          ...  ...            ...            ...
+Actual 110            0            0  ...              0              0
+Actual 111            0            2  ...              0              0
+Actual 112            0            3  ...              0              0
+Actual 113            0            0  ...              1              0
+Actual 114            0            0  ...              0              5
 
-[94 rows x 94 columns]</code></pre>
+[115 rows x 115 columns]</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and print sensitivity, specificity, and balanced accuracy</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>sensitivity, specificity, balanced_accuracy <span class="op">=</span> calculate_metrics(cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and print sensitivity, specificity, and balanced accuracy</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>sensitivity, specificity, balanced_accuracy <span class="op">=</span> calculate_metrics(cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;string&gt;:10: RuntimeWarning: invalid value encountered in scalar divide</code></pre>
+<pre><code>&lt;string&gt;:9: RuntimeWarning: invalid value encountered in scalar divide
+&lt;string&gt;:10: RuntimeWarning: invalid value encountered in scalar divide</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">:.2f}</span><span class="ss">, Specificity: </span><span class="sc">{</span>specificity<span class="sc">:.2f}</span><span class="ss">, Balanced Accuracy: </span><span class="sc">{</span>balanced_accuracy<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">:.2f}</span><span class="ss">, Specificity: </span><span class="sc">{</span>specificity<span class="sc">:.2f}</span><span class="ss">, Balanced Accuracy: </span><span class="sc">{</span>balanced_accuracy<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Sensitivity: 1.00, Specificity: nan, Balanced Accuracy: nan</code></pre>
+<pre><code>Sensitivity: nan, Specificity: nan, Balanced Accuracy: nan</code></pre>
 </div>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate predictions on the test set</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate predictions on the test set</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 7ms/step
-[1m227/264[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m0s[0m 222us/step
-[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 221us/step</code></pre>
+[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m2s[0m 8ms/step
+[1m260/264[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 194us/step
+[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 194us/step</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>y_pred_classes <span class="op">=</span> np.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>y_true_classes <span class="op">=</span> np.argmax(y_test, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute confusion matrix</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true_classes, y_pred_classes)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the confusion matrix</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>disp <span class="op">=</span> ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>np.unique(y_true_classes))</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>disp.plot(cmap<span class="op">=</span>plt.cm.Blues)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>y_pred_classes <span class="op">=</span> np.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>y_true_classes <span class="op">=</span> np.argmax(y_test, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute confusion matrix</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true_classes, y_pred_classes)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># # Display the confusion matrix</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=np.unique(y_true_classes))</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># disp.plot(cmap=plt.cm.Blues)</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.title('Confusion Matrix')</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.show()</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate specificity and sensitivity for each class</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>tp <span class="op">=</span> np.diag(cm)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> cm.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">-</span> np.diag(cm)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> cm.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">-</span> np.diag(cm)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>tn <span class="op">=</span> cm.<span class="bu">sum</span>() <span class="op">-</span> (fp <span class="op">+</span> fn <span class="op">+</span> tp)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>sensitivity <span class="op">=</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay object at 0x37730fb60&gt;</code></pre>
+<pre><code>&lt;string&gt;:2: RuntimeWarning: invalid value encountered in divide</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix'</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-20-11.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate specificity and sensitivity for each class</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>tp <span class="op">=</span> np.diag(cm)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> cm.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">-</span> np.diag(cm)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> cm.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">-</span> np.diag(cm)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>tn <span class="op">=</span> cm.<span class="bu">sum</span>() <span class="op">-</span> (fp <span class="op">+</span> fn <span class="op">+</span> tp)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>sensitivity <span class="op">=</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>specificity <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fp)</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Print specificity and sensitivity for each class</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>unique_labels <span class="op">=</span> np.unique(y_true_classes)</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, class_label <span class="kw">in</span> <span class="bu">enumerate</span>(unique_labels):</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Class </span><span class="sc">{</span>class_label<span class="sc">}</span><span class="ss"> - Sensitivity: </span><span class="sc">{</span>sensitivity[i]<span class="sc">:.4f}</span><span class="ss">, Specificity: </span><span class="sc">{</span>specificity[i]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>specificity <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fp)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print specificity and sensitivity for each class</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>unique_labels <span class="op">=</span> np.unique(y_true_classes)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, class_label <span class="kw">in</span> <span class="bu">enumerate</span>(unique_labels):</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Class </span><span class="sc">{</span>class_label<span class="sc">}</span><span class="ss"> - Sensitivity: </span><span class="sc">{</span>sensitivity[i]<span class="sc">:.4f}</span><span class="ss">, Specificity: </span><span class="sc">{</span>specificity[i]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Class 0 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 2 - Sensitivity: 0.5616, Specificity: 0.9987
-Class 3 - Sensitivity: 0.1500, Specificity: 0.9999
-Class 4 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 5 - Sensitivity: 0.7647, Specificity: 0.9996
-Class 6 - Sensitivity: 0.5381, Specificity: 0.9965
-Class 8 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 10 - Sensitivity: 0.8960, Specificity: 0.9761
+<pre><code>Class 0 - Sensitivity: 0.0000, Specificity: 0.9996
+Class 2 - Sensitivity: nan, Specificity: 0.9948
+Class 3 - Sensitivity: 0.4384, Specificity: 0.9968
+Class 4 - Sensitivity: 0.2000, Specificity: 0.9995
+Class 5 - Sensitivity: 1.0000, Specificity: 0.9905
+Class 6 - Sensitivity: 0.7353, Specificity: 0.9957
+Class 8 - Sensitivity: 0.3347, Specificity: 0.9948
+Class 10 - Sensitivity: nan, Specificity: 0.9999
 Class 12 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 13 - Sensitivity: 0.5625, Specificity: 0.9994
-Class 14 - Sensitivity: 1.0000, Specificity: 1.0000
+Class 13 - Sensitivity: 0.3606, Specificity: 0.9915
+Class 14 - Sensitivity: nan, Specificity: 0.9911
 Class 16 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 17 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 18 - Sensitivity: 0.4528, Specificity: 0.9981
-Class 19 - Sensitivity: 0.6663, Specificity: 0.9274
-Class 20 - Sensitivity: 0.3357, Specificity: 0.9921
-Class 21 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 22 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 24 - Sensitivity: 0.0000, Specificity: 0.9999
-Class 25 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 26 - Sensitivity: 0.6555, Specificity: 0.9743
-Class 28 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 30 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 32 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 33 - Sensitivity: 1.0000, Specificity: 0.9983
-Class 34 - Sensitivity: 0.7000, Specificity: 1.0000
-Class 36 - Sensitivity: 0.7812, Specificity: 0.9484
-Class 37 - Sensitivity: 0.0819, Specificity: 0.9912
+Class 17 - Sensitivity: 0.7188, Specificity: 0.9969
+Class 18 - Sensitivity: 1.0000, Specificity: 1.0000
+Class 19 - Sensitivity: nan, Specificity: 0.9933
+Class 20 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 21 - Sensitivity: 0.5000, Specificity: 0.9959
+Class 22 - Sensitivity: 0.3899, Specificity: 0.9926
+Class 24 - Sensitivity: 0.0060, Specificity: 0.9987
+Class 25 - Sensitivity: 0.3217, Specificity: 0.9792
+Class 26 - Sensitivity: 1.0000, Specificity: 0.9991
+Class 28 - Sensitivity: 0.5000, Specificity: 0.9953
+Class 30 - Sensitivity: nan, Specificity: 0.9992
+Class 32 - Sensitivity: 0.7500, Specificity: 0.9699
+Class 33 - Sensitivity: 0.0000, Specificity: 0.9947
+Class 34 - Sensitivity: 0.4075, Specificity: 0.9951
+Class 36 - Sensitivity: nan, Specificity: 0.9998
+Class 37 - Sensitivity: 0.5750, Specificity: 0.9870
 Class 38 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 39 - Sensitivity: 0.6522, Specificity: 0.9996
-Class 40 - Sensitivity: 0.5333, Specificity: 0.9964
-Class 44 - Sensitivity: 0.4279, Specificity: 0.9932
-Class 45 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 46 - Sensitivity: 0.4817, Specificity: 0.9789
-Class 48 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 49 - Sensitivity: 0.7273, Specificity: 0.9981
-Class 50 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 51 - Sensitivity: 0.3953, Specificity: 0.9956
-Class 52 - Sensitivity: 0.2857, Specificity: 1.0000
-Class 54 - Sensitivity: 0.4754, Specificity: 0.9971
-Class 55 - Sensitivity: 0.7865, Specificity: 0.9890
-Class 57 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 58 - Sensitivity: 0.2570, Specificity: 0.9955
-Class 62 - Sensitivity: 0.8571, Specificity: 0.9989
-Class 63 - Sensitivity: 0.7971, Specificity: 0.9983
-Class 64 - Sensitivity: 0.4427, Specificity: 0.9976
-Class 65 - Sensitivity: 0.2987, Specificity: 0.9978
-Class 68 - Sensitivity: 0.6364, Specificity: 0.9995
-Class 69 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 70 - Sensitivity: 0.9149, Specificity: 0.9960
-Class 71 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 72 - Sensitivity: 0.7143, Specificity: 0.9983
-Class 73 - Sensitivity: 0.5000, Specificity: 1.0000
-Class 74 - Sensitivity: 0.4147, Specificity: 0.9909
-Class 75 - Sensitivity: 0.5333, Specificity: 1.0000
-Class 76 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 77 - Sensitivity: 0.9343, Specificity: 0.9900
-Class 78 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 79 - Sensitivity: 0.5721, Specificity: 0.9796
-Class 80 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 81 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 82 - Sensitivity: 0.4631, Specificity: 0.9871
+Class 39 - Sensitivity: nan, Specificity: 0.9996
+Class 40 - Sensitivity: 0.0000, Specificity: 0.9988
+Class 44 - Sensitivity: 0.7333, Specificity: 0.9989
+Class 45 - Sensitivity: 0.8000, Specificity: 0.9986
+Class 46 - Sensitivity: 0.1865, Specificity: 0.9873
+Class 48 - Sensitivity: 0.6704, Specificity: 0.9320
+Class 49 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 50 - Sensitivity: 0.9565, Specificity: 0.9888
+Class 51 - Sensitivity: 0.5000, Specificity: 0.9862
+Class 52 - Sensitivity: nan, Specificity: 0.9976
+Class 54 - Sensitivity: 0.3755, Specificity: 0.9799
+Class 55 - Sensitivity: 1.0000, Specificity: 0.9951
+Class 57 - Sensitivity: 0.0209, Specificity: 1.0000
+Class 58 - Sensitivity: 0.0000, Specificity: 0.9994
+Class 62 - Sensitivity: 0.6869, Specificity: 0.9933
+Class 63 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 64 - Sensitivity: 0.5930, Specificity: 0.9744
+Class 65 - Sensitivity: 0.2857, Specificity: 0.9972
+Class 68 - Sensitivity: 0.2623, Specificity: 0.9935
+Class 69 - Sensitivity: 0.3646, Specificity: 0.9763
+Class 70 - Sensitivity: nan, Specificity: 0.9973
+Class 71 - Sensitivity: 1.0000, Specificity: 0.9996
+Class 72 - Sensitivity: 0.4413, Specificity: 0.9722
+Class 73 - Sensitivity: nan, Specificity: 0.9972
+Class 74 - Sensitivity: nan, Specificity: 0.9999
+Class 75 - Sensitivity: 0.8929, Specificity: 0.9977
+Class 76 - Sensitivity: 0.8261, Specificity: 0.9951
+Class 77 - Sensitivity: 0.3511, Specificity: 0.9881
+Class 78 - Sensitivity: 0.2857, Specificity: 0.9913
+Class 79 - Sensitivity: nan, Specificity: 0.9999
+Class 80 - Sensitivity: 0.9091, Specificity: 0.9961
+Class 81 - Sensitivity: 0.7500, Specificity: 0.9981
+Class 82 - Sensitivity: 0.9894, Specificity: 0.9933
 Class 83 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 85 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 87 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 88 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 89 - Sensitivity: 0.0971, Specificity: 0.9972
-Class 90 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 91 - Sensitivity: 0.9519, Specificity: 0.9897
-Class 95 - Sensitivity: 1.0000, Specificity: 0.9994
-Class 97 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 98 - Sensitivity: 0.9744, Specificity: 0.9990
-Class 99 - Sensitivity: 0.4737, Specificity: 0.9995
-Class 102 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 104 - Sensitivity: 0.4930, Specificity: 0.9971
-Class 105 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 85 - Sensitivity: 0.6429, Specificity: 0.9957
+Class 87 - Sensitivity: 1.0000, Specificity: 0.9975
+Class 88 - Sensitivity: 0.1613, Specificity: 0.9897
+Class 89 - Sensitivity: 0.4000, Specificity: 0.9994
+Class 90 - Sensitivity: 1.0000, Specificity: 0.9944
+Class 91 - Sensitivity: 0.6257, Specificity: 0.9922
+Class 95 - Sensitivity: 1.0000, Specificity: 0.9949
+Class 97 - Sensitivity: 0.1721, Specificity: 0.9944
+Class 98 - Sensitivity: 1.0000, Specificity: 1.0000
+Class 99 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 102 - Sensitivity: 0.1611, Specificity: 0.9897
+Class 104 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 105 - Sensitivity: nan, Specificity: 0.9951
 Class 106 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 107 - Sensitivity: 0.4792, Specificity: 0.9987
+Class 107 - Sensitivity: 0.0000, Specificity: 1.0000
 Class 108 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 110 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 111 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 112 - Sensitivity: 0.8624, Specificity: 0.9910
-Class 114 - Sensitivity: 0.4200, Specificity: 0.9922
-Class 115 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 117 - Sensitivity: 1.0000, Specificity: 0.9975
-Class 118 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 119 - Sensitivity: 0.6390, Specificity: 0.9564
-Class 121 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 123 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 124 - Sensitivity: 0.6221, Specificity: 0.9873
-Class 125 - Sensitivity: 0.7831, Specificity: 0.9967
-Class 126 - Sensitivity: 0.2500, Specificity: 1.0000
-Class 127 - Sensitivity: 0.0000, Specificity: 1.0000
-Class 128 - Sensitivity: 1.0000, Specificity: 0.9999</code></pre>
+Class 110 - Sensitivity: 0.3495, Specificity: 0.9806
+Class 111 - Sensitivity: 0.3333, Specificity: 0.9967
+Class 112 - Sensitivity: 0.6667, Specificity: 0.9943
+Class 114 - Sensitivity: nan, Specificity: 0.9991
+Class 115 - Sensitivity: nan, Specificity: 0.9989
+Class 117 - Sensitivity: 1.0000, Specificity: 0.9888
+Class 118 - Sensitivity: nan, Specificity: 0.9986
+Class 119 - Sensitivity: 1.0000, Specificity: 0.9985
+Class 121 - Sensitivity: 0.9744, Specificity: 0.9987
+Class 123 - Sensitivity: 0.2632, Specificity: 0.9961
+Class 124 - Sensitivity: nan, Specificity: 0.9975
+Class 125 - Sensitivity: 0.0000, Specificity: 1.0000
+Class 126 - Sensitivity: nan, Specificity: 0.9992
+Class 127 - Sensitivity: 0.3521, Specificity: 0.9959
+Class 128 - Sensitivity: 1.0000, Specificity: 0.9976</code></pre>
 </div>
 </div>
 <p>The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.</p>
