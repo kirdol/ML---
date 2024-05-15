@@ -86,257 +86,209 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="preprocessing-and-splitting-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="preprocessing-and-splitting-the-data">Preprocessing and splitting the data</h2>
 <p>The dataset contains different types of data. Some columns are numerical (like “city_mpg_fuel_type_1” or “charge_time_240v”), and some are categorical (“vehicle_class” or “fuel_type”). We identify and separate these two types of columns. Separating numerical and categorical columns is an essential step in data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(here(<span class="st">"data/data_cleaned.csv"</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify categorical and numerical columns</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>categorical_cols <span class="op">=</span> data.select_dtypes(include<span class="op">=</span>[<span class="st">'object'</span>]).columns.tolist()</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>numerical_cols <span class="op">=</span> data.select_dtypes(include<span class="op">=</span>[<span class="st">'int64'</span>, <span class="st">'float64'</span>]).columns.tolist()</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the target column 'make' from the features list</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'make'</span> <span class="kw">in</span> categorical_cols:</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    categorical_cols.remove(<span class="st">'make'</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'make'</span> <span class="kw">in</span> numerical_cols:</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    numerical_cols.remove(<span class="st">'make'</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the preprocessing steps for numerical and categorical columns</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'num'</span>, StandardScaler(), numerical_cols),</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'cat'</span>, OneHotEncoder(sparse_output<span class="op">=</span><span class="va">False</span>), categorical_cols)  <span class="co"># Set sparse_output to False</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split data into features and target</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.drop(<span class="st">'make'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data[<span class="st">'make'</span>]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply preprocessing</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>X_preprocessed <span class="op">=</span> preprocessor.fit_transform(X)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode the target variable</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>y_encoded <span class="op">=</span> pd.get_dummies(y).values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 <p>The data is split into two parts: training and testing. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.</p>
+<section id="building-the-neural-network-models-and-training-them" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-neural-network-models-and-training-them">Building the neural network models and training them</h3>
+<section id="base-neural-network" class="level4">
+<h4 class="anchored" data-anchor-id="base-neural-network">Base Neural Network</h4>
+<p>We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. In the end, the output layer predicts the probability of each car manufacturer. The first layes, the input layer, takes the input features. The second layers is set to 128 neurons, the third to 64 neurons and the last layer, the output layer, has as many neurons as there are car manufacturers. The activation function used in the hidden layers is the Rectified Linear Unit (ReLU), and the output layer uses the Softmax activation function. The model is compiled with the Adam optimizer and the categorical crossentropy loss function.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into training and testing sets</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_preprocessed, y_encoded, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the neural network model</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>model_no_dropout <span class="op">=</span> Sequential([</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    Input(shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    Dense(y_train.shape[<span class="dv">1</span>], activation<span class="op">=</span><span class="st">'softmax'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="building-the-neural-network-model-and-training-it" class="level3">
-<h3 class="anchored" data-anchor-id="building-the-neural-network-model-and-training-it">Building the neural network model and training it</h3>
-<p>We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. We aslo added dropout layers to prevent overfitting. This layers help mitigate overfitting by randomly “dropping out” (ignoring) a fraction of the neurons during each training step. In the end, the output layer predicts the probability of each car manufacturer.</p>
+<p>We used activation functions in the hidden layers to introduce non-linearity into the model. The ReLU activation function is used in the hidden layers because it is computationally efficient and helps the model learn complex patterns in the data. The Softmax activation function is used in the output layer because it converts the model’s raw output into probabilities that sum to one. This allows us to interpret the model’s output as the probability of each car manufacturer.</p>
+<section id="we-used-the-following-hyperparameters" class="level6">
+<h6 class="anchored" data-anchor-id="we-used-the-following-hyperparameters">We used the following hyperparameters:</h6>
+<ul>
+<li><strong>epochs:</strong> 5 (Corresponds to the number of times the model sees the entire dataset during training.)</li>
+<li><strong>batch_size:</strong> 32 (Corresponds to the number of samples that the model processes before updating the weights.)</li>
+<li><strong>validation_split:</strong> 0.2 (Corresponds to the fraction of the training data to be used as validation data.)</li>
+</ul>
+<p>The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the neural network model</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Sequential([</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    Input(shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    Dropout(<span class="fl">0.2</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    Dropout(<span class="fl">0.2</span>),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    Dense(y_train.shape[<span class="dv">1</span>], activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the model</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>, loss<span class="op">=</span><span class="st">'categorical_crossentropy'</span>, metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train, y_train, epochs<span class="op">=</span><span class="dv">10</span>, batch_size<span class="op">=</span><span class="dv">32</span>, validation_split<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Epoch 1/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m4:26[0m 316ms/step - accuracy: 0.0000e+00 - loss: 4.9568
-[1m111/845[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m0s[0m 457us/step - accuracy: 0.0573 - loss: 4.3712      
-[1m236/845[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m0s[0m 427us/step - accuracy: 0.0978 - loss: 3.9578
-[1m363/845[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m0s[0m 417us/step - accuracy: 0.1272 - loss: 3.7099
-[1m490/845[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m0s[0m 411us/step - accuracy: 0.1512 - loss: 3.5311
-[1m617/845[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m0s[0m 408us/step - accuracy: 0.1713 - loss: 3.3908
-[1m743/845[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m0s[0m 406us/step - accuracy: 0.1889 - loss: 3.2762
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 526us/step - accuracy: 0.2014 - loss: 3.1965 - val_accuracy: 0.4539 - val_loss: 1.8538
-Epoch 2/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 8ms/step - accuracy: 0.3750 - loss: 2.1458
-[1m128/845[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 394us/step - accuracy: 0.4207 - loss: 1.9448
-[1m257/845[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 391us/step - accuracy: 0.4267 - loss: 1.9324
-[1m385/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 391us/step - accuracy: 0.4304 - loss: 1.9198
-[1m514/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 390us/step - accuracy: 0.4340 - loss: 1.9060
-[1m643/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 390us/step - accuracy: 0.4377 - loss: 1.8909
-[1m772/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 390us/step - accuracy: 0.4415 - loss: 1.8757
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 456us/step - accuracy: 0.4434 - loss: 1.8677 - val_accuracy: 0.5347 - val_loss: 1.4987
-Epoch 3/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 7ms/step - accuracy: 0.4688 - loss: 1.4340
-[1m128/845[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 394us/step - accuracy: 0.5001 - loss: 1.6110
-[1m258/845[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 390us/step - accuracy: 0.5000 - loss: 1.6066
-[1m388/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 389us/step - accuracy: 0.4997 - loss: 1.6040
-[1m518/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 388us/step - accuracy: 0.5006 - loss: 1.5994
-[1m648/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 388us/step - accuracy: 0.5015 - loss: 1.5956
-[1m778/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 388us/step - accuracy: 0.5028 - loss: 1.5914
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 453us/step - accuracy: 0.5035 - loss: 1.5888 - val_accuracy: 0.5675 - val_loss: 1.3415
-Epoch 4/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 8ms/step - accuracy: 0.3438 - loss: 1.9814
-[1m126/845[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m0s[0m 402us/step - accuracy: 0.5073 - loss: 1.5119
-[1m252/845[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m0s[0m 400us/step - accuracy: 0.5193 - loss: 1.4795
-[1m379/845[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.5230 - loss: 1.4675
-[1m505/845[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.5248 - loss: 1.4625
-[1m632/845[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.5264 - loss: 1.4591
-[1m760/845[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m0s[0m 397us/step - accuracy: 0.5283 - loss: 1.4549
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 463us/step - accuracy: 0.5295 - loss: 1.4521 - val_accuracy: 0.5871 - val_loss: 1.2358
-Epoch 5/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 7ms/step - accuracy: 0.4375 - loss: 1.3798
-[1m128/845[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 394us/step - accuracy: 0.5548 - loss: 1.3324
-[1m258/845[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 391us/step - accuracy: 0.5588 - loss: 1.3314
-[1m387/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 390us/step - accuracy: 0.5612 - loss: 1.3302
-[1m517/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 390us/step - accuracy: 0.5617 - loss: 1.3315
-[1m647/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 389us/step - accuracy: 0.5616 - loss: 1.3326
-[1m777/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 389us/step - accuracy: 0.5612 - loss: 1.3337
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 454us/step - accuracy: 0.5611 - loss: 1.3339 - val_accuracy: 0.6020 - val_loss: 1.1636
-Epoch 6/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 8ms/step - accuracy: 0.5312 - loss: 1.3079
-[1m126/845[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m0s[0m 401us/step - accuracy: 0.5778 - loss: 1.2949
-[1m253/845[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.5796 - loss: 1.2823
-[1m380/845[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.5789 - loss: 1.2791
-[1m508/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 396us/step - accuracy: 0.5785 - loss: 1.2783
-[1m636/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 395us/step - accuracy: 0.5780 - loss: 1.2782
-[1m764/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 395us/step - accuracy: 0.5775 - loss: 1.2779
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 461us/step - accuracy: 0.5773 - loss: 1.2772 - val_accuracy: 0.6161 - val_loss: 1.1038
-Epoch 7/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 8ms/step - accuracy: 0.7812 - loss: 0.6887
-[1m127/845[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 399us/step - accuracy: 0.6038 - loss: 1.1448
-[1m254/845[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 397us/step - accuracy: 0.5985 - loss: 1.1732
-[1m381/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 396us/step - accuracy: 0.5954 - loss: 1.1858
-[1m509/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 395us/step - accuracy: 0.5931 - loss: 1.1932
-[1m636/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 395us/step - accuracy: 0.5912 - loss: 1.1991
-[1m763/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 395us/step - accuracy: 0.5898 - loss: 1.2030
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 461us/step - accuracy: 0.5891 - loss: 1.2046 - val_accuracy: 0.6263 - val_loss: 1.0565
-Epoch 8/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 7ms/step - accuracy: 0.6875 - loss: 0.7839
-[1m127/845[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 399us/step - accuracy: 0.5941 - loss: 1.1483
-[1m255/845[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 396us/step - accuracy: 0.5942 - loss: 1.1554
-[1m384/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 394us/step - accuracy: 0.5950 - loss: 1.1588
-[1m513/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 393us/step - accuracy: 0.5959 - loss: 1.1605
-[1m641/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 393us/step - accuracy: 0.5963 - loss: 1.1610
-[1m769/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 393us/step - accuracy: 0.5963 - loss: 1.1621
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 459us/step - accuracy: 0.5963 - loss: 1.1626 - val_accuracy: 0.6360 - val_loss: 1.0191
-Epoch 9/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 8ms/step - accuracy: 0.5312 - loss: 1.2170
-[1m127/845[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.6093 - loss: 1.1132
-[1m254/845[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 397us/step - accuracy: 0.6084 - loss: 1.1273
-[1m381/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 396us/step - accuracy: 0.6075 - loss: 1.1291
-[1m509/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 395us/step - accuracy: 0.6064 - loss: 1.1304
-[1m637/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 395us/step - accuracy: 0.6057 - loss: 1.1306
-[1m765/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 394us/step - accuracy: 0.6051 - loss: 1.1305
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 461us/step - accuracy: 0.6048 - loss: 1.1304 - val_accuracy: 0.6454 - val_loss: 0.9797
-Epoch 10/10
-
-[1m  1/845[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m6s[0m 8ms/step - accuracy: 0.6875 - loss: 0.8569
-[1m126/845[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m0s[0m 400us/step - accuracy: 0.6160 - loss: 1.0852
-[1m253/845[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m0s[0m 398us/step - accuracy: 0.6132 - loss: 1.0970
-[1m381/845[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 396us/step - accuracy: 0.6133 - loss: 1.0979
-[1m507/845[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 397us/step - accuracy: 0.6137 - loss: 1.0987
-[1m634/845[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 397us/step - accuracy: 0.6135 - loss: 1.0999
-[1m762/845[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 396us/step - accuracy: 0.6136 - loss: 1.1005
-[1m845/845[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 461us/step - accuracy: 0.6135 - loss: 1.1008 - val_accuracy: 0.6448 - val_loss: 0.9629</code></pre>
-</div>
-</div>
-<p>After training, the model’s performance is evaluated on the testing set. This evaluation measures how accurately the model can predict car manufacturers for new data it hasn’t seen before.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>loss, accuracy <span class="op">=</span> model.evaluate(X_test, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 6ms/step - accuracy: 0.5938 - loss: 0.7771
-[1m210/264[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 240us/step - accuracy: 0.6420 - loss: 0.9864
-[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 240us/step - accuracy: 0.6425 - loss: 0.9853</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test accuracy: </span><span class="sc">{</span>accuracy<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Test accuracy: 0.6420454382896423</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> np.argmax(model.predict(X_test), axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m3s[0m 14ms/step
-[1m259/264[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 194us/step
-[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 194us/step</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print predictions</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(predictions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[114  19 124 ...  36 119  36]</code></pre>
-</div>
-</div>
-<p>Once the model is trained and evaluated, it can be used to make predictions. Given a new set of car features, the model can predict which manufacturer produced the car.</p>
-<p>Below you can see how the accuracy of the model evolves over the epochs. The training accuracy increases as the model learns from the training data, while the validation accuracy shows how well the model generalizes to new data.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the accuracy and loss</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot training &amp; validation accuracy values</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].plot(history.history[<span class="st">'accuracy'</span>])</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].plot(history.history[<span class="st">'val_accuracy'</span>])</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">'Model accuracy'</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_ylabel(<span class="st">'Accuracy'</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_xlabel(<span class="st">'Epoch'</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].legend([<span class="st">'Train'</span>, <span class="st">'Validation'</span>], loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot training &amp; validation loss values</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].plot(history.history[<span class="st">'loss'</span>])</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].plot(history.history[<span class="st">'val_loss'</span>])</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">'Model loss'</span>)</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_ylabel(<span class="st">'Loss'</span>)</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_xlabel(<span class="st">'Epoch'</span>)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].legend([<span class="st">'Train'</span>, <span class="st">'Validation'</span>], loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>As we can see, at each epoch, the accuracy is increasing and the loss is decreasing. The model is learning from the training data and improving its predictions.</p>
+<p>In the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Final Training Accuracy: 0.5896</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Final Validation Accuracy: 0.5931</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test Accuracy: 0.5823</code></pre>
+</div>
+</div>
+<p>Overall, the performance of the model is still good. However the quality can be improved. To address this issue, we can introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model’s performance later.</p>
+</section>
+</section>
+<section id="neural-network-with-dropout-layers" class="level4">
+<h4 class="anchored" data-anchor-id="neural-network-with-dropout-layers">Neural Network with Dropout layers</h4>
+<p>Dropout layers randomly set a fraction of input units to zero during training, which helps prevent overfitting by forcing the model to learn more robust features. We will tune the dropout rate to find the optimal value that balances training and validation accuracy and that insure to reduce overfitting.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create and compile the model</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_model(dropout_rate<span class="op">=</span><span class="fl">0.0</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> Sequential([</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        Input(shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        Dropout(dropout_rate),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        Dropout(dropout_rate),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        Dense(y_train.shape[<span class="dv">1</span>], activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(optimizer<span class="op">=</span>Adam(), loss<span class="op">=</span><span class="st">'categorical_crossentropy'</span>, metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate to train the final model with droopout layers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Out best dropout rate used for the following model.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dropout_rate_to_plot <span class="op">=</span> <span class="fl">0.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-14-5.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to calculate metrics from confusion matrix</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_metrics(cm):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># True Positive, False Positive, False Negative, True Negative</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> cm[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> cm[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> cm[<span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    tn <span class="op">=</span> cm[<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    sensitivity <span class="op">=</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)  <span class="co"># True Positive Rate (Recall)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    specificity <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fp)  <span class="co"># True Negative Rate</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    balanced_accuracy <span class="op">=</span> (sensitivity <span class="op">+</span> specificity) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sensitivity, specificity, balanced_accuracy</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dropout rate to use</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>dropout_rate <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model with the specified dropout rate</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Testing model with dropout rate: </span><span class="sc">{</span>dropout_rate<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Testing model with dropout rate: 0.2</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> create_model(dropout_rate<span class="op">=</span>dropout_rate)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model and collect training accuracy</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train_split, y_train_split, epochs<span class="op">=</span><span class="dv">5</span>, batch_size<span class="op">=</span><span class="dv">32</span>, verbose<span class="op">=</span><span class="dv">0</span>, validation_data<span class="op">=</span>(X_val, y_val))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the validation set</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>val_loss, val_accuracy <span class="op">=</span> model.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the test set</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>test_loss, test_accuracy <span class="op">=</span> model.evaluate(X_test, y_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the last epoch's training accuracy, validation accuracy, and test accuracy</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>training_accuracy <span class="op">=</span> history.history[<span class="st">'accuracy'</span>][<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>training_accuracies <span class="op">=</span> [training_accuracy]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>validation_accuracies <span class="op">=</span> [val_accuracy]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>test_accuracies <span class="op">=</span> [test_accuracy]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Print rounded accuracy values</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training accuracy: </span><span class="sc">{</span><span class="bu">round</span>(training_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">, Validation accuracy: </span><span class="sc">{</span><span class="bu">round</span>(val_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">, Test accuracy: </span><span class="sc">{</span><span class="bu">round</span>(test_accuracy, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training accuracy: 0.55, Validation accuracy: 0.61, Test accuracy: 0.59</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the confusion matrix and metrics</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.argmax(model.predict(X_test), axis<span class="op">=-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[1m  1/264[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m3s[0m 15ms/step
+[1m260/264[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 194us/step
+[1m264/264[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 194us/step</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> np.argmax(y_test, axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true, y_pred)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert confusion matrix to a DataFrame for better readability</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>cm_df <span class="op">=</span> pd.DataFrame(cm, index<span class="op">=</span>[<span class="ss">f'Actual </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">0</span>])],</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                     columns<span class="op">=</span>[<span class="ss">f'Predicted </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">1</span>])])</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the confusion matrix as a table</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Confusion Matrix for Dropout Rate </span><span class="sc">{</span>dropout_rate<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix for Dropout Rate 0.2</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cm_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Predicted 0  Predicted 1  ...  Predicted 92  Predicted 93
+Actual 0             0            0  ...             0             0
+Actual 1             0           37  ...             0             0
+Actual 2             0            0  ...             0             0
+Actual 3             0            0  ...             0             0
+Actual 4             0            0  ...             0             0
+...                ...          ...  ...           ...           ...
+Actual 89            0            0  ...             0             1
+Actual 90            0            0  ...             0             0
+Actual 91            0            0  ...             0             0
+Actual 92            0            0  ...             0             0
+Actual 93            0            0  ...             0             7
+
+[94 rows x 94 columns]</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and print sensitivity, specificity, and balanced accuracy</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>sensitivity, specificity, balanced_accuracy <span class="op">=</span> calculate_metrics(cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;string&gt;:10: RuntimeWarning: invalid value encountered in scalar divide</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">:.2f}</span><span class="ss">, Specificity: </span><span class="sc">{</span>specificity<span class="sc">:.2f}</span><span class="ss">, Balanced Accuracy: </span><span class="sc">{</span>balanced_accuracy<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sensitivity: 1.00, Specificity: nan, Balanced Accuracy: nan</code></pre>
+</div>
+</div>
+<p>The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.</p>
+</section>
 </section>
 </section>
 </section>

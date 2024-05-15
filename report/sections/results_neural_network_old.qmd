@@ -1,0 +1,145 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
+```{r Loading R packages NN, echo= FALSE, message = FALSE, output = FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+```{python Loading python Librairies NN, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
+import pandas as pd
+import numpy as np
+from pyprojroot.here import here
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Input
+from tensorflow.keras.utils import to_categorical
+```
+
+# Neural Network
+
+In this section, we will build a neural network model to predict the make of a car based on the features at our disposal. We will preprocess the data, split it into training and testing sets, define the neural network architecture, compile the model, train it and evaluate its performance.
+
+## Preprocessing and splitting the data
+
+The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and separate these two types of columns. Separating numerical and categorical columns is an essential step in data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.
+
+
+```{python}
+# Load the data
+data = pd.read_csv(here("data/data_cleaned.csv"))
+
+# Identify categorical and numerical columns
+categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+numerical_cols = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
+
+# Remove the target column 'make' from the features list
+if 'make' in categorical_cols:
+    categorical_cols.remove('make')
+if 'make' in numerical_cols:
+    numerical_cols.remove('make')
+
+# Define the preprocessing steps for numerical and categorical columns
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), numerical_cols),
+        ('cat', OneHotEncoder(sparse_output=False), categorical_cols)  # Set sparse_output to False
+    ])
+```
+
+```{python}
+# Split data into features and target
+X = data.drop('make', axis=1)
+y = data['make']
+
+# Apply preprocessing
+X_preprocessed = preprocessor.fit_transform(X)
+
+# Encode the target variable
+y_encoded = pd.get_dummies(y).values
+```
+
+The data is split into two parts: training and testing. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.
+
+```{python}
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y_encoded, test_size=0.2, random_state=123)
+```
+
+### Building the neural network model and training it
+We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. We aslo added dropout layers to prevent overfitting. This layers help mitigate overfitting by randomly "dropping out" (ignoring) a fraction of the neurons during each training step. In the end, the output layer predicts the probability of each car manufacturer.
+
+```{python}
+# Define the neural network model
+model = Sequential([
+    Input(shape=(X_train.shape[1],)),
+    Dense(128, activation='relu'),
+    Dropout(0.2),
+    Dense(64, activation='relu'),
+    Dropout(0.2),
+    Dense(y_train.shape[1], activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+````
+
+The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.
+
+```{python}
+# Train the model
+history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
+```
+
+After training, the model's performance is evaluated on the testing set. This evaluation measures how accurately the model can predict car manufacturers for new data it hasn't seen before.
+
+```{python}
+# Evaluate the model
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f'Test accuracy: {accuracy}')
+
+# Make predictions
+predictions = np.argmax(model.predict(X_test), axis=1)
+
+# Print predictions
+print(predictions)
+```
+
+Once the model is trained and evaluated, it can be used to make predictions. Given a new set of car features, the model can predict which manufacturer produced the car.
+
+Below you can see how the accuracy of the model evolves over the epochs. The training accuracy increases as the model learns from the training data, while the validation accuracy shows how well the model generalizes to new data.
+
+```{python}
+# Plot the accuracy and loss
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+
+# Plot training & validation accuracy values
+axs[0].plot(history.history['accuracy'])
+axs[0].plot(history.history['val_accuracy'])
+axs[0].set_title('Model accuracy')
+axs[0].set_ylabel('Accuracy')
+axs[0].set_xlabel('Epoch')
+axs[0].legend(['Train', 'Validation'], loc='upper left')
+
+# Plot training & validation loss values
+axs[1].plot(history.history['loss'])
+axs[1].plot(history.history['val_loss'])
+axs[1].set_title('Model loss')
+axs[1].set_ylabel('Loss')
+axs[1].set_xlabel('Epoch')
+axs[1].legend(['Train', 'Validation'], loc='upper left')
+
+plt.tight_layout()
+plt.show()
+```
+
