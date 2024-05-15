@@ -28,6 +28,7 @@ from keras.optimizers import Adam
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 ```
 
+
 # Neural Network
 
 In this section, we will build a neural network model to predict the make of a car based on the features at our disposal. We will preprocess the data, split it into training and testing sets, define the neural network architecture, compile the model, train it and evaluate its performance.
@@ -35,6 +36,7 @@ In this section, we will build a neural network model to predict the make of a c
 ## Preprocessing and splitting the data
 
 The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and separate these two types of columns. Separating numerical and categorical columns is an essential step in data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.
+
 
 
 ```{python, echo = FALSE}
@@ -68,7 +70,9 @@ X_preprocessed = preprocessor.fit_transform(X)
 y_encoded = pd.get_dummies(y).values
 ```
 
+
 The data is split into two parts: training and testing. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.
+
 
 ```{python, echo = FALSE}
 # Split the data into training and testing sets
@@ -80,10 +84,12 @@ class_weights = compute_class_weight(class_weight='balanced', classes=np.unique(
 class_weights_dict = {i: class_weights[i] for i in range(len(class_weights))}
 ```
 
+
 ### Building the neural network models and training them
 
 #### Base Neural Network
 We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. In the end, the output layer predicts the probability of each car manufacturer. The first layes, the input layer, takes the input features. The second layers is set to 128 neurons, the third to 64 neurons and the last layer, the output layer, has as many neurons as there are car manufacturers. The activation function used in the hidden layers is the Rectified Linear Unit (ReLU), and the output layer uses the Softmax activation function. The model is compiled with the Adam optimizer and the categorical crossentropy loss function.
+
 
 ```{python}
 #| code-fold: false
@@ -96,6 +102,7 @@ model_no_dropout = Sequential([
     Dense(y_train.shape[1], activation='softmax')])
 ```
 
+
 We used activation functions in the hidden layers to introduce non-linearity into the model. The ReLU activation function is used in the hidden layers because it is computationally efficient and helps the model learn complex patterns in the data. The Softmax activation function is used in the output layer because it converts the model's raw output into probabilities that sum to one. This allows us to interpret the model's output as the probability of each car manufacturer.
 
 ###### We used the following hyperparameters:
@@ -105,6 +112,7 @@ We used activation functions in the hidden layers to introduce non-linearity int
 * **validation_split:** 0.2 (Corresponds to the fraction of the training data to be used as validation data.)
 
 The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.
+
 
 ```{python, echo = FALSE, output = FALSE}
 # Compile the model
@@ -161,7 +169,9 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
+
 By looking at the boxplot representing the distribution of the sensitivity and specificity for the classes, we see a clear sign of unbalanced classes. The sensitivity and specificity are not consistent across the classes. This is a sign that the model is not performing well on all classes. We will use class weights to address this issue.
+
 
 ```{python, echo = FALSE, output = FALSE}
 # Compile the model
@@ -220,7 +230,9 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
+
 As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. Let's now see how the accuracy evolved during the training process with the following plot.
+
 
 ```{python, echo = FALSE}
 # Plot the accuracy and loss for the model without Dropout
@@ -246,7 +258,9 @@ plt.tight_layout()
 plt.show()
 ```
 
+
 As we can see, at each epoch, the accuracy is increasing and the loss is decreasing. The model is learning from the training data and improving its predictions.
+
 
 ```{python, echo = FALSE}
 # Extract the final training and validation accuracy from the history_no_dropout
@@ -254,7 +268,9 @@ final_training_accuracy = history_no_dropout.history['accuracy'][-1]
 final_validation_accuracy = history_no_dropout.history['val_accuracy'][-1]
 ```
 
+
 In the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.
+
 
 ```{python, echo = FALSE}
 # Print the accuracies with nice formatting
@@ -263,11 +279,13 @@ print(f"Final Validation Accuracy: {final_validation_accuracy:.4f}")
 print(f"Test Accuracy: {accuracy_no_dropout:.4f}")
 ```
 
+
 Overall, the performance of the model is still good. However the quality can be improved. To address this issue, we can introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model's performance later.
 
 #### Neural Network with Dropout layers
 
 Dropout layers randomly set a fraction of input units to zero during training, which helps prevent overfitting by forcing the model to learn more robust features. We will tune the dropout rate to find the optimal value that balances training and validation accuracy and that insure to reduce overfitting.
+
 
 ```{python, echo = FALSE}
 # Split the data into training and validation sets
@@ -290,7 +308,6 @@ def create_model(dropout_rate=0.0):
     model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 ```
-
 
 ```{python, echo = FALSE, output = FALSE}
 # Define the dropout rates to test
@@ -339,7 +356,9 @@ plt.show()
 ```
 
 
+
 We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate to train the final model with droopout layers.
+
 
 ```{python}
 #| code-fold: false
@@ -347,7 +366,6 @@ We can see that the model with a dropout rate of 0.2 has the best performance on
 # Out best dropout rate used for the following model.
 dropout_rate_to_plot = 0.2
 ```
-
 
 ```{python, echo = FALSE, output = FALSE}
 # Train the model with the specified dropout rate
@@ -462,5 +480,7 @@ for i, class_label in enumerate(unique_labels):
     print(f"Class {class_label} - Sensitivity: {sensitivity[i]:.4f}, Specificity: {specificity[i]:.4f}")
 ```
 
+
 The model is trained using the training data. During training, the model learns by adjusting its internal parameters to minimize the difference between its predictions and the actual car manufacturers in the training data. The model is trained for a fixed number of iterations called epochs.
+
 
