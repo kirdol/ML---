@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x343daddc0&gt;, &lt;matplotlib.lines.Line2D object at 0x37be94080&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95610&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95880&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37be94710&gt;, &lt;matplotlib.lines.Line2D object at 0x37be94920&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95f70&gt;, &lt;matplotlib.lines.Line2D object at 0x37be96240&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x343d62a50&gt;, &lt;matplotlib.lines.Line2D object at 0x37be95a60&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37be95cd0&gt;, &lt;matplotlib.lines.Line2D object at 0x37be96510&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37be7f740&gt;, &lt;matplotlib.lines.Line2D object at 0x37be967e0&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38b5b53a0&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b4ec0&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b5a00&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b55b0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38b5b4bf0&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b4620&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b44a0&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b5fa0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x353f136e0&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b4890&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38b5b49e0&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b6270&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x367df0110&gt;, &lt;matplotlib.lines.Line2D object at 0x38b5b64e0&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -127,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h5 class="anchored" data-anchor-id="adding-class-weights-to-the-model">Adding class weights to the model</h5>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x37ea384a0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea39130&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea392b0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea39700&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37ea38fe0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea38c80&gt;, &lt;matplotlib.lines.Line2D object at 0x37b5cfdd0&gt;, &lt;matplotlib.lines.Line2D object at 0x37e12c260&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x37ea389b0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea38170&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37ea387d0&gt;, &lt;matplotlib.lines.Line2D object at 0x37e1d1a90&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37ea383b0&gt;, &lt;matplotlib.lines.Line2D object at 0x37ea39670&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x353f12c90&gt;, &lt;matplotlib.lines.Line2D object at 0x38b0d56a0&gt;, &lt;matplotlib.lines.Line2D object at 0x38d0bcd70&gt;, &lt;matplotlib.lines.Line2D object at 0x38d0bd0a0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3687e0680&gt;, &lt;matplotlib.lines.Line2D object at 0x38d0bc1a0&gt;, &lt;matplotlib.lines.Line2D object at 0x38d02de20&gt;, &lt;matplotlib.lines.Line2D object at 0x38d0c0e90&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x38d0e2e10&gt;, &lt;matplotlib.lines.Line2D object at 0x38d0bca70&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38d0bc440&gt;, &lt;matplotlib.lines.Line2D object at 0x38bbc7740&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38d0bc920&gt;, &lt;matplotlib.lines.Line2D object at 0x38d0bcf50&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -151,13 +151,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>But, in the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 0.7450</code></pre>
+<pre><code>Final Training Accuracy: 0.7495</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 0.7054</code></pre>
+<pre><code>Final Validation Accuracy: 0.7112</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Accuracy: 0.6893</code></pre>
+<pre><code>Test Accuracy: 0.6909</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting and to improve the model performance, we will introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model’s performance later.</p>
@@ -211,18 +211,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 55.21%</code></pre>
+<pre><code>Final Training Accuracy: 55.25%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 58.26%</code></pre>
+<pre><code>Final Validation Accuracy: 58.77%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 57.94%</code></pre>
+<pre><code>Test Set Accuracy: 58.07%</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x37bc47230&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc47290&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc320&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc650&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37bc46330&gt;, &lt;matplotlib.lines.Line2D object at 0x37bc45af0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc980&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdcc50&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x398926e10&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdc080&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37bc47aa0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdcec0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37bc47dd0&gt;, &lt;matplotlib.lines.Line2D object at 0x37bcdd130&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3068fb830&gt;, &lt;matplotlib.lines.Line2D object at 0x30031bad0&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d51c0&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d5490&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x30031b890&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d42c0&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d5790&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d5a00&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x30685d040&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d4e90&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3003d4950&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d5c70&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3003d4c80&gt;, &lt;matplotlib.lines.Line2D object at 0x3003d5f40&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -230,6 +230,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="results_neural_network_files/figure-html/unnamed-chunk-22-11.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of folds</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> KFold(n_splits<span class="op">=</span>k, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize lists to store accuracies</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>training_accuracies <span class="op">=</span> []</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>validation_accuracies <span class="op">=</span> []</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> train_index, val_index <span class="kw">in</span> kfold.split(X_train):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    X_train_split, X_val_split <span class="op">=</span> X_train[train_index], X_train[val_index]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    y_train_split, y_val_split <span class="op">=</span> y_train[train_index], y_train[val_index]</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create and train the model</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> create_model(dropout_rate<span class="op">=</span>dropout_rate_to_plot)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    history <span class="op">=</span> model.fit(X_train_split, y_train_split, epochs<span class="op">=</span><span class="dv">100</span>, batch_size<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                        class_weight<span class="op">=</span>class_weights_dict, validation_data<span class="op">=</span>(X_val_split, y_val_split), verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Collect accuracy data</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    training_accuracy <span class="op">=</span> history.history[<span class="st">'accuracy'</span>][<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    validation_accuracy <span class="op">=</span> history.history[<span class="st">'val_accuracy'</span>][<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    training_accuracies.append(training_accuracy)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    validation_accuracies.append(validation_accuracy)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Evaluate on the test set</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    test_loss, test_accuracy <span class="op">=</span> model.evaluate(X_test, y_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average accuracies</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>average_training_accuracy <span class="op">=</span> np.mean(training_accuracies)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>average_validation_accuracy <span class="op">=</span> np.mean(validation_accuracies)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>average_test_accuracy <span class="op">=</span> np.mean(test_accuracies)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Average Training Accuracy: </span><span class="sc">{</span>average_training_accuracy<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average Training Accuracy: 0.5510</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Average Validation Accuracy: </span><span class="sc">{</span>average_validation_accuracy<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average Validation Accuracy: 0.5924</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Average Training Accuracy: </span><span class="sc">{</span>average_training_accuracy<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average Training Accuracy: 0.5510</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Average Validation Accuracy: </span><span class="sc">{</span>average_validation_accuracy<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average Validation Accuracy: 0.5924</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Average Test Accuracy: </span><span class="sc">{</span>average_test_accuracy<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average Test Accuracy: 0.5552</code></pre>
 </div>
 </div>
 </section>
