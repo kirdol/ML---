@@ -12,7 +12,7 @@ library(data.table)
 data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
 ```
 
-In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities accross instances and combine features in fewer dimensions.
+In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities across instances and combine features in fewer dimensions.
 
 # Principal Component Analysis
 
@@ -25,27 +25,29 @@ data_prepared <- data_cleaned %>%
   scale()  # Standardizes numeric data including converted factors
 ```
 
+We begin by standardizing our data, meaning trasnforming our character variables into factors and then the factors into numeric.
+
 ## Heatmap
 
 ```{r, message = F, warning = F}
 cor_matrix <- cor(data_prepared)  # Calculate correlation matrix
 
-# Melt the correlation matrix for ggplot2
+# Melt Correlation Matrix
 melted_cor_matrix <- melt(cor_matrix)
 
-# Heatmap with all correlation coefficients displayed
+# Heatmap
 ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") +  # Add white lines to distinguish the tiles
-  geom_text(aes(label = sprintf("%.2f", value)), color = "black", size = 3.5) +  # Always display labels
+  geom_tile(color = "white") + 
+  geom_text(aes(label = sprintf("%.2f", value)), color = "black", size = 3.5) +  
   scale_fill_gradient2(low = "lightblue", high = "darkblue", mid = "blue", midpoint = 0, limit = c(-1,1),
-                       name = "Spearman\nCorrelation") +  # Use gradient2 for a diverging color scheme
+                       name = "Spearman\nCorrelation") +  
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         axis.text.y = element_text(angle = 45, hjust = 1),
-        plot.title = element_text(hjust = 0.5),  # Center the title
+        plot.title = element_text(hjust = 0.5),  
         plot.title.position = "plot") +
   labs(x = 'Variables', y = 'Variables', 
-       title = 'Correlations Heatmap of Variables')  # Adjust the title and labels as needed
+       title = 'Correlations Heatmap of Features')  
 ```
 
 We used this heatmap to check the correlation between the variables. As we can see, some variables seem to be strongly correlated, but most of them don't seem to be too strongly correlated, whether positively or negatively. Let's now look into the link between the features using a biplot, which combines the observations as well as the features.
@@ -56,6 +58,7 @@ We used this heatmap to check the correlation between the variables. As we can s
 pca_results <- PCA(data_prepared, graph = FALSE)
 summary(pca_results)
 
+# Biplot Graph
 fviz_pca_biplot(pca_results,
                 geom.ind = "point",  
                 geom.var = c("arrow", "text"), 
@@ -87,63 +90,123 @@ Taking the screeplot into account, 7 dimensions are needed to reach at least 80%
 
 ## Clusters
 
-```{r, warning = F, message = F}
-# Extract PCA coordinates for clustering
-pca_coords <- pca_results$ind$coord
+```{r, message = F, warning = F}
+# Get PCA coordinates
+pca_coords_df <- data.frame(pca_results$ind$coord)
 
-# Using the Elbow Method to determine the number of clusters
-set.seed(123)  
-wss <- sapply(1:15, function(k) {
-  kmeans(pca_coords, centers = k, nstart = 25)$tot.withinss
-})
+# Perform K-means clustering
+set.seed(123) # for reproducibility
 
-# Elbow Plot
-plot(1:15, wss, type = "b", pch = 20, frame = FALSE, 
-     xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
+# Use Elbow Method
+wcss <- vector()
+for (i in 1:10) {
+  km <- kmeans(pca_coords_df[, 1:3], centers = i)
+  wcss[i] <- sum(km$withinss)
+}
 
-# Optimal number of cluster according to Elbow
-k <- 4
+# Elbow Graph
+elbow_plot <- plot_ly(x = 1:10, y = wcss, type = 'scatter', mode = 'lines+markers',
+                      marker = list(color = 'blue')) %>%
+  layout(title = "Elbow Method for Determining Optimal Number of Clusters",
+         xaxis = list(title = "Number of Clusters"),
+         yaxis = list(title = "Within-Cluster Sum of Squares (WCSS)"))
 
-# K-means
-set.seed(123) 
-km_result <- kmeans(pca_coords, centers = k, nstart = 25)
+# Print the elbow plot
+elbow_plot
 
-# Add cluster results and observation names to the PCA coordinates data frame
-pca_coords_df <- as.data.frame(pca_coords)
-pca_coords_df$cluster <- factor(km_result$cluster)
-pca_coords_df$name <- rownames(data_cleaned) 
-
-# Visualize the clusters using PCA and label points with observation names
-ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = cluster, label = name)) +
-  geom_point() +
-  geom_text(check_overlap = TRUE, vjust = 1.5, size = 3) +  
-  labs(title = "Cluster Plot", x = "Dim1 (20%)", y = "Dim2 (20%)") +
-  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen", "lightgrey")) +  
-  theme_minimal() +
-  theme(legend.position = "right")  
+# Looking at Elbow, Optimal nb of clusters = 5
+optimal_clusters <- 5
+km_result <- kmeans(pca_coords_df[, 1:3], centers = optimal_clusters)
 ```
 
-## Biplot & Clusters
+Using the Elbow method for clustering, we can see that the optimal number of cluster is 5, which makes sense regarding the link of our features in our PCA. To dive deeper and better see the clusters, we have decided to provide a 3D biplot, which includes the PCA and the clustering.
 
-```{r, warning = F, message = F}
+## 3D Biplot
+
+```{r, message = F, warning = F}
+# Add cluster assignments to PCA coordinates
+pca_coords_df$cluster <- km_result$cluster
+
 # Calculate Cluster Centers
-cluster_centers <- aggregate(pca_coords_df[, 1:2], by = list(cluster = pca_coords_df$cluster), FUN = mean)
+cluster_centers <- aggregate(pca_coords_df[, 1:3], by = list(cluster = pca_coords_df$cluster), FUN = mean)
 
-# Biplot with clusters
-fviz_pca_biplot(pca_results,
-                geom.ind = "point", 
-                geom.var = c("arrow", "text"),  
-                col.ind = factor(km_result$cluster), 
-                palette = c("lightblue", "lightpink", "lightgreen", "lightgrey"), 
-                addEllipses = TRUE, 
-                ellipse.level = 0.95, 
-                repel = TRUE,  
-                legend.title = "Cluster") +
-  geom_text(data = cluster_centers, aes(x = Dim.1, y = Dim.2, label = paste("Cluster", cluster)), 
-            color = "black", size = 5, vjust = -1) +
-  labs(title = "PCA - Biplot",
-       x = paste("Dim1 (", round(pca_results$eig[1,2], 1), "%)", sep = ""),
-       y = paste("Dim2 (", round(pca_results$eig[2,2], 1), "%)", sep = ""))
+# Get loadings for variables
+loadings <- data.frame(
+  variable = rownames(pca_results$var$coord),
+  pca_results$var$coord[, 1:3]
+)
+
+# Create the 3D scatter plot with clusters and loadings
+fig <- plot_ly() %>%
+  add_trace(
+    data = pca_coords_df,
+    x = ~Dim.1,
+    y = ~Dim.2,
+    z = ~Dim.3,
+    color = ~factor(km_result$cluster),
+    colors = c("lightblue", "lightpink", "lightgreen", "lightgrey", "beige"),
+    type = 'scatter3d',
+    mode = 'markers',
+    marker = list(size = 5)
+  ) %>%
+  add_trace(
+    data = cluster_centers,
+    x = ~Dim.1,
+    y = ~Dim.2,
+    z = ~Dim.3,
+    text = ~paste("Cluster", cluster),
+    type = 'scatter3d',
+    mode = 'text',
+    textposition = 'top center',
+    textfont = list(color = 'black', size = 12)
+  )
+
+# Scale factor for loadings arrows
+scale.loads <- 10.0
+
+# Add loadings as arrows
+for (k in 1:nrow(loadings)) {
+  fig <- fig %>%
+    add_trace(
+      x = c(0, loadings$Dim.1[k]) * scale.loads,
+      y = c(0, loadings$Dim.2[k]) * scale.loads,
+      z = c(0, loadings$Dim.3[k]) * scale.loads,
+      type = 'scatter3d',
+      mode = 'lines+markers',
+      line = list(width = 4, color = 'blue'),
+      marker = list(size = 2, color = 'blue'),
+      showlegend = FALSE
+    ) %>%
+    add_trace(
+      x = loadings$Dim.1[k] * scale.loads,
+      y = loadings$Dim.2[k] * scale.loads,
+      z = loadings$Dim.3[k] * scale.loads,
+      text = loadings$variable[k],
+      type = 'scatter3d',
+      mode = 'text',
+      textposition = 'top center',
+      textfont = list(color = 'blue', size = 10),
+      showlegend = FALSE
+    )
+}
+
+# Layout
+fig <- fig %>%
+  layout(
+    title = "PCA - 3D Biplot with Features",
+    scene = list(
+      xaxis = list(title = paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")),
+      yaxis = list(title = paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")),
+      zaxis = list(title = paste("Dim3 (", round(pca_results$eig[3, 2], 1), "%)", sep = ""))
+    )
+  )
+
+# Display the plot
+fig
 ```
 
-Using a clustering methods allow us to see the number of clusters that share similarities. Here, the elbow indicates that the optimal number of clusters should be 4. When comparing it with the biplot (last graph), we clearly notice that cluster 1 refers to the characteristics (range and mpg) for fuel 1 and same for fuel 4. Cluster 2 and 3 are packed towards the center and it is harder to see which features are similar, which is explainable with the fact that we would need around 6 dimensions to explain the total variance. We can suppose that cluster 2 refers to the class and the vehicle transmission, whereas cluster 3 focuses on engines and cylinders.
+To combine both PCA and clustering, we first started with assigning the PCA coordinates to the clusters, then calculate the centers. We wanted to have the biplot such that we can rotate the plot and see both the observations divided into 5 clusters as well as the features arrows.
+
+Looking at the plot, we can observe interesting features similarities. Let's have a look through each cluster. To begin with, cluster 1 seems to link the features regarding the range and mpg of fuel type 2. Then, cluster 2 seem to focus on the features regarding fuel type 1, as well as the drive and the transmission. Next is cluster 3 which seem to mainly link the range of fuel type 1, but also the charge time and moderatlely the mps. Then, cluster 4 englobes both engine displacement and cylinders as well as the vehicle class and the drive. Cluster 5 mainly considers make being moderately linked to mpg of fuel type 1, and somewhat to both fuel type 1 and fuel type 2. Model year seems to also be somewhat linked. 
+
+In addition to that, looking at the dimensions, we can generalize by saying that dimension 1 links the features regarding fuel type 1, dimension 2 moderately the features regarding fuel type 2 and dimension 3 connects the technical car features (engine, class, make).
