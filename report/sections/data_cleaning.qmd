@@ -1,3 +1,9 @@
+---
+format:
+  html:
+    code-fold: true
+---
+
 # Data cleaning
 In this section we will handle the missing value of our dataset to make sure that we have a clean dataset to perform our EDA and modeling. We will first visualize the missing values in our dataset and then clean the missing values in the columns that we will use for our analysis. We will also remove some rows and columns that are not relevant for our analysis.
 
@@ -23,7 +29,7 @@ data_with_missing_r_c <- data_with_missing_columns %>%
 vis_dat(data_with_missing_r_c, warn_large_data = FALSE)
 ```
 
-We can now more easily see the missing in our data. Below we have the detail of the pourcentage of missing values by columns.
+We can now more easily see the missing in our data. Below we have the detail of the percentage of missing values by columns.
 
 ```{r echo = FALSE}
 # Create a summary dataframe of missing values by column
@@ -34,19 +40,35 @@ missing_summary_df <- data %>%
     Total_Rows = nrow(data),
     Proportion_Missing = Missing_Count / Total_Rows
   ) %>%
-  arrange(desc(Proportion_Missing)) %>%
-  select(Column, "Missing values" = Missing_Count, "Prop. Missing" = Proportion_Missing)
+  filter(Proportion_Missing > 0) %>% # Filter to include only columns with missing values
+  arrange(desc(Proportion_Missing)) %>% # Sort by descending order of Proportion_Missing
+  select(Column, Missing_Count, Proportion_Missing)
+```
 
+```{r, echo = FALSE, output = FALSE}
 # Print the summary dataframe
 datatable(missing_summary_df,
           options = list(pageLength = 7,
                           class = "hover",
                           searchHighlight = TRUE),
           rownames = FALSE)%>%
-  formatPercentage("Prop. Missing", 2)
+  formatPercentage("Proportion_Missing", 2)
 ```
 
-Let's first have a closer look at the engine cylinders and engine displacement columns.
+```{r, echo = FALSE}
+# Create a barplot of the proportion of missing values by column
+ggplot(missing_summary_df, aes(x = reorder(Column, -Proportion_Missing), y = Proportion_Missing)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(aes(label = scales::percent(Proportion_Missing, accuracy = 0.01)), 
+            vjust = -0.5, size = 3) +
+  labs(
+    title = "Proportion of Missing Values by Column",
+    x = "Column",
+    y = "Proportion of Missing Values"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ```{r echo = FALSE}
 # Filter rows where 'Engine Cylinders' is missing and select the 'Model' and 'Fuel Type 1'
@@ -77,7 +99,7 @@ elec <- data %>%
 # elec = 484, meaninf that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type represent all our electric vehicle
 ```
 
-We see that all the `{r} miss_elec` missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type is only "`{r} fuel_type_1_miss`". Therefore, we can conclude that all the missing values in "Engine Cylinders" and "Engine Displacement" vehicle fuel type represent all our electric vehicle. This make sense since electric vehicle do not have an combustion engine and therefore those categories are not really applicable. We will therefore replace all missing values in this two columns with "none".
+As we can see we have missing in 6 columns. Let's first have a closer look at the engine cylinders and engine displacement columns. They both have 423 missing values. After some data manipulation, we see that these 423 missing are all electric vehicles and that they all have missing values in the engine cylinders and engine displacement columns. Given that in our dataset we have 423 vehicles, we now that theses missing in these column only concerns electric vehicles. This make sense since electric vehicle do not have an combustion engine and therefore those categories are not really applicable. We will therefore replace all missing values in this two columns with "none".
 
 ```{r Cleaning of Engine Cylinders and Engine Displacement, echo = FALSE}
 # Replace missing values in 'Engine Cylinders' and 'Engine Displacement' with "none"
@@ -101,7 +123,7 @@ missing_summary_df2 <- data_cleaning %>%
 
 # Print the summary dataframe
 datatable(missing_summary_df2,
-          options = list(pageLength = 6,
+          options = list(pageLength = 5,
                           class = "hover",
                           searchHighlight = TRUE),
           rownames = FALSE)%>%
@@ -259,21 +281,48 @@ data_cleaned <- data_cleaning4 %>%
 
 # Save the cleaned dataset
 write_csv(data_cleaned, here("data","data_cleaned.csv"))
+
+# Step 1: Count the number of vehicles for each make
+make_counts <- data_cleaned %>%
+  group_by(make) %>%
+  summarise(count = n())
+
+x <- 10 # Minimum number of vehicles per make
+
+# Step 2: Filter out makes with fewer than x vehicles
+makes_with_at_least_x <- make_counts %>%
+  filter(count >= x) %>%
+  select(make)
+
+# Step 3: Use this list to filter the original dataframe
+data_cleaned_reduced <- data_cleaned %>%
+  filter(make %in% makes_with_at_least_x$make)
+
+# Save the cleaned dataset
+write_csv(data_cleaned_reduced, here("data","data_cleaned_reduced.csv"))
 ```
 
-Here is the cleaned dataset on which we are working on from now on. 
+The dataset is now cleaned and does not contain any missing values. It contains 42240 observations and 18 features. We have stored it in a csv file (data_cleaned.csv) However, for some models, we need to tackle the unbalanced classes in the target variable. For this reason we also created a new csv file for which we drop the make with less than 10 models (data_cleaned_reduced.csv).
+
+Here are the cleaned datasets on which we are working on from now on.
 
 ```{r, echo = FALSE, message = TRUE, warning = FALSE}
-#Cleaned dataset
+# Cleaned dataset
 data_cleaned <- data_cleaned %>%
   complete(make)
 datatable(data_cleaned, options = list(pageLength = 5,
                                    class = "hover",
                                    searchHighlight = TRUE), rownames = FALSE)
-
-
 ```
 
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
+# Cleaned_reduced dataset
+data_cleaned_reduced <- data_cleaned_reduced %>%
+  complete(make)
+datatable(data_cleaned_reduced, options = list(pageLength = 5,
+                                   class = "hover",
+                                   searchHighlight = TRUE), rownames = FALSE)
+```
 
 
 
