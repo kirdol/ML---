@@ -116,17 +116,4 @@ fig6
 
 ```
 
-Here, we can observe that it is possible to divide into 6 clusters. When comparing it to the 3D biplot in the 'results_unsupervised_learning' part, we clearly notice that one of the clusters could be divided into four smaller clusters, which indicates heterogeneity in this cluster when using only 3 clusters. However, with 6 clusters in hand, it is more difficult to interpret the 4 separated clusters. In addition to that, it explains the second elbow in the elbow method: at 3 clusters, we obtained optimality, but we get another steep curve between cluster 5 and 6, meaning that selecting 4 or 5 clusters would not be too much of a benefit, but adding a 6th cluster could be worth capturing. Stopping at 3 cluster still is significant for us and it makes our clustering anaylsis more interpretable than 6, that's why we selected 3 clusters for our analysis. Below is the code for the silhouette plot which isn't running as it exceeds the vector memory. It would have been interesting to check the heterogeneity of the cluster.
-
-```{r}
-# Compute the silhouette scores
-# ss <- silhouette(km_result$cluster, dist(pca_coords_df[, 1:3]))
-
-# Plot the silhouette plot for optimal clusters
-# fviz_silhouette(ss) + 
- # ggtitle("Silhouette Plot for Optimal Clusters (k = 6)") + 
-  # theme_minimal()
-
-# > Error: vector memory exhausted (limit reached?)
-```
-
+After looking at the silhouette plot in the unsupervised learning part, we decided to provide a 3D biplot for 6 clusters, as we can also see in the elbow plot that 6 seem to be optimal in a way. In this biplot, we can observe that it is possible to divide into 6 clusters. When comparing it to the 3D biplot in the 'results_unsupervised_learning' part, we clearly notice that cluster 2 could be divided into four smaller clusters, which indicates heterogeneity in this cluster when using only 3 clusters. However, with 6 clusters in hand, it is more difficult to interpret the 4 distinct clusters. In addition to that, it explains the second elbow in the elbow method: at 3 clusters, we obtained optimality, but we get another steep curve between cluster 5 and 6, meaning that selecting 4 or 5 clusters would not be too much of a benefit, but adding a 6th cluster could be worth capturing. Stopping at 3 cluster still is significant for us and it makes our clustering anaylsis more interpretable than 6, that's why we selected only 3 clusters for our analysis. 
