@@ -6,8 +6,9 @@ format:
 
 # Classification Tree
 
-In this section we are going to perform a classification tree analysis on the dataset. We will first load the necessary packages and the dataset. We then prepare the data by encoding categorical variables and splitting it into training and testing sets. We then tried to pruned the tree with different max_depth values to find the optimal tree depth that balances between training and test accuracy.
+In this section we are going to perform a classification tree analysis on the dataset. We start first to load the necessary packages and the dataset. We then have prepared the data by encoding categorical variables and splitted it into training and testing sets. We then pruned the tree with different max_depth values to find the optimal tree depth that balances between training and test accuracy.
 
+### Loading R packages, Python libraries and Data Preparation
 ```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
 ```
@@ -33,7 +34,8 @@ file_path = here("data/data_cleaned.csv")
 data = pd.read_csv(file_path)
 ```
 
-We first loaded the dataset and identified make as the target variable. We also encoded categorical variables using Label Encoding to convert them into numerical values.
+
+After importing all the necessary libraries and packages, we first started by loading the dataset and identified make as the target variable. We also encoded categorical variables using **Label Encoding** to convert them into numerical values.
 
 ```{python Preparing the data, echo = FALSE}
 # Preprocess the data
@@ -50,7 +52,7 @@ for column in data.columns:
         label_encoders[column] = le
 ```
 
-We then splited the dataset into training (80%) and testing (20%) sets to be able to evaluate the model's performance on unseen data after the training to check wheter the model is overfitting or not. We will see that it does.
+We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data. Unfortunately, we will see later that our model is overfitting, meaning that it performs poorly when seeing new data. We will address this issue later. You will find here an plot showing the actual data splitting effectuated. The x axis represent the number of observations in our dataset and the y axis the number of makes. 
 
 ```{python Splitting the data, echo = FALSE}
 # Split the data into training and testing sets
@@ -59,8 +61,96 @@ y = data[target]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
 
-Trained a Decision Tree classifier on the training data without any constraints.
-The "None" case below represent the case without the pruning of the tree. As we can see, we observed overfitting, with high accuracy on training data and slightly lower accuracy on test data. Therefore, we decided to prune the tree as it as the advantage so simplify models and therefore limit overfitting. We chose to prune the tree by trying a few max_depth parameter values to control the tree's growth (none, 5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy.
+```{python, echo = FALSE}
+# !pip install matplotlib seaborn ------- INSTALL IF NEEDED
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+
+# Load the dataset
+file_path = here("data/data_cleaned.csv")
+data = pd.read_csv(file_path)
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.columns:
+    if data[column].dtype == 'object':
+        le = LabelEncoder()
+        data[column] = le.fit_transform(data[column])
+        label_encoders[column] = le
+
+# Split the data into features and target
+target = 'make'
+features = data.columns.drop(target)
+X = data[features]
+y = data[target]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Combine the train and test data for visualization
+train_data = X_train.copy()
+train_data[target] = y_train
+train_data['Set'] = 'Train'
+
+test_data = X_test.copy()
+test_data[target] = y_test
+test_data['Set'] = 'Test'
+
+combined_data = pd.concat([train_data, test_data])
+
+# Visualize the data split
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
+plt.title('Visualization of Training and Testing Data Split')
+plt.xlabel('Data Index')
+plt.ylabel('Target Variable (make)')
+plt.legend(title='Dataset')
+plt.show()
+
+```
+
+### Training the Decision Tree without Pruning
+
+Starting to train our Decision Tree, we have first decided to do it without any constraints and see the results of it. 
+
+```{python, echo = FALSE}
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
+from pyprojroot.here import here
+# Train the Decision Tree without specifying max_depth
+# Train the Decision Tree without specifying max_depth
+clf_no_prune = DecisionTreeClassifier(random_state=42)
+clf_no_prune.fit(X_train, y_train)
+
+# Predict and calculate accuracies
+y_pred_train_no_prune = clf_no_prune.predict(X_train)
+y_pred_test_no_prune = clf_no_prune.predict(X_test)
+accuracy_train_no_prune = accuracy_score(y_train, y_pred_train_no_prune)
+accuracy_test_no_prune = accuracy_score(y_test, y_pred_test_no_prune)
+
+print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
+print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
+
+# Visualize the Decision Tree without pruning
+plt.figure(figsize=(20, 10))
+plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+plt.title("Decision Tree (without max_depth)")
+plt.show()
+
+```
+
+As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than the accuracy of the test set, attesting that our model is overfitting. 
+
+### Training the Decision Tree with Pruning method
+
+In order to have a less complex tree and to fight overfittingness, we have decided to prune our tree and then train it. We chose to prune the tree by trying a few max_depth parameter values to control the tree's growth (none, 5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. "None" is actually the training without any max_depth parameter. Here are our new results: 
 
 ```{python, echo = FALSE}
 # Define a function to train and evaluate the Decision Tree with different max_depth values
@@ -71,20 +161,55 @@ def train_and_evaluate_tree(max_depth):
     y_pred_test = clf.predict(X_test)
     accuracy_train = accuracy_score(y_train, y_pred_train)
     accuracy_test = accuracy_score(y_test, y_pred_test)
-    return accuracy_train, accuracy_test
+    return clf, accuracy_train, accuracy_test
 
 # Evaluate the model with different max_depth values
 max_depth_values = [5, 10, 15, 20, 25, 30, None]
 results = {}
+clfs = {}
 
 for depth in max_depth_values:
-    accuracy_train, accuracy_test = train_and_evaluate_tree(depth)
+    clf, accuracy_train, accuracy_test = train_and_evaluate_tree(depth)
     results[depth] = (accuracy_train, accuracy_test)
+    clfs[depth] = clf  # Store the classifier for visualization
 
 # Print the results
 print("max_depth\tTraining Accuracy\tTest Accuracy")
 for depth, (train_acc, test_acc) in results.items():
     print(f"{depth}\t\t{train_acc:.4f}\t\t{test_acc:.4f}")
+
+# Visualize the Decision Tree for specific max_depth values (e.g., 10, 20)
+depths_to_visualize = [5]
+for depth in depths_to_visualize:
+    plt.figure(figsize=(20, 10))
+    plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+    plt.title(f"Decision Tree (max_depth={depth})")
+    plt.show()
+```
+
+```{python, echo = FALSE}
+# Define a function to train and evaluate the Decision Tree with different max_depth values
+# def train_and_evaluate_tree(max_depth):
+#     clf = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
+#     clf.fit(X_train, y_train)
+#     y_pred_train = clf.predict(X_train)
+#     y_pred_test = clf.predict(X_test)
+#     accuracy_train = accuracy_score(y_train, y_pred_train)
+#     accuracy_test = accuracy_score(y_test, y_pred_test)
+#     return accuracy_train, accuracy_test
+# 
+# # Evaluate the model with different max_depth values
+# max_depth_values = [5, 10, 15, 20, 25, 30, None]
+# results = {}
+# 
+# for depth in max_depth_values:
+#     accuracy_train, accuracy_test = train_and_evaluate_tree(depth)
+#     results[depth] = (accuracy_train, accuracy_test)
+# 
+# # Print the results
+# print("max_depth\tTraining Accuracy\tTest Accuracy")
+# for depth, (train_acc, test_acc) in results.items():
+#     print(f"{depth}\t\t{train_acc:.4f}\t\t{test_acc:.4f}")
 ```
 
 The model's accuracy improved as the tree's depth increased up to a point, with a max_depth of 25 or 30 providing the best test accuracy up to 70%. We see that reducing the max_depth to 10 or 15 improves the balance between, therefore reduce drastically the case of overfitting but this is at the expense of the accuracy of our model on new data. But we can see that pruning the tree with a max depth of 25 allows us to increase our accuracy from 69.84% to 70% therefore increasing the accuracy of our model and at the same time, it reduce the gap between the test set and the trainig set. In our case,  pruning the Decision Tree helps in improving its generalization performance by preventing it from becoming too complex and reduce overfitting the training data.
