@@ -28,5 +28,5 @@ abstract: |
 source(here::here("scripts/setup.R"))
 ```
 
-```{r child = paste0("sections/", c("introduction.qmd", "data_description_html.qmd", "EDA_Uncleaned.qmd", "data_cleaning.qmd", "EDA_cleaned.qmd", "results_classification_tree.qmd", "results_neural_network.qmd", "results_unsupervised_learning.qmd", "references.qmd"))}
+```{r child = paste0("sections/", c("introduction.qmd","data_description_html.qmd", "EDA_Uncleaned.qmd", "data_cleaning.qmd", "EDA_cleaned.qmd", "results_classification_tree.qmd", "results_neural_network.qmd", "references.qmd"))}
 ```

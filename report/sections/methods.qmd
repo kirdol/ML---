@@ -8,16 +8,7 @@ editor_options:
 
 # Methods
 
-A very important section describing in detail all the methods that are used in the report. This section explains how the study was conducted. It aims at giving relevant information and tools for others to be able to reproduce the study. It explains the global strategy of the study, and describes each tool used to achieve this goal. For a comprehensive and structured presentation, often it is important to give the general structure of the study, and then to drill down each step. The individual tools (e.g. machine learning methods, etc.) should be described in a concise and relevant way. This section is not a course. For example, one can give a brief definition and the important properties (important for the study), then refer to an external source for the details. In addition, the description should be balanced. Do not spend three pages on explaining the boxplots when a predictive model of random forest is explained in one-half page. It should describe and duly cite
-
-Statistical and machine learning methods to analyze the data
-Software, computer programs, function packages (typically for R).
-The sequence of analysis, the reason of each method.
-
-However,
-
-It does not include methods that are not used, even if you spent a lot of time on it. Except maybe if the fact that a particular method is not useful is of interest for the report.
-It is not a course about a method. It should contain all the relevant pieces of information, but it should also be stopped at some points. Clear references and well-chosen are of major importance here.
+This section provides a detailed explanation of the methods used in this study, aimed at ensuring reproducibility. The global strategy and each specific tool employed are described concisely, with relevant properties highlighted. Clear references are provided for further details where necessary.
 
 ## Supervised Learning
 
@@ -25,11 +16,101 @@ It is not a course about a method. It should contain all the relevant pieces of 
 
 ### Neural Network
 
-## Unsupervised Learning
+The use of a neural network was used for a classification task. As already discussed, we want to predict the make of a car utilizing the other features.
+
+A neural network is a computational model inspired by the way biological neural networks in the human brain process information. It consists of interconnected layers of nodes (neurons) where each connection has an associated weight. The network learns to map input data to the desired output by adjusting these weights through a process called training. The model can be tuned using hyperparameters set before the learning process begins that governs the overall behavior and performance of the machine learning model.
+
+Key parameters and hyperparameters used in neural networks include:
+
+-   **Learning Rate:** Controls how much the model’s weights are updated with respect to the gradient of the loss function.
+
+-   **Number of Epochs:** The number of complete passes through the training dataset.
+
+-   **Batch Size:** The number of training examples used in one iteration to update the model’s weights.
+
+-   **Number of Layers:** Determines the depth of the network, including input, hidden, and output layers.
+
+-   **Number of Neurons per Layer:** The size of each layer, influencing the capacity of the model to learn from data.
+
+-   **Activation Functions:** Non-linear functions applied to the output of each neuron, such as ReLU, sigmoid, or softmax.
+
+-   **Optimizer:** The algorithm used to update the weights, such as Adam, SGD, or RMSprop.
+
+-   **Loss Function:** Measures the difference between the predicted and actual output, guiding the optimizer, e.g., categorical cross-entropy for classification tasks.
+
+-   **Dropout Rate:** The fraction of neurons to drop during training to prevent overfitting.
+
+-   **Class Weights:** Used to handle imbalanced datasets by giving more importance to underrepresented classes.
+
+#### Our three primary models
+
+1.  A Simple Neural Network Model
+
+2.  A Class-Weighted Neural Network Model
+
+3.  And a Dropout-Enhanced Neural Network Model (also using class-weight)
+
+All three models used the cleaned data set prepared in the data cleaning section. We chose the version with more than 10 observation for each car brands to avoid over imbalanced classes.
+
+Each model’s architecture, training process, and evaluation metrics are described in the following sections.
+
+##### Simple Neural Network Model
+
+The simple neural network model serves as the baseline. It consists of the following components:
+
+-   Input Layer: Matches the number of features in the dataset.
+
+-   Hidden Layers: Two dense layers with ReLU activation functions.
+
+-   Output Layer: A dense layer with a softmax activation function for classification. The softmax activation function output a probability for each features input to belong to a specific class (brand).
+
+The model is trained using the Adam optimizer, categorical cross-entropy loss function, and accuracy as the primary metric.
+
+##### Class-Weighted Neural Network Model
+
+To address class imbalance, a class-weighted approach has then been applied. This involves assigning higher weights to the minority class during training. The architecture of the network remains the same as the simple model. The following steps were taken:
+
+-   Class Weights Calculation: Inverse proportionality to class frequencies.
+
+-   Model Training: Incorporating class weights into the loss function.
+
+The use of class weights helps in penalizing misclassifications of the minority class more heavily, thereby improving the model’s performance on imbalanced data.
+
+##### Dropout-Enhanced Neural Network Model
+
+The third model incorporates dropout layers to mitigate overfitting while retaining the original class imbalance. Dropout layers randomly set a fraction of input units to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons.
+
+-   Model Architecture: Similar to the simple model with additional dropout layers after each dense hidden layer.
+
+-   Dropout Rate: Will be tuned during the modeling.
+
+The dropout-enhanced model helps improve generalization by reducing the risk of overfitting to the training data.
+
+#### Software and Tools
+
+The following software and tools were used to implement and evaluate the models (non-exhaustive list):
+
+-   Python: The programming language used for all implementations.
+
+-   TensorFlow and Keras: Libraries used for building and training neural network models.
+
+-   Scikit-learn: Used for data preprocessing, splitting the dataset, and calculating class weights.
+
+-   Pandas and NumPy: Libraries used for data manipulation and numerical computations.
+
+#### Sequence of Analysis
+
+We first encode the categorical variables and normalized the numercial features. We then trained the models and evaluated each one. By evaluating and investigating the model at each step we managed to deal with the different challenges that we faced. We also managed to tune the dropout rate to insure to keep a good model performance while highly decreasing the case of overfitting we were having.
+
+This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.
+
+Note that this section was written and based on the course website found at this adress: [ML_BA](https://do-unil.github.io/mlba/)
+
+### Unsupervised Learning
 
 As we have seen several unsupervised learning tools in class, we have looked at our dataset and decided to start with a Principal Component Analysis, as we have some categorical variables as well as numerical ones. This technique allows to combine features in fewer dimensions according to their similarities. We then proceeded with a clustering method and combined both of them into a vizualisation in order to have a clearer result.
 
-To begin the method, it is crucial to standardize the data, meaning to transform the categorical variables into factors, which in turn is transformed into numerical. Then, to have a small idea of the link between the features before attacking the PCA, we will a correlation heatmap, showing which variable really seem to be somewhat correlated, whether positively and negatively. We will start with the PCA right after and then a screeplot, all of this in order to see the weight of the dimensions as well as the observations in the PCA graph. 
+To begin the method, it is crucial to standardize the data, meaning to transform the categorical variables into factors, which in turn is transformed into numerical. Then, to have a small idea of the link between the features before attacking the PCA, we will a correlation heatmap, showing which variable really seem to be somewhat correlated, whether positively and negatively. We will start with the PCA right after and then a screeplot, all of this in order to see the weight of the dimensions as well as the observations in the PCA graph.
 
 Depending on the results of the PCA, we might consider proceeding with a clustering to have a clearer overview of the similarities in the observations and divide them into clusters
 
