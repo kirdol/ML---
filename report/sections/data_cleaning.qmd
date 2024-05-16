@@ -261,3 +261,19 @@ data_cleaned <- data_cleaning4 %>%
 write_csv(data_cleaned, here("data","data_cleaned.csv"))
 ```
 
+Here is the cleaned dataset on which we are working on from now on. 
+
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
+#Cleaned dataset
+data_cleaned <- data_cleaned %>%
+  complete(make)
+datatable(data_cleaned, options = list(pageLength = 5,
+                                   class = "hover",
+                                   searchHighlight = TRUE), rownames = FALSE)
+
+
+```
+
+
+
+
