@@ -1,0 +1,3 @@
+# Supplementary material
+
+Our project is self contained in this HTML file that you can also visit at this address: [ML Project - Group C](https://kirdol.github.io/ML_Project/)

@@ -1,19 +1,13 @@
 # Data description
-* Description of the data file format (xlsx, csv, text, video, etc.) __DONE__
-* The features or variables: type, units, the range (e.g. the time, numerical, in weeks from January 1, 2012 to December 31, 2015), their coding (numerical, the levels for categorical, etc.), etc. __TABLE-NTBF__
-* The instances: customers, company, products, subjects, etc. __DONE__
-* Missing data pattern: if there are missing data, if they are specific to some features, etc. __NTBD__
-* Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc. __NTBD__
-* If only a subset was used, it should be mentioned and explained; e.g. inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications. __NTBD__
 
 ```{r Packages, echo = FALSE, message = FALSE}
 source(here::here("scripts","setup.R"))
 data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 ```
 
-"For this project, we selected a dataset focused on vehicle characteristics, available as a .csv file from data.world. You can access the dataset via the following link: [data.world](https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023). It includes a total of 26 features describing 45,896 vehicle models released between 1984 and 2023. Below is a table providing an overview of the available features and their descriptions. You can find a deeper description of the data in [Annex -@sec-Annex]."
+For this project, we selected a dataset focused on vehicle characteristics, available as a .csv file from data.world. You can access the dataset via the following link: [data.world](https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023). It includes a total of 26 features describing 45,896 vehicle models released between 1984 and 2023. Below is a table providing an overview of the available features and their descriptions. You can find a deeper description of the data in [Annex -@sec-Annex]. The analysis of the missing values will be dealt with in the data cleaning section.
 
-### The features or variables: type, units,...
+### Description of the features
 
 ```{r echo=FALSE}
 D1_1_SDG_table_info <- data.frame(
@@ -83,17 +77,3 @@ D1_1_SDG_table_info %>%
                                       "responsive")) %>%
   column_spec(1, width = "35%")
 ```
-
-## The instances: customers, company, products, subjects, etc.
-
-In a basic instance, each row is concerning one car. We can find in order the ID of the car corresponding to a precise feature observation, then the features as seen in the table before. 
-
-## Missing data pattern: if there are missing data, if they are specific to some features, etc.
-
-
-## Any modification to the initial data: aggregation, imputation in replacement of missing data, recoding of levels, etc.
-
-
-## If only a subset was used, it should be mentioned and explained; e.g. inclusion criteria. Note that if inclusion criteria do not exist and the inclusion was an arbitrary choice, it should be stated as such. One should not try to invent unreal justifications.
-
-
