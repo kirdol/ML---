@@ -29,6 +29,7 @@ data_with_missing_r_c <- data_with_missing_columns %>%
   filter(rowSums(is.na(.)) > 0)
 vis_dat(data_with_missing_r_c, warn_large_data = FALSE)
 ```
+## Dealing with the columns Engine Cylinders and Engine Displacement
 
 ```{r echo = FALSE}
 # Create a summary dataframe of missing values by column
@@ -125,6 +126,8 @@ datatable(missing_summary_df2,
 ```
 As we can see, we still have some missing in the columns "Fuel Type 2", "Engine Description", "Drive" and "Transmission". Let's investigate the missing in the column "Drive".
 
+## Dealing with the column Drive, Transmission and Engine Description
+
 ```{r Percentage of missing drive values by brand, echo = FALSE}
 # Count the missing 'Drive' values per brand
 missing_drive_by_make <- data_cleaning %>% 
@@ -156,7 +159,8 @@ ggplot(percentage_missing_drive_by_make,
        y = "Percentage Missing (%)")
 ```
 
-We decided to drop the brand with more than 10% of missing values in the "Drive" column. After this operation, we also removed the 8 observations that remained with missing values in the "Transmission" column.
+We decided to drop the brand with more than 10% of missing values in the "Drive" column. After this operation, we also removed the 8 observations that remained with missing values in the "Transmission" column. We decided to drop the column engine description since it contains missings values for more than a third of our observation.
+
 
 ```{r, echo = FALSE}
 # Calculate the percentage of missing 'Drive' values per brand
@@ -214,6 +218,8 @@ datatable(missing_summary_df3,
   formatPercentage("Prop. Missing", 2)
 ```
 
+## Final dataset
+
 ```{r creation of the final dataset, echo = FALSE}
 # Create the final dataset
 data_cleaned <- data_cleaning4 %>%
@@ -260,7 +266,7 @@ write_csv(data_cleaned_reduced,
           here("data","data_cleaned_reduced.csv"))
 ```
 
-The dataset is now cleaned and does not contain any missing values. It contains 42240 observations and 18 features. We renamed the columns and stored it in a csv file (data_cleaned.csv). However, for some models, we need to tackle the unbalanced classes in the target variable. For this reason we also created a new csv file for which we drop the make with less than 10 models (data_cleaned_reduced.csv).
+The dataset is now cleaned and does not contain any missing values. It contains 42240 observations, 18 features and 129 brands. We renamed the columns and stored it in a csv file (data_cleaned.csv). However, for some models, we need to tackle the unbalanced classes in the target variable. For this reason we also created a new csv file for which we drop the make with less than 10 models (data_cleaned_reduced.csv). This dataset contains 42061 observations, 18 features and 66 brands.
 
 Here are the cleaned datasets on which we are working on from now on.
 

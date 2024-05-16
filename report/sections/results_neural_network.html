@@ -109,9 +109,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>validation_split:</strong> 0.2 (Corresponds to the fraction of the training data to be used as validation data.)</li>
 </ul>
 <p>The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.</p>
+<p>Overall, the model perform well but we have’t dealt with the issue of unbalanced classes yet. Let’s have a look at the distribution of the sensitivity and specificity for each class.</p>
+</section>
+<section id="issue-of-unbalanced-classes" class="level5">
+<h5 class="anchored" data-anchor-id="issue-of-unbalanced-classes">Issue of unbalanced classes</h5>
+<p>The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the graph (((((((((((((((add graph reference))))))))))))))), there’s still big differences between the classes.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x33d164980&gt;, &lt;matplotlib.lines.Line2D object at 0x37516cef0&gt;, &lt;matplotlib.lines.Line2D object at 0x37516cd40&gt;, &lt;matplotlib.lines.Line2D object at 0x37516eab0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x37516cb00&gt;, &lt;matplotlib.lines.Line2D object at 0x37516d3d0&gt;, &lt;matplotlib.lines.Line2D object at 0x37516e0c0&gt;, &lt;matplotlib.lines.Line2D object at 0x37516f680&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x33d12a960&gt;, &lt;matplotlib.lines.Line2D object at 0x37516d460&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x37516da60&gt;, &lt;matplotlib.lines.Line2D object at 0x37516f830&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x37516d550&gt;, &lt;matplotlib.lines.Line2D object at 0x37516fa40&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x34da31970&gt;, &lt;matplotlib.lines.Line2D object at 0x34da80fe0&gt;, &lt;matplotlib.lines.Line2D object at 0x34da81c40&gt;, &lt;matplotlib.lines.Line2D object at 0x34da825d0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x34da81490&gt;, &lt;matplotlib.lines.Line2D object at 0x34da81400&gt;, &lt;matplotlib.lines.Line2D object at 0x34da82ba0&gt;, &lt;matplotlib.lines.Line2D object at 0x34da82e70&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x33aa10590&gt;, &lt;matplotlib.lines.Line2D object at 0x34da80350&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x34da82930&gt;, &lt;matplotlib.lines.Line2D object at 0x34da83170&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x34da80ce0&gt;, &lt;matplotlib.lines.Line2D object at 0x34da83470&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -121,13 +126,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>By looking at the boxplot representing the distribution of the sensitivity and specificity for the classes, we see a clear sign of unbalanced classes. The sensitivity and specificity are not consistent across the classes. This is a sign that the model is not performing well on all classes. Some of the classe, having more vehicle models, the model automatically prefer to predict those vehicles models more than some rare one. We will use class weights to address this issue.</p>
+<p>By examining the boxplot representing the distribution of sensitivity and specificity across the classes, we observe clear evidence of class imbalance. Sensitivity and specificity are not consistent across the classes. Specificity, which measures how well the model identifies true negatives, is very high for every class. This indicates that the model is effective at detecting instances that do not belong to a given class. However, sensitivity, which measures the true positive rate and reflects how well the model correctly predicts the make of a car for a specific brand, is not as high. This suggests that the model is not performing well for all classes.</p>
+<p>For some classes with more vehicle models, the model tends to predict those classes more frequently, leading to higher accuracy but lower sensitivity for rarer classes. To address this issue, we will use class weights to ensure the model performs more evenly across all classes.</p>
 </section>
 <section id="adding-class-weights-to-the-model" class="level5">
 <h5 class="anchored" data-anchor-id="adding-class-weights-to-the-model">Adding class weights to the model</h5>
+<p>This technique has been explained in the methods section but in a nutshell, it is a way to penalize the model for misclassifying the minority class more than the majority class. This helps the model to learn the patterns in the minority class better and improve its performance on the test set.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3757c2ea0&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c2c00&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c15b0&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c1400&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3757c26f0&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c09b0&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c33e0&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c01a0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x3757c3140&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c12e0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3757c0b30&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c2d80&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3757c0cb0&gt;, &lt;matplotlib.lines.Line2D object at 0x3757c1c10&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3737c0dd0&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c1040&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c34d0&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c0500&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3737c1550&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c1c70&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c1d00&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c22a0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x3737c1100&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c3230&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3737c2b40&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c2840&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3737c2f30&gt;, &lt;matplotlib.lines.Line2D object at 0x3737c37a0&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -137,7 +144,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on. We can now look at the evolution of the accuracy during the training process with the following plot.</p>
+<p>As we can see the model is taking better care of the minority classes and overall the sensitivity is higher across the classes. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on.</p>
+</section>
+<section id="model-performance" class="level5">
+<h5 class="anchored" data-anchor-id="model-performance">Model performance</h5>
+<p>We can now look at the evolution of the accuracy of our model during the training process with the following plot.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -149,18 +160,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>As we can see, at each epoch, the accuracy is increasing and the loss is decreasing. The model is learning from the training data and improving its predictions.</p>
 <p>But, in the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.</p>
+<p><strong>Performance of the model with weighted class:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 0.7677</code></pre>
+<pre><code>Final Training Accuracy: 67.00%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 0.7285</code></pre>
+<pre><code>Final Validation Accuracy: 63.80%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Accuracy: 0.7145</code></pre>
+<pre><code>Test Set Accuracy: 63.72%</code></pre>
 </div>
 </div>
-<p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting and to improve the model performance, we will introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model’s performance later.</p>
+<p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting, we will introduce Dropout layers in the neural network.</p>
 </section>
 </section>
 <section id="neural-network-with-dropout-layers" class="level4">
@@ -209,15 +221,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.</p>
+<p><strong>Performance of the model with weighted class and dropout layers:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 62.30%</code></pre>
+<pre><code>Final Training Accuracy: 53.35%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 65.94%</code></pre>
+<pre><code>Final Validation Accuracy: 58.20%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 65.28%</code></pre>
+<pre><code>Test Set Accuracy: 57.51%</code></pre>
 </div>
 </div>
 </section>

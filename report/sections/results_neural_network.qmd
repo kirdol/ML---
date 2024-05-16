@@ -28,7 +28,7 @@ from keras.optimizers import Adam
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import KFold
 
-num_epochs = 100
+num_epochs = 20
 ```
 
 # Neural Network
@@ -131,7 +131,7 @@ Overall, the model perform well but we have't dealt with the issue of unbalanced
 
 ##### Issue of unbalanced classes
 
-The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. 
+The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the graph (((((((((((((((add graph reference))))))))))))))), there's still big differences between the classes.
 
 ```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
@@ -172,9 +172,13 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
-By looking at the boxplot representing the distribution of the sensitivity and specificity for the classes, we see a clear sign of unbalanced classes. The sensitivity and specificity are not consistent across the classes. This is a sign that the model is not performing well on all classes. Some of the classe, having more vehicle models, the model automatically prefer to predict those vehicles models more than some rare one. We will use class weights to address this issue.
+By examining the boxplot representing the distribution of sensitivity and specificity across the classes, we observe clear evidence of class imbalance. Sensitivity and specificity are not consistent across the classes. Specificity, which measures how well the model identifies true negatives, is very high for every class. This indicates that the model is effective at detecting instances that do not belong to a given class. However, sensitivity, which measures the true positive rate and reflects how well the model correctly predicts the make of a car for a specific brand, is not as high. This suggests that the model is not performing well for all classes.
+
+For some classes with more vehicle models, the model tends to predict those classes more frequently, leading to higher accuracy but lower sensitivity for rarer classes. To address this issue, we will use class weights to ensure the model performs more evenly across all classes.
 
 ##### Adding class weights to the model
+
+This technique has been explained in the methods section but in a nutshell, it is a way to penalize the model for misclassifying the minority class more than the majority class. This helps the model to learn the patterns in the minority class better and improve its performance on the test set.
 
 ```{python, echo = FALSE, output = FALSE}
 # Define the neural network model
@@ -240,7 +244,7 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
-As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on.
+As we can see the model is taking better care of the minority classes and overall the sensitivity is higher across the classes. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on.
 
 ##### Model performance
 
@@ -280,14 +284,15 @@ final_validation_accuracy = history_no_dropout.history['val_accuracy'][-1]
 
 But, in the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.
 
+**Performance of the model with weighted class:**
 ```{python, echo = FALSE}
 # Print the accuracies with nice formatting
-print(f"Final Training Accuracy: {final_training_accuracy:.4f}")
-print(f"Final Validation Accuracy: {final_validation_accuracy:.4f}")
-print(f"Test Accuracy: {accuracy_no_dropout:.4f}")
+print(f"Final Training Accuracy: {final_training_accuracy * 100:.2f}%")
+print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
+print(f"Test Set Accuracy: {accuracy_no_dropout * 100:.2f}%")
 ```
 
-Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting and to improve the model performance, we will introduce Dropout layers in the neural network. We will also see if Cross-validation can help to improve the model's performance later.
+Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting, we will introduce Dropout layers in the neural network.
 
 #### Neural Network with Dropout layers
 
@@ -381,29 +386,43 @@ dropout_rate_to_plot = 0.2
 # Train the model with the specified dropout rate
 model = create_model(dropout_rate=dropout_rate_to_plot)
 
-# Train the model and collect training accuracy
-history = model.fit(X_train_split,y_train_split, epochs=num_epochs, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
+# Train the model and collect training accuracy and loss
+history = model.fit(X_train_split, y_train_split, epochs=num_epochs, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
 
-# Extract accuracy data
+# Extract accuracy and loss data
 training_accuracy = history.history['accuracy']
 validation_accuracy = history.history['val_accuracy']
+training_loss = history.history['loss']
+validation_loss = history.history['val_loss']
 ```
 
 ```{python, echo = FALSE}
-# Plot the accuracies
-epochs = range(1, len(training_accuracy) + 1)
-plt.figure(figsize=(10, 5))
-plt.plot(epochs, training_accuracy, 'b', label='Training accuracy')
-plt.plot(epochs, validation_accuracy, 'r', label='Validation accuracy')
-plt.title('Training and Validation Accuracy')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend()
+# Plot the accuracy and loss for the model with Dropout
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+
+# Plot training & validation accuracy values
+axs[0].plot(training_accuracy)
+axs[0].plot(validation_accuracy)
+axs[0].set_title('Model accuracy with Dropout')
+axs[0].set_ylabel('Accuracy')
+axs[0].set_xlabel('Epoch')
+axs[0].legend(['Train', 'Validation'], loc='upper left')
+
+# Plot training & validation loss values
+axs[1].plot(training_loss)
+axs[1].plot(validation_loss)
+axs[1].set_title('Model loss with Dropout')
+axs[1].set_ylabel('Loss')
+axs[1].set_xlabel('Epoch')
+axs[1].legend(['Train', 'Validation'], loc='upper left')
+
+plt.tight_layout()
 plt.show()
 ```
 
 We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.
 
+**Performance of the model with weighted class and dropout layers:**
 ```{python, echo = FALSE}
 # Print the final accuracies
 # Extract the final epoch's accuracy for the training and validation sets
@@ -417,3 +436,4 @@ print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
 print(f"Test Set Accuracy: {test_accuracy * 100:.2f}%")
 ```
 
+Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data.
