@@ -223,20 +223,39 @@ Looking at this 3D biplot, we can clearly see the 3 different clusters. Cluster 
 ## Silhouette Plot
 
 ```{r, message = F, warning = F}
-# Sample a subset of the data if needed
+# Set seed for reproducibility
 set.seed(123)
-sample_indices <- sample(1:nrow(pca_coords_df), 25000) # Sample size can be adapted here
+
+# Sample a subset of the data if needed
+sample_indices <- sample(1:nrow(pca_coords_df), 30000) # Adjust sample size as needed
 sampled_data <- pca_coords_df[sample_indices, 1:3]
 
+# Perform KMeans clustering
+optimal_clusters <- 3 # Replace with your optimal number of clusters
+kmeans_result <- kmeans(sampled_data, centers = optimal_clusters)
+
+# Create a data frame with the clustering results
+clustered_data <- data.frame(sampled_data, cluster = kmeans_result$cluster)
+
+# Define the number of samples per cluster
+samples_per_cluster <- min(table(clustered_data$cluster))
+
+# Sample equal number of points from each cluster
+equal_sampled_data <- do.call(rbind, lapply(1:optimal_clusters, function(cluster_num) {
+  cluster_subset <- clustered_data[clustered_data$cluster == cluster_num, ]
+  cluster_sample_indices <- sample(1:nrow(cluster_subset), samples_per_cluster)
+  return(cluster_subset[cluster_sample_indices, ])
+}))
+
 # Calculate silhouette values for the sampled data
-sampled_silhouette_values <- silhouette(kmeans_result$cluster, dist(sampled_data))
+equal_sampled_silhouette_values <- silhouette(equal_sampled_data$cluster, dist(equal_sampled_data[, 1:3]))
 
 # Define the colors for each cluster
 colors <- c("lightblue", "lightpink", "lightgreen")
 
 # Plot silhouette values for the sampled data with custom colors
-fviz_silhouette(sampled_silhouette_values, palette = colors) +
-  ggtitle("Silhouette Plot for 3 Clusters") +
+fviz_silhouette(equal_sampled_silhouette_values, palette = colors) +
+  ggtitle("Silhouette Plot for Sampled KMeans Clustering") +
   xlab("Cluster") +
   ylab("Silhouette Width")
 ```
