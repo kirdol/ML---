@@ -86,7 +86,7 @@ fviz_eig(pca_results,
          main = "Scree Plot of PCA") 
 ```
 
-Taking the screeplot into account, 7 dimensions are needed to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions. 
+Taking the screeplot into account, 7 dimensions are needed to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle seem to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions.
 
 # Clustering
 
@@ -135,7 +135,7 @@ cluster_plot <- ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = factor(c
 cluster_plot
 ```
 
-Using the elbow method for clustering allows to show us the optimal number of cluster. In our case, we seem to have 2 elbows, so the first one indicates the optimality at 3 clusters. We will work with 3 clusters and see what the second elbow represents. Then, we will at the cluster plot which shows the 3 clusters. We will go deeper in the interpreatation by looking at the 3D version of the biplot, which includes both the PCA and the clustering.
+Using the elbow method for clustering allows to show us the optimal number of cluster. In our case, we seem to have 2 elbows, so the first one indicates the optimality at 3 clusters. We will work with 3 clusters and see what the second elbow represents. Then, we will at the cluster plot which shows the 3 clusters. We will go deeper in the interpretation by looking at the 3D version of the biplot, which includes both the PCA and the clustering.
 
 ## 3D Biplot
 
