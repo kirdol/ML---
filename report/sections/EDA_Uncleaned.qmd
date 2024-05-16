@@ -5,8 +5,6 @@ format:
     fig-align: center
 ---
 
-***EDA:***
-
 ```{r Packages and data loading, echo = FALSE, message = FALSE, warning=FALSE}
 source(here::here("scripts","setup.R"))
 # data <- read.csv(here("data", "Vehicle_MPG_1984_to_2023_renamed.csv"), na = c(""))
@@ -14,20 +12,78 @@ source(here::here("scripts","setup.R"))
 data <- read_csv(here("data","data_initial_underscores.csv"))
 ```
 
-**Columns description**
+# EDA
 
-To begin with our EDA, let's have a look at our dataset and in particular the characteristics of the columns.
+Now that we have presented the variables contained in the dataset, let's try to understand the data structure, characteristics and underlying patterns thanks to an EDA.
 
-```{r}
-#to get a detailed summary
-skim(data)
+### Dataset overview 
+
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
+# Cleaned dataset
+data <- data %>%
+  complete(make)
+datatable(data, options = list(pageLength = 5,
+                                   class = "hover",
+                                   searchHighlight = TRUE), rownames = FALSE)
 ```
 
-The dataset that we are working with contains approx. 46'000 rows and 26 columns. We can see that most of our features are concerning the consumption of the cars. In addition, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will be handle these in the section "data cleaning".
+### Columns description
 
-**Exploration of the distribution**
+Let's have a quick look at the characteristics of the columns. You will find more statistical details about it in the annexe. 
+```{r, echo = FALSE}
+#to get a detailed summary
+# skim(data)
+# summary(data)
+# library(psych)
+# library(Hmisc)
+# library(DataExplorer)
+# str(data)
+# introduce(data)
+# describe(data)
+# Hmisc::describe(data)
+# introduce(data)
+# library(dplyr)
+# glimpse(data)
+```
 
-Here are more details about the distribution of the numerical features.
+```{r}
+# Load necessary packages
+library(dplyr)
+library(knitr)
+library(kableExtra)
+# Assuming your dataset is named 'data'
+
+# Get the number of rows and columns
+num_rows <- nrow(data)
+num_cols <- ncol(data)
+
+# Get the frequency of column types
+col_types <- sapply(data, class)
+type_freq <- table(col_types)
+char_count <- ifelse("character" %in% names(type_freq), type_freq["character"], 0)
+num_count <- ifelse("numeric" %in% names(type_freq), type_freq["numeric"], 0)
+
+# Create a summary data frame
+summary_df <- data.frame(
+  Name = "data",
+  Number_of_rows = num_rows,
+  Number_of_columns = num_cols,
+  Character = char_count,
+  Numeric = num_count,
+  Group_variables = "None"
+)
+
+# Display the summary using kable
+kable(summary_df, format = "html", table.attr = "style='width:50%;'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+```
+
+The dataset that we are working with contains approx. 46'000 rows and 26 columns, each row representing a model from one of the 141 brands. From the data overview, we can see that most of our features are concerning the consumption of the cars. If we now check more in details in the annex, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will handle these issues in the section "Data cleaning".
+
+### Exploration of the distribution
+
+Now let's explore the distribution of the numerical features.
 
 ```{r, fig.height= 5, fig.width=8}
 #  melt.data <- melt(data)
@@ -38,11 +94,11 @@ Here are more details about the distribution of the numerical features.
 plot_histogram(data)# Time.to.Charge.EV..hours.at.120v. not appearing because all observations = 0 
 ```
 
-As most of our models in our dataset are not EVs or hybrid cars, it results in having many 0s in our columns. This issue will be tackled in the cleaning data section. Also, some features are numerical discrete, as we can see on the plot of the column "Engine Cylinders"
+As the majority of models in our dataset are neither electric vehicles (EVs) nor hybrid cars and because of the nature of some column concerning only these two types of vehicles, the results are showing numerous zero values in several columns. This issue will be addressed during the data cleaning process. Additionally, certain features, such as "Engine Cylinders," are numerically discrete, as illustrated in the corresponding plot.
 
-**Outliers Detection**
+### Outliers Detection
 
-For each one of our numerical column, let's check thank to the boxplot the outliers per feature
+In order identify occurences that deviate significantly for the rest of the observations, and in order to potentially improve the global quality of the data, we have decided to analyse outliers thanks to boxplots. Here are the result on the numerical columns of the dataset: 
 
 ```{r, fig.height=10, fig.width=12}
 #tentative boxplots
@@ -71,25 +127,23 @@ ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
   theme_minimal() +
   theme(legend.position = "none",  # Hide the legend
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 0),strip.text = element_text(size = 7)) +  # Rotate x-axis labels
-  labs(title = "Boxplots of Variables with Different Scales", x = "", y = "Value")
+  labs(title = "Outlier Detection Boxplots", x = "", y = "Values")
 
 ```
 
-Most of our boxplots are showing extreme values. Again, this is due to the small amount of EV and hybrid cars in our dataset compared to the rest of the models and due to the nature of some feature, concerning only those type of vehicles. 
-
-```{r}
+Most of our boxplots are showing extreme values. Again, this is due to the small amount of EV and hybrid cars in our dataset compared to the rest of the models and due to the nature of some features, concerning only those type of vehicles. 
+```{r, echo=FALSE}
 #Now 
 # plot_correlation(data) #drop time charge EV 120V
 # create_report(data)
 #nb cars per brand
 ```
 
-**number of models per make**
+### Number of models per make
 
 Now let's check how many models per make we have in our dataset. In order to have a clear plot, we have decided to keep the top 20 brands among all the make on the graph. All the remaining makes are accessible on the table just below. 
 
 ```{r}
-
 #Number of occurences/model per make 
 nb_model_per_make <- data %>%
   group_by(make, model) %>%
@@ -105,28 +159,14 @@ only_one_model_cars <- nb_model_per_make %>%
 #table globale
 datatable(nb_model_per_make,
           rownames = FALSE,
-          options = list(pageLength = 10,
+          options = list(pageLength = 5,
                          class = "hover",
                          searchHighlight = TRUE))
-
-#table only 1 model
-datatable(only_one_model_cars,
-          rownames = FALSE,
-          options = list(pageLength = 10,
-                         class = "hover",
-                         searchHighlight = TRUE))
-
-
 
 # Option to limit to top 20 makes for better readability
 top_n_makes <- nb_model_per_make %>% top_n(20, Models_Per_Make)
 
-# Reordering the Make variable within the plotting code to make it ordered by Models_Per_Make descending
-# nb_model_per_make$Make <- factor(nb_model_per_make$Make, levels = nb_model_per_make$Make[order(-nb_model_per_make$Models_Per_Make)])
-
-```
-
-```{r}
+#plot
 ggplot(top_n_makes, aes(x = reorder(make, Models_Per_Make), y = Models_Per_Make)) +
   geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
   labs(title = "Models per Make (Top 20)",
@@ -138,12 +178,22 @@ ggplot(top_n_makes, aes(x = reorder(make, Models_Per_Make), y = Models_Per_Make)
         plot.title = element_text(size = 14)) +
   coord_flip()  # Flip coordinates for better readability
 
+
 ```
 
-```{r}
+On the 141 brands, we notice that only 13 brands have more than 100 models in the dataset. Among these, only two of them (Mercedes-Benz and BMW) have more than 400 models presents. Let's now check the number of make with 1 model in the dataset.
+
+```{r, fig.height=7}
+#table only 1 model
+datatable(only_one_model_cars,
+          rownames = FALSE,
+          options = list(pageLength = 5,
+                         class = "hover",
+                         searchHighlight = TRUE))
+
 ggplot(only_one_model_cars, aes(x = make, y = Models_Per_Make)) +
   geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
-  labs(title = "Makes with only 1 model",
+  labs(title = "Makes with only 1 model in the dataset",
        x = "Make",
        y = "Number of Models") +
   theme_minimal() +
@@ -154,51 +204,48 @@ ggplot(only_one_model_cars, aes(x = make, y = Models_Per_Make)) +
 
 ```
 
-Therefore, we can see that Mercendes-Benz and BMW have significantly more models in our dataset, which means that we are dealing with some imbalances in categories. Therefore, we need to be careful when doing predictions, as will may encounter bias toward these two majority classes. Therefore, there are few technics that can be used to deal with this problem, such as resampling technics, Ensemble Methods (RF, Boosting), tuning probability threshold
+Therefore, we can see that Mercendes-Benz and BMW have significantly more models in our dataset, which means that we are dealing with some imbalances in categories. Therefore, we need to be careful when doing predictions, as will may encounter bias toward these two majority classes. Therefore, there are few technics that can be used to deal with this problem, such as resampling technics, Ensemble Methods (RF, Boosting), tuning probability threshold,.....
 
 https://chatgpt.com/c/09a66e4e-80c6-4fbd-bf4e-73a2b3e44afd
 
+```{r,plot.new(); dev.off(), warning=FALSE, echo=FALSE}
 
-
-**Correlation matrix for numerical features**
-
-
-```{r,plot.new(); dev.off(), warning=FALSE}
-#Here I encounter some problems with some of the variables. 
-
-#check NAs
-# colSums(is.na(data))
-
-data_corrplot <- data %>%
-  select_if(is.numeric)
-
-# Identify constant columns (columns with zero standard deviation)
-constant_columns <- sapply(data_corrplot, function(x) sd(x, na.rm = TRUE) == 0)
-
-# Print constant columns for inspection
-# print("Constant columns (standard deviation is zero):")
-# print(names(data_corrplot)[constant_columns])
-
-# Remove constant columns
-data_corrplot <- data_corrplot[, !constant_columns]
-
-# Correlation transformation for plot using complete observations
-cor_matrix <- cor(data_corrplot, use = "complete.obs")
-
-# Melt correlation matrix for plotting
-cor_melted <- melt(cor_matrix)
-
-# Plot correlation matrix heatmap using ggplot2
-ggplot(data = cor_melted, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white",
-                       midpoint = 0, limit = c(-1, 1), space = "Lab",
-                       name = "Pearson\nCorrelation") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 8, hjust = 1),
-        axis.text.y = element_text(size = 8)) +
-  coord_fixed() +
-  labs(x = '', y = '', title = 'Correlation Matrix Heatmap')
+#*Correlation matrix for numerical features*
+# #Here I encounter some problems with some of the variables. 
+# 
+# #check NAs
+# # colSums(is.na(data))
+# 
+# data_corrplot <- data %>%
+#   select_if(is.numeric)
+# 
+# # Identify constant columns (columns with zero standard deviation)
+# constant_columns <- sapply(data_corrplot, function(x) sd(x, na.rm = TRUE) == 0)
+# 
+# # Print constant columns for inspection
+# # print("Constant columns (standard deviation is zero):")
+# # print(names(data_corrplot)[constant_columns])
+# 
+# # Remove constant columns
+# data_corrplot <- data_corrplot[, !constant_columns]
+# 
+# # Correlation transformation for plot using complete observations
+# cor_matrix <- cor(data_corrplot, use = "complete.obs")
+# 
+# # Melt correlation matrix for plotting
+# cor_melted <- melt(cor_matrix)
+# 
+# # Plot correlation matrix heatmap using ggplot2
+# ggplot(data = cor_melted, aes(Var1, Var2, fill = value)) +
+#   geom_tile(color = "white") +
+#   scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+#                        midpoint = 0, limit = c(-1, 1), space = "Lab",
+#                        name = "Pearson\nCorrelation") +
+#   theme_minimal() +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 8, hjust = 1),
+#         axis.text.y = element_text(size = 8)) +
+#   coord_fixed() +
+#   labs(x = '', y = '', title = 'Correlation Matrix Heatmap')
 
 ```
 

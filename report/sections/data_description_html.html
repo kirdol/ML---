@@ -50,6 +50,11 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="data-description" class="level1">
 <h1>Data description</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in fun(libname, pkgname): couldn't connect to display ":0"</code></pre>
+</div>
+</div>
 <p>For this project, we selected a dataset focused on vehicle characteristics, available as a .csv file from data.world. You can access the dataset via the following link: <a href="https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023">data.world</a>. It includes a total of 26 features describing 45,896 vehicle models released between 1984 and 2023. Below is a table providing an overview of the available features and their descriptions. You can find a deeper description of the data in <strong>?@sec-Annex</strong>. The analysis of the missing values will be dealt with in the data cleaning section.</p>
 <section id="description-of-the-features" class="level3">
 <h3 class="anchored" data-anchor-id="description-of-the-features">Description of the features</h3>
@@ -91,15 +96,15 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">City MPG (Fuel Type 1)</td>
-<td style="text-align: left;">Consumption of the car in meter per gallon of fuel when driving in a city, for fuel type 1</td>
+<td style="text-align: left;">Consumption of the car in miles per gallon of fuel when driving in a city, for fuel type 1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Highway MPG (Fuel Type 1)</td>
-<td style="text-align: left;">Consumption of the car in meter per gallon of fuel when driving on a highway, for fuel type 1</td>
+<td style="text-align: left;">Consumption of the car in miles per gallon of fuel when driving on a highway, for fuel type 1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">Combined MPG (Fuel Type 1)</td>
-<td style="text-align: left;">Combined city and highway car consumption in meter per gallon, for fuel type 1</td>
+<td style="text-align: left;">Combined city and highway car consumption in miles per gallon, for fuel type 1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Fuel Type 2</td>
@@ -107,15 +112,15 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">City MPG (Fuel Type 2)</td>
-<td style="text-align: left;">Consumption of the car in meter per gallon of fuel when driving in a city, for fuel type 2</td>
+<td style="text-align: left;">Consumption of the car in miles per gallon of fuel when driving in a city, for fuel type 2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Highway MPG (Fuel Type 2)</td>
-<td style="text-align: left;">Consumption of the car in meter per gallon of fuel when driving on a highway, for fuel type 2</td>
+<td style="text-align: left;">Consumption of the car in miles per gallon of fuel when driving on a highway, for fuel type 2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">Combined MPG (Fuel Type 2)</td>
-<td style="text-align: left;">Combined city and highway car consumption in meter per gallon, for fuel type 2</td>
+<td style="text-align: left;">Combined city and highway car consumption in miles per gallon, for fuel type 2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Engine Cylinders</td>
@@ -139,35 +144,35 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">Vehicle Class</td>
-<td style="text-align: left;">e.g. Minivan, Trucks, Midsize,....</td>
+<td style="text-align: left;">Type of vehicle, such as Minivan, Trucks,...</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Time to Charge EV (hours at 120v)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Number of hours required to fully charge an EV car at 120v</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">Time to Charge EV (hours at 240v)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Number of hours required to fully charge an EV car at 240v</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Range (for EV)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Maximum number of miles possible with a fully charged EV car</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">City Range (for EV - Fuel Type 1)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Maximum number of miles possible with a fully charged EV car in a city</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">City Range (for EV - Fuel Type 2)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Maximum number of miles possible while only using electricity with a fully charged hybrid car in a city</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; width: 35%;">Hwy Range (for EV - Fuel Type 1)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Maximum number of miles possible with a fully charged EV car on a highway</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 35%;">Hwy Range (for EV - Fuel Type 2)</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Maximum number of miles possible while only using electricity with a fully charged hybrid car on a highway</td>
 </tr>
 </tbody>
 </table>

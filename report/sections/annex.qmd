@@ -9,6 +9,12 @@ editor_options:
 source(here::here("scripts","setup.R"))
 ```
 
+## Data Columns Detailed
+```{r, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
+skim(data)
+```
+
 ## Data Summary
 ```{r, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
 data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
