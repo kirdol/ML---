@@ -28,7 +28,7 @@ from keras.optimizers import Adam
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import KFold
 
-num_epochs = 100
+num_epochs = 5
 ```
 
 # Neural Network
@@ -126,12 +126,6 @@ predictions_no_dropout = np.argmax(model_no_dropout.predict(X_test), axis=1)
 # Print predictions
 print(predictions_no_dropout)
 ```
-
-Overall, the model perform well but we have't dealt with the issue of unbalanced classes yet. Let's have a look at the distribution of the sensitivity and specificity for each class.
-
-##### Issue of unbalanced classes
-
-The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. 
 
 ```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
@@ -240,11 +234,7 @@ ax.set_ylabel("Proportion")
 plt.show()
 ```
 
-As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on.
-
-##### Model performance
-
-We can now look at the evolution of the accuracy of our model during the training process with the following plot.
+As we can see the model performed better with class weights. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on. We can now look at the evolution of the accuracy during the training process with the following plot.
 
 ```{python, echo = FALSE}
 # Plot the accuracy and loss for the model without Dropout
@@ -404,6 +394,36 @@ plt.show()
 
 We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.
 
+
+```{python, echo = FALSE, output = FALSE}
+# Generate predictions on the test set
+y_pred = model.predict(X_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+y_true_classes = np.argmax(y_test, axis=1)
+
+# Compute confusion matrix
+cm = confusion_matrix(y_true_classes, y_pred_classes)
+
+# Calculate specificity and sensitivity for each class
+tp = np.diag(cm)
+fp = cm.sum(axis=0) - np.diag(cm)
+fn = cm.sum(axis=1) - np.diag(cm)
+tn = cm.sum() - (fp + fn + tp)
+
+# Handle potential division by zero
+with np.errstate(divide='ignore', invalid='ignore'):
+    sensitivity = np.divide(tp, tp + fn)
+    specificity = np.divide(tn, tn + fp)
+    # Set sensitivities and specificities to 0 where division by zero occurred
+    sensitivity[np.isnan(sensitivity)] = 0
+    specificity[np.isnan(specificity)] = 0
+
+# Print specificity and sensitivity for each class
+unique_labels = np.unique(y_true_classes)
+for i, class_label in enumerate(unique_labels):
+    print(f"Class {class_label} - Sensitivity: {sensitivity[i]:.4f}, Specificity: {specificity[i]:.4f}")
+```
+
 ```{python, echo = FALSE}
 # Print the final accuracies
 # Extract the final epoch's accuracy for the training and validation sets
@@ -415,5 +435,85 @@ test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
 print(f"Final Training Accuracy: {final_training_accuracy * 100:.2f}%")
 print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
 print(f"Test Set Accuracy: {test_accuracy * 100:.2f}%")
+```
+
+```{python, echo = FALSE, warning = FALSE}
+# Create boxplots
+data = [sensitivity, specificity]
+fig, ax = plt.subplots()
+ax.boxplot(data, labels=["Sensitivity", "Specificity"])
+ax.set_title("Sensitivity and Specificity for Each Class")
+ax.set_ylabel("Proportion")
+plt.show()
+```
+#### Neural Network with Cross-validation and Dropout layers
+
+```{python}
+# Define model creation function
+def create_model(input_shape, output_shape):
+    model = Sequential([
+        Input(shape=(input_shape,)),
+        Dense(128, activation='relu'),
+        Dense(64, activation='relu'),
+        Dense(output_shape, activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+```
+
+
+```{python}
+# Number of folds
+k = 5
+kfold = KFold(n_splits=k, shuffle=True, random_state=42)
+
+# Initialize lists to store accuracies for each epoch
+training_accuracies_CV = []
+validation_accuracies_CV = []
+
+# Initialize arrays to store accuracies for each epoch
+all_training_accuracies = np.zeros((k, num_epochs))
+all_validation_accuracies = np.zeros((k, num_epochs))
+
+for i, (train_index, val_index) in enumerate(kfold.split(X_train)):
+    X_train_split, X_val_split = X_train[train_index], X_train[val_index]
+    y_train_split, y_val_split = y_train[train_index], y_train[val_index]
+    
+    # Create and compile a new model instance for each fold
+    model_no_dropout_CV = create_model(X_train.shape[1], y_train.shape[1])
+    
+    # Train the model
+    history_CV = model_no_dropout_CV.fit(X_train_split, y_train_split, epochs=num_epochs, batch_size=32,
+                                         class_weight=class_weights_dict, validation_data=(X_val_split, y_val_split), verbose=1)
+    
+    # Collect accuracy data for each epoch
+    all_training_accuracies[i, :] = history_CV.history['accuracy']
+    all_validation_accuracies[i, :] = history_CV.history['val_accuracy']
+    
+    # Debugging output for the last epoch of the current fold
+    print(f"Fold {i+1} results: Training accuracy: {history_CV.history['accuracy'][-1]}, Validation accuracy: {history_CV.history['val_accuracy'][-1]}")
+
+# Calculate average accuracies for each epoch
+average_training_accuracies = np.mean(all_training_accuracies, axis=0)
+average_validation_accuracies = np.mean(all_validation_accuracies, axis=0)
+
+# Plot the accuracies
+epochs = range(1, num_epochs + 1)
+plt.figure(figsize=(12, 6))
+plt.plot(epochs, average_training_accuracies, 'b', label='Average Training Accuracy')
+plt.plot(epochs, average_validation_accuracies, 'r', label='Average Validation Accuracy')
+plt.title('Training and Validation Accuracy Over 75 Epochs (5 Folds)')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+
+```{python, echo = FALSE, eval = FALSE}
+print(f'Average Training Accuracy: {average_training_accuracy:.4f}')
+print(f'Average Validation Accuracy: {average_validation_accuracy:.4f}')
+print(f'Average Test Accuracy: {average_test_accuracy:.4f}')
 ```
 
