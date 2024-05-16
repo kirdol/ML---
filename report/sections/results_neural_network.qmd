@@ -28,7 +28,7 @@ from keras.optimizers import Adam
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import KFold
 
-num_epochs = 20
+num_epochs = 100
 ```
 
 # Neural Network
@@ -285,6 +285,7 @@ final_validation_accuracy = history_no_dropout.history['val_accuracy'][-1]
 But, in the end, we have a case of overfitting. The model performs well on the training data but not as well on the testing data. This is an issue because it limits the possibility of generalizing the model to new data.
 
 **Performance of the model with weighted class:**
+
 ```{python, echo = FALSE}
 # Print the accuracies with nice formatting
 print(f"Final Training Accuracy: {final_training_accuracy * 100:.2f}%")
@@ -423,6 +424,7 @@ plt.show()
 We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.
 
 **Performance of the model with weighted class and dropout layers:**
+
 ```{python, echo = FALSE}
 # Print the final accuracies
 # Extract the final epoch's accuracy for the training and validation sets

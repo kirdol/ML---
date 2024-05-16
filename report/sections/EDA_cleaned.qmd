@@ -5,14 +5,14 @@ format:
     fig-align: center
 ---
 
-***EDA:***
+# EDA:
 
 ```{r Packages and data loading cleaned, echo = FALSE, message = FALSE, warning=FALSE}
 source(here::here("scripts","setup.R"))
 data <- read_csv(here("data","data_cleaned.csv"))
 ```
 
-**Columns description**
+## Columns description
 
 To begin with our EDA, let's have a look at our dataset and in particular the characteristics of the columns.
 
@@ -23,7 +23,7 @@ skim(data)
 
 The dataset that we are working with contains approx. 46'000 rows and 26 columns. We can see that most of our features are concerning the consumption of the cars. In addition, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will be handle these in the section "data cleaning".
 
-**Exploration of the distribution**
+## Exploration of the distribution
 
 Here are more details about the distribution of the numerical features.
 
@@ -38,7 +38,7 @@ plot_histogram(data)# Time.to.Charge.EV..hours.at.120v. not appearing because al
 
 We notice that most of our observations of our features are 0s because of the nature of the features. For instance, as most of our cars are not hybrids, they have a unique type of fuel and don't have any type 2, which results in a 0 in the concerned features. Also, some features are numerical discrete, as we can see on the plot of the column "Engine Cylinders".  
 
-**Outliers Detection**
+## Outliers Detection
 
 For each one of our numerical column, let's check thank to the boxplot the outliers per feature
 
@@ -68,11 +68,11 @@ ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
 #nb cars per brand
 ```
 
-**number of models per make**
+## number of models per make
 
 As we got rid of XXX, .....
 
-**Correlation matrix for numerical features**
+## Correlation matrix for numerical features
 
 
 ```{r}
