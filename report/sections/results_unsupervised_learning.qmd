@@ -127,7 +127,7 @@ pca_coords_df$cluster <- km_result$cluster
 # Cluster Plot
 cluster_plot <- ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = factor(cluster))) +
   geom_point() +
-  ggtitle("2D Cluster Plot (Dim.1 vs Dim.2)") +
+  ggtitle("Cluster") +
   xlab(paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")) +
   ylab(paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")) +
   scale_color_manual(values = c("lightblue", "lightpink", "lightgreen"))
