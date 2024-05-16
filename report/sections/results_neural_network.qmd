@@ -40,7 +40,7 @@ The dataset contains different types of data. Some columns are numerical (like "
 
 ```{python, echo = FALSE}
 # Load the data
-data = pd.read_csv(here("data/data_cleaned.csv"))
+data = pd.read_csv(here("data/data_cleaned_reduced.csv"))
 
 # Identify categorical and numerical columns
 categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
@@ -112,7 +112,7 @@ The model is trained for 5 epochs with a batch size of 32. The validation split 
 model_no_dropout.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, verbose=0)
+history_no_dropout = model_no_dropout.fit(X_train, y_train, epochs=5, batch_size=32, validation_split=0.2, verbose=0)
 
 # Evaluate the model
 loss_no_dropout, accuracy_no_dropout = model_no_dropout.evaluate(X_test, y_test)
@@ -180,7 +180,7 @@ model_no_dropout2 = Sequential([
 model_no_dropout2.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_no_dropout2.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
+history_no_dropout = model_no_dropout2.fit(X_train, y_train, epochs=5, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
 
 # Evaluate the model
 loss_no_dropout, accuracy_no_dropout = model_no_dropout2.evaluate(X_test, y_test)
@@ -327,7 +327,7 @@ for rate in dropout_rates:
     model = create_model(dropout_rate=rate)
     
     # Train the model and collect training accuracy
-    history = model.fit(X_train_split, y_train_split, epochs=100, batch_size=32, class_weight=class_weights_dict, verbose=0)
+    history = model.fit(X_train_split, y_train_split, epochs=5, batch_size=32, class_weight=class_weights_dict, verbose=0)
     
     # Evaluate the model on the validation set
     val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
@@ -370,7 +370,7 @@ dropout_rate_to_plot = 0.2
 model = create_model(dropout_rate=dropout_rate_to_plot)
 
 # Train the model and collect training accuracy
-history = model.fit(X_train_split,y_train_split, epochs=100, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
+history = model.fit(X_train_split,y_train_split, epochs=5, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
 
 # Extract accuracy data
 training_accuracy = history.history['accuracy']
@@ -444,9 +444,9 @@ ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
 plt.show()
 ```
+#### Neural Network with Cross-validation and Dropout layers
 
-
-```{python}
+```{python, echo = FALSE}
 # Number of folds
 k = 5
 kfold = KFold(n_splits=k, shuffle=True, random_state=42)
@@ -454,14 +454,15 @@ kfold = KFold(n_splits=k, shuffle=True, random_state=42)
 # Initialize lists to store accuracies
 training_accuracies = []
 validation_accuracies = []
+test_accuracies = []  # Initialize the test_accuracies list
 
 for train_index, val_index in kfold.split(X_train):
     X_train_split, X_val_split = X_train[train_index], X_train[val_index]
     y_train_split, y_val_split = y_train[train_index], y_train[val_index]
     
     # Create and train the model
-    model = create_model(dropout_rate=dropout_rate_to_plot)
-    history = model.fit(X_train_split, y_train_split, epochs=100, batch_size=32,
+    modelend = create_model(dropout_rate=dropout_rate_to_plot)
+    history = modelend.fit(X_train_split, y_train_split, epochs=20, batch_size=32,
                         class_weight=class_weights_dict, validation_data=(X_val_split, y_val_split), verbose=0)
     
     # Collect accuracy data
@@ -473,15 +474,41 @@ for train_index, val_index in kfold.split(X_train):
     
     # Evaluate on the test set
     test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+    test_accuracies.append(test_accuracy)  # Append the test accuracy for each fold
+
+    # Debugging output
+    print(f"Fold results: Training accuracy: {training_accuracy}, Validation accuracy: {validation_accuracy}, Test accuracy: {test_accuracy}")
 
 # Calculate average accuracies
 average_training_accuracy = np.mean(training_accuracies)
 average_validation_accuracy = np.mean(validation_accuracies)
-average_test_accuracy = np.mean(test_accuracies)
+average_test_accuracy = np.mean(test_accuracies)  # Now this will work correctly
 
+# More debugging output
+print(f"Training accuracies: {training_accuracies}")
+print(f"Validation accuracies: {validation_accuracies}")
+print(f"Test accuracies: {test_accuracies}")
+
+# Print the average accuracies
 print(f'Average Training Accuracy: {average_training_accuracy:.4f}')
 print(f'Average Validation Accuracy: {average_validation_accuracy:.4f}')
+print(f'Average Test Accuracy: {average_test_accuracy:.4f}')
+```
 
+```{python, echo = FALSE, warning = FALSE}
+# Plot the accuracies
+epochs = range(1, len(training_accuracies) + 1)
+plt.figure(figsize=(10, 5))
+plt.plot(epochs, training_accuracies, 'b', label='Training accuracy')
+plt.plot(epochs, validation_accuracies, 'r', label='Validation accuracy')
+plt.title('Training and Validation Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+```
+
+```{python, echo = FALSE}
 print(f'Average Training Accuracy: {average_training_accuracy:.4f}')
 print(f'Average Validation Accuracy: {average_validation_accuracy:.4f}')
 print(f'Average Test Accuracy: {average_test_accuracy:.4f}')
