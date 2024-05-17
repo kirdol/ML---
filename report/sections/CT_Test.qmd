@@ -1,0 +1,250 @@
+### Loading R packages, Python libraries and Data Preparation
+```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
+source(here::here("scripts","setup.R"))
+```
+
+```{python Loading python Librairies CT, echo = FALSE, message = FALSE, waring = FALSE, output = FALSE}
+import subprocess
+subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+from pyprojroot.here import here
+open(here("scripts/setup.py"))
+```
+
+```{python}
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pyprojroot.here import here
+
+# Load the dataset
+file_path = here("data/data_cleaned_reduced.csv")
+data = pd.read_csv(file_path)
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.columns:
+    if data[column].dtype == 'object':
+        le = LabelEncoder()
+        data[column] = le.fit_transform(data[column])
+        label_encoders[column] = le
+
+# Split the data into features and target
+target = 'make'
+features = data.columns.drop(target)
+X = data[features]
+y = data[target]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+```
+
+
+```{python}
+# Train the Decision Tree without specifying max_depth
+clf_no_prune = DecisionTreeClassifier(random_state=42)
+clf_no_prune.fit(X_train, y_train)
+
+# Predict and calculate accuracies
+y_pred_train_no_prune = clf_no_prune.predict(X_train)
+y_pred_test_no_prune = clf_no_prune.predict(X_test)
+accuracy_train_no_prune = accuracy_score(y_train, y_pred_train_no_prune)
+accuracy_test_no_prune = accuracy_score(y_test, y_pred_test_no_prune)
+
+print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
+print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
+```
+
+```{python}
+# Calculate confusion matrix
+cm = confusion_matrix(y_test, y_pred_test_no_prune)
+
+# Calculate sensitivity and specificity for each class
+sensitivity = cm.diagonal() / cm.sum(axis=1)
+specificity = [np.delete(cm, i, 0).sum() / (np.delete(cm, i, 0).sum() + np.delete(cm, i, 1).sum() - cm.diagonal()[i]) for i in range(cm.shape[0])]
+
+# Combine sensitivity and specificity into a DataFrame
+metrics_df = pd.DataFrame({
+    'Class': label_encoders[target].classes_,
+    'Sensitivity': sensitivity,
+    'Specificity': specificity
+})
+
+metrics_df
+```
+
+```{python}
+# Convert the metrics DataFrame to a long format for easier plotting with seaborn
+metrics_long_df = metrics_df.melt(id_vars='Class', value_vars=['Sensitivity', 'Specificity'], var_name='Metric', value_name='Value')
+
+# Plotting the boxplots
+plt.figure(figsize=(12, 6))
+sns.boxplot(data=metrics_long_df, x='Metric', y='Value')
+plt.title('Sensitivity and Specificity Distribution')
+plt.xlabel('Metric')
+plt.ylabel('Value')
+plt.show()
+```
+
+
+
+
+
+```{python}
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pyprojroot.here import here
+
+# Load the dataset
+file_path = here("data/data_cleaned_reduced.csv")
+data = pd.read_csv(file_path)
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.columns:
+    if data[column].dtype == 'object':
+        le = LabelEncoder()
+        data[column] = le.fit_transform(data[column])
+        label_encoders[column] = le
+
+# Split the data into features and target
+target = 'make'
+features = data.columns.drop(target)
+X = data[features]
+y = data[target]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the Decision Tree with class_weight='balanced'
+clf_weighted = DecisionTreeClassifier(random_state=42, class_weight='balanced')
+clf_weighted.fit(X_train, y_train)
+
+# Predict and calculate accuracies
+y_pred_train_weighted = clf_weighted.predict(X_train)
+y_pred_test_weighted = clf_weighted.predict(X_test)
+accuracy_train_weighted = accuracy_score(y_train, y_pred_train_weighted)
+accuracy_test_weighted = accuracy_score(y_test, y_pred_test_weighted)
+
+print(f"Training Accuracy (with class_weight='balanced'): {accuracy_train_weighted:.4f}")
+print(f"Test Accuracy (with class_weight='balanced'): {accuracy_test_weighted:.4f}")
+
+# Calculate confusion matrix
+cm_weighted = confusion_matrix(y_test, y_pred_test_weighted)
+
+# Calculate sensitivity and specificity for each class
+sensitivity_weighted = cm_weighted.diagonal() / cm_weighted.sum(axis=1)
+specificity_weighted = [np.delete(cm_weighted, i, 0).sum() / (np.delete(cm_weighted, i, 0).sum() + np.delete(cm_weighted, i, 1).sum() - cm_weighted.diagonal()[i]) for i in range(cm_weighted.shape[0])]
+
+# Combine sensitivity and specificity into a DataFrame
+metrics_weighted_df = pd.DataFrame({
+    'Class': label_encoders[target].classes_,
+    'Sensitivity': sensitivity_weighted,
+    'Specificity': specificity_weighted
+})
+
+# Convert the metrics DataFrame to a long format for easier plotting with seaborn
+metrics_weighted_long_df = metrics_weighted_df.melt(id_vars='Class', value_vars=['Sensitivity', 'Specificity'], var_name='Metric', value_name='Value')
+
+# Plotting the boxplots
+plt.figure(figsize=(12, 6))
+sns.boxplot(data=metrics_weighted_long_df, x='Metric', y='Value')
+plt.title('Sensitivity and Specificity Distribution (with class_weight="balanced")')
+plt.xlabel('Metric')
+plt.ylabel('Value')
+plt.show()
+```
+
+
+
+
+
+```{python}
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pyprojroot.here import here
+
+# Load the dataset
+file_path = here("data/data_cleaned.csv")
+data = pd.read_csv(file_path)
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.columns:
+    if data[column].dtype == 'object':
+        le = LabelEncoder()
+        data[column] = le.fit_transform(data[column])
+        label_encoders[column] = le
+
+# Split the data into features and target
+target = 'make'
+features = data.columns.drop(target)
+X = data[features]
+y = data[target]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+```
+
+
+```{python}
+# Train the Decision Tree without specifying max_depth
+clf_no_prune = DecisionTreeClassifier(random_state=42)
+clf_no_prune.fit(X_train, y_train)
+
+# Predict and calculate accuracies
+y_pred_train_no_prune = clf_no_prune.predict(X_train)
+y_pred_test_no_prune = clf_no_prune.predict(X_test)
+accuracy_train_no_prune = accuracy_score(y_train, y_pred_train_no_prune)
+accuracy_test_no_prune = accuracy_score(y_test, y_pred_test_no_prune)
+
+print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
+print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
+```
+
+```{python}
+# Calculate confusion matrix
+cm = confusion_matrix(y_test, y_pred_test_no_prune)
+
+# Calculate sensitivity and specificity for each class
+sensitivity = cm.diagonal() / cm.sum(axis=1)
+specificity = [np.delete(cm, i, 0).sum() / (np.delete(cm, i, 0).sum() + np.delete(cm, i, 1).sum() - cm.diagonal()[i]) for i in range(cm.shape[0])]
+
+# Combine sensitivity and specificity into a DataFrame
+metrics_df = pd.DataFrame({
+    'Class': label_encoders[target].classes_,
+    'Sensitivity': sensitivity,
+    'Specificity': specificity
+})
+
+metrics_df
+```
+
+```{python}
+# Convert the metrics DataFrame to a long format for easier plotting with seaborn
+metrics_long_df = metrics_df.melt(id_vars='Class', value_vars=['Sensitivity', 'Specificity'], var_name='Metric', value_name='Value')
+
+# Plotting the boxplots
+plt.figure(figsize=(12, 6))
+sns.boxplot(data=metrics_long_df, x='Metric', y='Value')
+plt.title('Sensitivity and Specificity Distribution')
+plt.xlabel('Metric')
+plt.ylabel('Value')
+plt.show()
+```
