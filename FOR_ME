@@ -8,3 +8,9 @@ Report structure to do :
 - B. Personal Information And Non-Plagiarism Statement (Mandatory)
 - C. Summary Or Abstract
 - D. Table Of Content (Toc), Table Of Figures (Tof) And Table Of Tables (Tot)
+
+
+
+Model selection/implementation : 
+- Confusion Matrix ; Accuracy Or Cohen's Kappa 
+- Interpretability ML : Variable importance AND PDP

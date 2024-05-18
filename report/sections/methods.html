@@ -69,6 +69,66 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="supervised-learning">Supervised Learning</h2>
 <section id="classification-tree" class="level3">
 <h3 class="anchored" data-anchor-id="classification-tree">Classification Tree</h3>
+<p>As our dataset is dealing with classes, we have decided to use a Classification tree to predict the make of the car.</p>
+<p>Classification Trees are constituted of one root node and a hierarchical set of binary rules. Each node represent a decision on an attribute, each branch the outcome of the decision and each leaf a class label (The most important features are located at the top of the graph). Thus, the name is coming from the shape of the representation, that looks like a tree. Even if it can be also applied to regressions, we are using it in our case for classification tasks.</p>
+<p>Key parameters and hyperparameters used in classification tree include:</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><p>Data observations</p></li>
+<li><p>Method (usually class, which specifies that the decision tree being constructed is for classification tasks)</p></li>
+</ul>
+<p><strong>Hyperparameters</strong></p>
+<ul>
+<li><p><strong>Minsplit</strong> : minimum number of observations that must exist in a node for a split to be attempted</p></li>
+<li><p><strong>minbucket</strong> : controls the minimum size of terminal nodes</p></li>
+<li><p><strong>complexity parameter cp</strong> : controls the size of the decision tree. Also prevent overfitting.</p></li>
+<li><p><strong>Maximum depth</strong> : Set a maximum “length” of the tree, starting from the root node.</p></li>
+<li><p><strong>Random state</strong> : Set a specific number (usually 42) to control the randomness of the estimator.</p></li>
+<li><p><strong>xval</strong> : Helps in model validation by performing cross-validation</p></li>
+</ul>
+</section>
+<section id="our-two-primary-models" class="level3">
+<h3 class="anchored" data-anchor-id="our-two-primary-models">Our two primary models</h3>
+<ol type="1">
+<li><p>Classification Tree without constraints</p></li>
+<li><p>Classification Tree with Pruning (Setting a limit for the max depth)</p></li>
+</ol>
+<p>In both cases, we are using training and test accuracy in order to know when there is overfitting.</p>
+</section>
+<section id="classification-tree-without-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="classification-tree-without-constraints">Classification Tree without constraints</h3>
+<p>The classification tree model serves as the baseline. It consists of the following components:</p>
+<ul>
+<li><p>A Root Node: the highest node in a tree. It represents the entire dataset, before being splitting according to the best features that are going to separate the observations according to specific criterions.</p></li>
+<li><p>Internal Nodes: the remaining nodes that are not the root or a leaf node. Each internal node splits the data into two or more subsets based on a feature and a threshold value.</p></li>
+<li><p>Branches and Edges: connections between the nodes. Represent the outcome of a decision performed at each node.</p></li>
+<li><p>Leaf node: final decision/classification. Each node correspond to a class label.</p></li>
+</ul>
+<p>In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split). Even by using the stopping rules seen in class (minsplit, cp, minbucket), the tree can sometimes grow too long. Therefore, we need to prune the tree.</p>
+</section>
+<section id="classification-tree-with-pruning" class="level3">
+<h3 class="anchored" data-anchor-id="classification-tree-with-pruning">Classification Tree with Pruning</h3>
+<p>Now let’s talk about the classification tree using pruning.</p>
+<p>We have the same components as in the base method. Nevertheless, some part of the process is different. In this case we are using a complexity parameter to control the size of the tree. This threshold prevents overfitting.</p>
+<p>One popular method for pruning is the 1-SE rule, which involves the following steps: first build a fully grown tree using standard stopping rules; then calculate the error for all possible sub-trees. The best tree with the lowest error is identified and its standard error (SE) is calculated. Trees with an error within one SE of the error of the best tree are considered equivalent, and among these the shortest tree is selected.</p>
+<p>In our case, we have decided to tune the max_depth hyperparameter to limit the maximum depth of the decision tree.</p>
+<section id="software-and-tools" class="level4">
+<h4 class="anchored" data-anchor-id="software-and-tools">Software and Tools</h4>
+<ul>
+<li><p>rpart : Used for building classification and regression trees</p></li>
+<li><p>pandas : Library used for data manipulation and analysis.</p></li>
+<li><p>Scikit-learn: Used for data preprocessing, splitting the dataset, and calculating class weights.</p></li>
+<li><p>matplotlib : Used for creating static, animated, and interactive visualizations</p></li>
+<li><p>seaborn : Provides a high-level interface for drawing attractive and informative statistical graphics</p></li>
+</ul>
+</section>
+<section id="sequence-of-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="sequence-of-analysis">Sequence of Analysis</h4>
+<p>After loading and importing our necessary functions R and Python functions, we have prepared the data by first defining the make as the target variable, then encoding categorical variables using <strong>Label Encoding</strong> to convert them into numerical values. This step is essential as classification tree needs numerical value to work.</p>
+<p>We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our “unseen data” of the testing set. This helps to build a robust model that generalizes well to new data.</p>
+<p>Once the separation done, we finally have trained our decision tree, using the parameters and hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting.</p>
+<p>After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.</p>
+</section>
 </section>
 <section id="neural-network" class="level3">
 <h3 class="anchored" data-anchor-id="neural-network">Neural Network</h3>
@@ -125,8 +185,8 @@ ul.task-list li input[type="checkbox"] {
 <p>The dropout-enhanced model helps improve generalization by reducing the risk of overfitting to the training data.</p>
 </section>
 </section>
-<section id="software-and-tools" class="level4">
-<h4 class="anchored" data-anchor-id="software-and-tools">Software and Tools</h4>
+<section id="software-and-tools-1" class="level4">
+<h4 class="anchored" data-anchor-id="software-and-tools-1">Software and Tools</h4>
 <p>The following software and tools were used to implement and evaluate the models (non-exhaustive list):</p>
 <ul>
 <li><p>Python: The programming language used for all implementations.</p></li>
@@ -135,8 +195,8 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Pandas and NumPy: Libraries used for data manipulation and numerical computations.</p></li>
 </ul>
 </section>
-<section id="sequence-of-analysis" class="level4">
-<h4 class="anchored" data-anchor-id="sequence-of-analysis">Sequence of Analysis</h4>
+<section id="sequence-of-analysis-1" class="level4">
+<h4 class="anchored" data-anchor-id="sequence-of-analysis-1">Sequence of Analysis</h4>
 <p>We first encode the categorical variables and normalized the numercial features. We then trained the models and evaluated each one. By evaluating and investigating the model at each step we managed to deal with the different challenges that we faced. We also managed to tune the dropout rate to insure to keep a good model performance while highly decreasing the case of overfitting we were having.</p>
 <p>This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.</p>
 <p>Note that this section was written and based on the course website found at this adress: <a href="https://do-unil.github.io/mlba/">ML_BA</a></p>
