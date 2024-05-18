@@ -465,5 +465,48 @@ kappa_score = round(cohen_kappa_score(np.argmax(y_val, axis=1), y_val_pred_class
 
 ```{python, echo = FALSE}
 # Print the Cohen's Kappa score
-print(f"Cohen's Kappa Score: {kappa_score * 100:.2f}%")
+print(f"Cohen's Kappa Score:{kappa_score * 100:.2f}%")
 ```
+
+```{python, echo = FALSE}
+#### Variable importance ####
+
+# https://romainlhardy.medium.com/estimating-feature-importance-the-easy-way-2ebe970c600c
+
+# import numpy as np
+# import matplotlib.pyplot as plt
+# from sklearn.metrics import accuracy_score
+# 
+# # Function to calculate feature importance using permutation method
+# def get_feature_importance(model, X_test, y_test, j, n=100):
+#     # Baseline accuracy
+#     y_pred = model.predict(X_test)
+#     s = accuracy_score(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1))
+#     
+#     total = 0.0
+#     for i in range(n):
+#         perm = np.random.permutation(range(X_test.shape[0]))
+#         X_test_ = X_test.copy()
+#         X_test_[:, j] = X_test[perm, j]
+#         y_pred_ = model.predict(X_test_)
+#         s_ij = accuracy_score(np.argmax(y_test, axis=1), np.argmax(y_pred_, axis=1))
+#         total += s_ij
+#     
+#     return s - total / n
+# 
+# # Calculate feature importances for all features
+# f = []
+# for j in range(X_test.shape[1]):
+#     f_j = get_feature_importance(model, X_test, y_test, j, n=100)
+#     f.append(f_j)
+# 
+# # Plot feature importances
+# plt.figure(figsize=(10, 5))
+# plt.bar(range(X_test.shape[1]), f, color="r", alpha=0.7)
+# plt.xticks(ticks=range(X_test.shape[1]))
+# plt.xlabel("Feature")
+# plt.ylabel("Importance")
+# plt.title("Feature Importances")
+# plt.show()
+```
+

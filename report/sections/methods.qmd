@@ -14,59 +14,59 @@ This section provides a detailed explanation of the methods used in this study, 
 
 ### Classification Tree
 
-As our dataset is dealing with classes, we have decided to use a Classification tree to predict the make of the car. 
+As our dataset is dealing with classes, we have decided to use a Classification tree to predict the make of the car.
 
-Classification Trees are constituted of one root node and a hierarchical set of binary rules. Each node represent a decision on an attribute, each branch the outcome of the decision and each leaf a class label (The most important features are located at the top of the graph). Thus, the name is coming from the shape of the representation, that looks like a tree.   Even if it can be also applied to regressions, we are using it in our case for classification tasks. 
+Classification Trees are constituted of one root node and a hierarchical set of binary rules. Each node represent a decision on an attribute, each branch the outcome of the decision and each leaf a class label (The most important features are located at the top of the graph). Thus, the name is coming from the shape of the representation, that looks like a tree. Even if it can be also applied to regressions, we are using it in our case for classification tasks.
 
 Key parameters and hyperparameters used in classification tree include:
 
 **Parameters**
 
--  Data observations
+-   Data observations
 
--  Method (usually class, which specifies that the decision tree being constructed is for classification tasks)
+-   Method (usually class, which specifies that the decision tree being constructed is for classification tasks)
 
 **Hyperparameters**
 
--  **Minsplit** : minimum number of observations that must exist in a node for a split to be attempted 
+-   **Minsplit** : minimum number of observations that must exist in a node for a split to be attempted
 
--  **minbucket** : controls the minimum size of terminal nodes
+-   **minbucket** : controls the minimum size of terminal nodes
 
--  **complexity parameter cp** : controls the size of the decision tree. Also prevent overfitting. 
+-   **complexity parameter cp** : controls the size of the decision tree. Also prevent overfitting.
 
--  **Maximum depth** : Set a maximum "length" of the tree, starting from the root node. 
+-   **Maximum depth** : Set a maximum "length" of the tree, starting from the root node.
 
--  **Random state** : Set a specific number (usually 42) to control the randomness of the estimator. 
+-   **Random state** : Set a specific number (usually 42) to control the randomness of the estimator.
 
--  **xval** : Helps in model validation by performing cross-validation
+-   **xval** : Helps in model validation by performing cross-validation
 
 ### Our two primary models
 
-1. Classification Tree without constraints 
+1.  Classification Tree without constraints
 
-2. Classification Tree with Pruning (Setting a limit for the max depth)
+2.  Classification Tree with Pruning (Setting a limit for the max depth)
 
-In both cases, we are using training and test accuracy in order to know when there is overfitting. 
+In both cases, we are using training and test accuracy in order to know when there is overfitting.
 
-### Classification Tree without constraints 
+### Classification Tree without constraints
 
 The classification tree model serves as the baseline. It consists of the following components:
 
--   A Root Node: the highest node in a tree. It represents the entire dataset, before being splitting according to the best features that are going to separate the observations according to specific criterions. 
+-   A Root Node: the highest node in a tree. It represents the entire dataset, before being splitting according to the best features that are going to separate the observations according to specific criterions.
 
 -   Internal Nodes: the remaining nodes that are not the root or a leaf node. Each internal node splits the data into two or more subsets based on a feature and a threshold value.
 
 -   Branches and Edges: connections between the nodes. Represent the outcome of a decision performed at each node.
 
--   Leaf node: final decision/classification. Each node correspond to a class label. 
+-   Leaf node: final decision/classification. Each node correspond to a class label.
 
 In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split). Even by using the stopping rules seen in class (minsplit, cp, minbucket), the tree can sometimes grow too long. Therefore, we need to prune the tree.
 
 ### Classification Tree with Pruning
 
-Now let's talk about the classification tree using pruning. 
+Now let's talk about the classification tree using pruning.
 
-We have the same components as in the base method. Nevertheless, some part of the process is different. In this case we are using a complexity parameter to control the size of the tree. This threshold prevents overfitting. 
+We have the same components as in the base method. Nevertheless, some part of the process is different. In this case we are using a complexity parameter to control the size of the tree. This threshold prevents overfitting.
 
 One popular method for pruning is the 1-SE rule, which involves the following steps: first build a fully grown tree using standard stopping rules; then calculate the error for all possible sub-trees. The best tree with the lowest error is identified and its standard error (SE) is calculated. Trees with an error within one SE of the error of the best tree are considered equivalent, and among these the shortest tree is selected.
 
@@ -86,13 +86,13 @@ In our case, we have decided to tune the max_depth hyperparameter to limit the m
 
 #### Sequence of Analysis
 
-After loading and importing our necessary functions R and Python functions, we have prepared the data by first defining the make as the target variable, then encoding  categorical variables using **Label Encoding** to convert them into numerical values. This step is essential as classification tree needs numerical value to work. 
+After loading and importing our necessary functions R and Python functions, we have prepared the data by first defining the make as the target variable, then encoding categorical variables using **Label Encoding** to convert them into numerical values. This step is essential as classification tree needs numerical value to work.
 
 We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
 
 Once the separation done, we finally have trained our decision tree, using the parameters and hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting.
 
-After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best. 
+After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.
 
 ### Neural Network
 
