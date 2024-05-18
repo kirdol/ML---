@@ -1,0 +1,13 @@
+---
+format:
+  html:
+    css: references.css
+---
+
+# References
+
+Azizi, I., & Boldi, M.-O. (2024). *MLBA - S24 - Machine Learning in Business Analytics 2023-2024*. MLBA - S24. Retrieved May 19, 2024, from https://do-unil.github.io/mlba/
+
+Yadav, H. (2023, 31 mai). Dropout in Neural Networks - Towards Data Science. *Medium*. Retrieved May 19, 2024, from https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9
+
+Klein, B. (2024, 19 avril). *21. Dropout Neural Networks in Python | Machine Learning. Retrieved May 19*, 2024, from https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.
