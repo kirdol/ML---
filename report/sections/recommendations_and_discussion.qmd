@@ -1,9 +1,8 @@
 # Summary of what was observed from the results
-With the neural network, we observed the importance of
-balancing the classes / sensitivity / specificity
-dealing with overfitting. The interesting task of tuning the parameters / The influence of the dropout rate on the validation accuracy.
-The overall accuracy on the test set that happend to be very good with our final model
+
+For the neural networks model to predict the make (brand) of a vehicle based on its technical characteristics, we managed to train a model with a high kappa score of almost 70%. We have been working with unbalanced classes. Our first neural network model was trained without addressing this problem. For this reason, our first model was very poor at predicting the minority class. To remedy this issue, we applied weighted classes to the loss function so that the model could give more importance to the minority class. We then had to address the presence of overfitting. The model’s validation and test accuracy were noticeably higher than the training accuracy. We applied a technique that we discovered but hadn’t seen in class called dropout layers to our model to mitigate this issue. This technique was interesting to work with. As expected, we saw that the validation accuracy was higher than the test and training accuracy. This is due to the way dropout layers are applied to the model. Some of the neurons are only disabled during the training phase and not during the testing phase. We decided to tune this hyperparameter to reduce the gap between the validation and test accuracy while ensuring not to drop our accuracy too much. In the end, we managed to obtain a model after 150 epochs that had a kappa score and an accuracy on the test set of 70%. We can say that the model is able to predict the make of a vehicle based on its technical characteristics with good accuracy.
 
 # Implications for the business (link with the context and the initial objectives of the study)
 
 # Limitations (this may be the subject of a separated section). An opening is often expected here: “What next?” “What can be done for improvement”, etc.?
+

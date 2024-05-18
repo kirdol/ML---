@@ -18,6 +18,8 @@ format:
     code-block-bg: true
     code-block-border-left: "#0095C8"
     code-summary: "Show the code"
+    link-external-icon: true
+    link-external-newwindow: true
   # pdf: default # use this if you want to render pdfs instead
 abstract: |
  The following machine learning project focuses on...

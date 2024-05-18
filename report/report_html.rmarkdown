@@ -1,0 +1,34 @@
+---
+title: Machine Learning Final Project
+author:
+ - Adam Lodrik
+ - Favre Stefan
+ - Macaraeg Jeff
+institute : University of Lausanne
+date: today
+title-block-banner: "#0095C8" #chosen for the university of lausanne
+toc: true
+toc-location: right
+format: 
+  html:
+    number-sections: true
+    html-math-method: katex
+    self-contained: true
+    code-fold: true
+    code-block-bg: true
+    code-block-border-left: "#0095C8"
+    code-summary: "Show the code"
+    link-external-icon: true
+    link-external-newwindow: true
+  # pdf: default # use this if you want to render pdfs instead
+abstract: |
+ The following machine learning project focuses on...
+---
+
+```{r Loading the packages, echo = FALSE, message = FALSE}
+# loading all the necessary packages
+source(here::here("scripts/setup.R"))
+```
+
+```{r child = paste0("sections/", c("introduction.qmd","data_description_html.qmd", "EDA_Uncleaned.qmd", "data_cleaning.qmd", "methods.qmd", "results_classification_tree.qmd", "results_neural_network.qmd", "results_unsupervised_learning.qmd", "recommendations_and_discussion.qmd", "references.qmd"))}
+```
