@@ -34,7 +34,7 @@ from sklearn.model_selection import KFold
 num_epochs = 150
 ```
 
-# Neural Network
+# Neural Networks
 
 In this section, we will build a neural network model to predict the make of a car based on the features at our disposal. We will preprocess the data, split it into training and testing sets, define the neural network architecture, compile the model, train it and evaluate its performance.
 
@@ -433,7 +433,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work.
+We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work. The model does not need early stopping in our case since the accuracies are not deacreasing and the loss is not increasing.
 
 **Performance of the model with weighted class and dropout layers:**
 
