@@ -42,6 +42,10 @@ Key parameters and hyperparameters used in neural networks include:
 
 -   **Class Weights:** Used to handle imbalanced datasets by giving more importance to underrepresented classes.
 
+##### Preprocessing the data
+
+An important step before training our model has been to separate numerical and categorical columns in our data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.
+
 #### Our three primary models
 
 1.  A Simple Neural Network Model
@@ -68,17 +72,17 @@ The model is trained using the Adam optimizer, categorical cross-entropy loss fu
 
 ##### Class-Weighted Neural Network Model
 
-To address class imbalance, a class-weighted approach has then been applied. This involves assigning higher weights to the minority class during training. The architecture of the network remains the same as the simple model. The following steps were taken:
+To address class imbalances, a class-weighted approach has then been applied. This involves assigning higher weights to the minority classes during training. The architecture of the network remains the same as the simple model. The following steps were taken:
 
 -   Class Weights Calculation: Inverse proportionality to class frequencies.
 
 -   Model Training: Incorporating class weights into the loss function.
 
-The use of class weights helps in penalizing misclassifications of the minority class more heavily, thereby improving the model’s performance on imbalanced data.
+The use of class weights helps in penalizing misclassifications of the minority classes more heavily, thereby improving the model’s performance on imbalanced data.
 
 ##### Dropout-Enhanced Neural Network Model
 
-The third model incorporates dropout layers to mitigate overfitting while retaining the original class imbalance. Dropout layers randomly set a fraction of input units to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons.
+The third model incorporates dropout layers to mitigate overfitting while keeping the modification applied in our second model. Dropout layers randomly set a fraction of neurons to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons.
 
 -   Model Architecture: Similar to the simple model with additional dropout layers after each dense hidden layer.
 
@@ -104,30 +108,27 @@ We first encode the categorical variables and normalized the numercial features.
 
 This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.
 
-Note that this section was written and based on the course website found at this adress: [ML_BA](https://do-unil.github.io/mlba/)
+Note that this section was written and based on the course website ([ML_BA](https://do-unil.github.io/mlba/)). The parts on the dropout layers is based on the following links: [towardsdatascience](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9) and [python-course](https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.)
 
 ## Unsupervised Learning
 
 ### Principal Component Analysis
 
-- combination of features
-- scaling
-- projection & variance proportion
-- circle of correlation
-- cos2
-- biplot
-- screeplot
-
+-   combination of features
+-   scaling
+-   projection & variance proportion
+-   circle of correlation
+-   cos2
+-   biplot
+-   screeplot
 
 To inspect the data, find/explain clusters, find dependence between the features. PCA can be used for EDA.
 
-To diminish the number of features when there are too many: dimension reduction 
- only keep few first PC.
- 
- PCA can only be performed on numerical features. When categorical features are also included in the analysis,
+To diminish the number of features when there are too many: dimension reduction only keep few first PC.
 
-for ordinal data, quick and dirty solution: modalities can be mapped to numbers (
-) respecting their order,
+PCA can only be performed on numerical features. When categorical features are also included in the analysis,
+
+for ordinal data, quick and dirty solution: modalities can be mapped to numbers ( ) respecting their order,
 
 for nominal data: there is no correct solution; especially replacing by numbers is incorrect.
 
@@ -135,11 +136,10 @@ With only categorical data, (Multiple) Correspondence Analysis is a solution. An
 
 ### Clustering
 
-- Partitioning Method
-- Numerical --> as we converted into numerical & factors into numerical, use K-Means
+-   Partitioning Method
+-   Numerical --\> as we converted into numerical & factors into numerical, use K-Means
 
-For 
- clusters:
+For clusters:
 
 The initial clustering is random: assign each instance to one cluster at random.
 
@@ -151,12 +151,10 @@ Step 2. and 3. are repeated until a convergence criterion is satisfied.
 
 -K-means
 
-- Number of cluster
-- TWCS
-- Elbow
-- Silhouette
-
-
+-   Number of cluster
+-   TWCS
+-   Elbow
+-   Silhouette
 
 As we have seen several unsupervised learning tools in class, we have looked at our dataset and decided to start with a Principal Component Analysis, as we have some categorical variables as well as numerical ones. This technique allows to combine features in fewer dimensions according to their similarities. We then proceeded with a clustering method and combined both of them into a vizualisation in order to have a clearer result.
 
