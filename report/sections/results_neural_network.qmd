@@ -37,7 +37,7 @@ In this section, we will build a neural network model to predict the make of a c
 
 ## Preprocessing and splitting the data
 
-The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and separate these two types of columns. Separating numerical and categorical columns is an essential step in data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.
+The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and separate these two types of columns and preprocessed them.
 
 
 ```{python, echo = FALSE}
@@ -365,6 +365,8 @@ for rate in dropout_rates:
     print(f"Training accuracy: {round(training_accuracy, 5)}, Validation accuracy: {round(val_accuracy, 2)}, Test accuracy: {round(test_accuracy, 2)}")
 ```
 
+##### Selection of the best dropout rate
+
 ```{python, echo = FALSE}
 # Plot the accuracies
 plt.figure(figsize=(10, 6))
@@ -400,6 +402,8 @@ training_loss = history.history['loss']
 validation_loss = history.history['val_loss']
 ```
 
+##### Model performance
+
 ```{python, echo = FALSE}
 # Plot the accuracy and loss for the model with Dropout
 fig, axs = plt.subplots(2, 1, figsize=(10, 10))
@@ -424,7 +428,8 @@ plt.tight_layout()
 plt.show()
 ```
 
-We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much.
+We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data.
+
 
 **Performance of the model with weighted class and dropout layers:**
 

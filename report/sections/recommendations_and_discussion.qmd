@@ -3,6 +3,7 @@ With the neural network, we observed the importance of
 balancing the classes / sensitivity / specificity
 dealing with overfitting. The interesting task of tuning the parameters / The influence of the dropout rate on the validation accuracy.
 The overall accuracy on the test set that happend to be very good with our final model
+the validation accuracy that is higher than the training accuracy
 
 # Implications for the business (link with the context and the initial objectives of the study)
 

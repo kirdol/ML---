@@ -162,7 +162,7 @@ The use of class weights helps in penalizing misclassifications of the minority 
 
 ##### Dropout-Enhanced Neural Network Model
 
-The third model incorporates dropout layers to mitigate overfitting while keeping the modification applied in our second model. Dropout layers randomly set a fraction of neurons to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons.
+The third model incorporates dropout layers to mitigate overfitting while keeping the modification applied in our second model. Dropout layers randomly set a fraction of neurons to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons. The deactivation of some neurons only happend during the training phases. When the model is used against the validation and test set, all neurons are active. This has the consequence of seeing higher accuracy on the validation set than the training set.
 
 -   Model Architecture: Similar to the simple model with additional dropout layers after each dense hidden layer.
 
@@ -181,6 +181,12 @@ The following software and tools were used to implement and evaluate the models 
 -   Scikit-learn: Used for data preprocessing, splitting the dataset, and calculating class weights.
 
 -   Pandas and NumPy: Libraries used for data manipulation and numerical computations.
+
+#### Mertics
+
+In our machine learning analysis, we used several key metrics to evaluate our model. The main metrics are the training, validation and test accuracies. The **validation accuracy** shows how well the model performs on the validation set, helping us tune the model during training. **Training accuracy** indicates the model’s performance on the training data, which helps identify overfitting. The difference between the training and validation accuracy is useful to detect the presence of overfitting in our models. The **test accuracy** measures the model’s performance on new, unseen data, providing an unbiased evaluation.
+
+We also used the **sensitivity** to measure the model’s ability to correctly identify positive casesand the **specificity** that measures the ability to correctly identify negative cases. Even though, when we started to create our model, we already knew that we had unbalanced classes, these metrics confirmed this with numbers. The last metric that has been used is the **Cohen’s kappa** that evaluates the agreement between predicted and true labels, accounting for chance, making it more reliable than simple accuracy, especially with imbalanced datasets. These metrics together give a comprehensive view of the model’s performance.
 
 #### Sequence of Analysis
 
