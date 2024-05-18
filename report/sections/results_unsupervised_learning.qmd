@@ -12,9 +12,9 @@ library(data.table)
 data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
 ```
 
-In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities across instances and combine features in fewer dimensions.
-
 # Principal Component Analysis
+
+In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities across instances and combine features in fewer dimensions.
 
 ## Data Standardization
 

@@ -199,11 +199,48 @@ ul.task-list li input[type="checkbox"] {
 <h4 class="anchored" data-anchor-id="sequence-of-analysis-1">Sequence of Analysis</h4>
 <p>We first encode the categorical variables and normalized the numercial features. We then trained the models and evaluated each one. By evaluating and investigating the model at each step we managed to deal with the different challenges that we faced. We also managed to tune the dropout rate to insure to keep a good model performance while highly decreasing the case of overfitting we were having.</p>
 <p>This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.</p>
-<p>Note that this section was written and based on the course website found at this adress: <a href="https://do-unil.github.io/mlba/">ML_BA</a></p>
+<p>Note that this section was written and based on the course website (<a href="https://do-unil.github.io/mlba/">ML_BA</a>). The parts on the dropout layers is based on the following links: <a href="https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9">towardsdatascience</a> and <a href="https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.">python-course</a></p>
 </section>
 </section>
-<section id="unsupervised-learning" class="level3">
-<h3 class="anchored" data-anchor-id="unsupervised-learning">Unsupervised Learning</h3>
+</section>
+<section id="unsupervised-learning" class="level2">
+<h2 class="anchored" data-anchor-id="unsupervised-learning">Unsupervised Learning</h2>
+<section id="principal-component-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="principal-component-analysis">Principal Component Analysis</h3>
+<ul>
+<li>combination of features</li>
+<li>scaling</li>
+<li>projection &amp; variance proportion</li>
+<li>circle of correlation</li>
+<li>cos2</li>
+<li>biplot</li>
+<li>screeplot</li>
+</ul>
+<p>To inspect the data, find/explain clusters, find dependence between the features. PCA can be used for EDA.</p>
+<p>To diminish the number of features when there are too many: dimension reduction only keep few first PC.</p>
+<p>PCA can only be performed on numerical features. When categorical features are also included in the analysis,</p>
+<p>for ordinal data, quick and dirty solution: modalities can be mapped to numbers ( ) respecting their order,</p>
+<p>for nominal data: there is no correct solution; especially replacing by numbers is incorrect.</p>
+<p>With only categorical data, (Multiple) Correspondence Analysis is a solution. And for mixed data type (categorical and numerical), Factor Analysis of Mixed Data (FAMD) is a solution. However, they are not adapted to large data set.</p>
+</section>
+<section id="clustering" class="level3">
+<h3 class="anchored" data-anchor-id="clustering">Clustering</h3>
+<ul>
+<li>Partitioning Method</li>
+<li>Numerical –&gt; as we converted into numerical &amp; factors into numerical, use K-Means</li>
+</ul>
+<p>For clusters:</p>
+<p>The initial clustering is random: assign each instance to one cluster at random.</p>
+<p>Compute the centers of the clusters.</p>
+<p>Each instance is then re-assigned to the cluster with the closest center.</p>
+<p>Step 2. and 3. are repeated until a convergence criterion is satisfied.</p>
+<p>-K-means</p>
+<ul>
+<li>Number of cluster</li>
+<li>TWCS</li>
+<li>Elbow</li>
+<li>Silhouette</li>
+</ul>
 <p>As we have seen several unsupervised learning tools in class, we have looked at our dataset and decided to start with a Principal Component Analysis, as we have some categorical variables as well as numerical ones. This technique allows to combine features in fewer dimensions according to their similarities. We then proceeded with a clustering method and combined both of them into a vizualisation in order to have a clearer result.</p>
 <p>To begin the method, it is crucial to standardize the data, meaning to transform the categorical variables into factors, which in turn is transformed into numerical. Then, to have a small idea of the link between the features before attacking the PCA, we will a correlation heatmap, showing which variable really seem to be somewhat correlated, whether positively and negatively. We will start with the PCA right after and then a screeplot, all of this in order to see the weight of the dimensions as well as the observations in the PCA graph.</p>
 <p>Depending on the results of the PCA, we might consider proceeding with a clustering to have a clearer overview of the similarities in the observations and divide them into clusters</p>

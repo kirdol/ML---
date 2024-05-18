@@ -25,10 +25,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Input
 from tensorflow.keras.utils import to_categorical
 from keras.optimizers import Adam
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, cohen_kappa_score
 from sklearn.model_selection import KFold
 
-num_epochs = 100
+num_epochs = 150
 ```
 
 # Neural Network
@@ -103,7 +103,7 @@ We used activation functions in the hidden layers to introduce non-linearity int
 
 ####### We used the following hyperparameters (non-exhaustive list):
 
-* **epochs:** 5 (Corresponds to the number of times the model sees the entire dataset during training.)
+* **epochs:** 150 (Corresponds to the number of times the model sees the entire dataset during training.)
 * **batch_size:** 32 (Corresponds to the number of samples that the model processes before updating the weights.)
 * **validation_split:** 0.2 (Corresponds to the fraction of the training data to be used as validation data.)
 
@@ -152,6 +152,9 @@ tn = cm.sum() - (fp + fn + tp)
 with np.errstate(divide='ignore', invalid='ignore'):
     sensitivity = np.divide(tp, tp + fn)
     specificity = np.divide(tn, tn + fp)
+    # Ensure that the data is in the correct format
+    sensitivity = np.array(sensitivity)
+    specificity = np.array(specificity)
     # Set sensitivities and specificities to 0 where division by zero occurred
     sensitivity[np.isnan(sensitivity)] = 0
     specificity[np.isnan(specificity)] = 0
@@ -306,7 +309,7 @@ X_train_split, X_val, y_train_split, y_val = train_test_split(X_train, y_train, 
 
 ####### We used the following hyperparameters (non-exhaustive list):
 
-* **epochs:** 5 (Corresponds to the number of times the model sees the entire dataset during training.)
+* **epochs:** 150 (Corresponds to the number of times the model sees the entire dataset during training.)
 * **batch_size:** 32 (Corresponds to the number of samples that the model processes before updating the weights.)
 * **validation_split:** 0.2 (Corresponds to the fraction of the training data to be used as validation data.)
 * **dropout_rate:** varies (Corresponds to the fraction of neurons to drop during training.)
@@ -375,12 +378,12 @@ plt.legend()
 plt.show()
 ```
 
-We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue.
-We will use this dropout rate of 0.2 to train the final model with dropout layers.
+We can see that the model with a dropout rate of 0.1 has the best balance between reducing drastically the overfitting problem and keeping a good overall accuracy. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue.
+We will use this dropout rate of 0.1 to train the final model with dropout layers.
 
 ```{python, echo = FALSE}
 # Out best dropout rate used for the following model.
-dropout_rate_to_plot = 0.2
+dropout_rate_to_plot = 0.1
 ```
 
 ```{python, echo = FALSE, output = FALSE}
@@ -421,7 +424,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.
+We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much.
 
 **Performance of the model with weighted class and dropout layers:**
 
@@ -438,4 +441,63 @@ print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
 print(f"Test Set Accuracy: {test_accuracy * 100:.2f}%")
 ```
 
-Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data.
+Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data. We aslo computed the Cohen's Kappa score which is a good indicator of the model's performance. And as we can see, the model performs well.
+
+
+```{python, echo = FALSE, output = FALSE}
+# Make predictions on the validation set
+y_val_pred = model.predict(X_val)
+
+# Convert probabilities to class labels for multi-class classification
+y_val_pred_class = np.argmax(y_val_pred, axis=1)
+
+# Calculate Cohen's Kappa
+kappa_score = round(cohen_kappa_score(np.argmax(y_val, axis=1), y_val_pred_class),4)
+```
+
+```{python, echo = FALSE}
+print(f"Cohen's Kappa Score:{kappa_score * 100:.2f}%")
+```
+
+```{python, echo = FALSE}
+#### Variable importance ####
+
+# https://romainlhardy.medium.com/estimating-feature-importance-the-easy-way-2ebe970c600c
+
+# import numpy as np
+# import matplotlib.pyplot as plt
+# from sklearn.metrics import accuracy_score
+# 
+# # Function to calculate feature importance using permutation method
+# def get_feature_importance(model, X_test, y_test, j, n=100):
+#     # Baseline accuracy
+#     y_pred = model.predict(X_test)
+#     s = accuracy_score(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1))
+#     
+#     total = 0.0
+#     for i in range(n):
+#         perm = np.random.permutation(range(X_test.shape[0]))
+#         X_test_ = X_test.copy()
+#         X_test_[:, j] = X_test[perm, j]
+#         y_pred_ = model.predict(X_test_)
+#         s_ij = accuracy_score(np.argmax(y_test, axis=1), np.argmax(y_pred_, axis=1))
+#         total += s_ij
+#     
+#     return s - total / n
+# 
+# # Calculate feature importances for all features
+# f = []
+# for j in range(X_test.shape[1]):
+#     f_j = get_feature_importance(model, X_test, y_test, j, n=100)
+#     f.append(f_j)
+# 
+# # Plot feature importances
+# plt.figure(figsize=(10, 5))
+# plt.bar(range(X_test.shape[1]), f, color="r", alpha=0.7)
+# plt.xticks(ticks=range(X_test.shape[1]))
+# plt.xlabel("Feature")
+# plt.ylabel("Importance")
+# plt.title("Feature Importances")
+# plt.show()
+```
+
