@@ -480,41 +480,31 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <div class="cell-output cell-output-stdout">
 <pre><code>Test Accuracy (without max_depth): 0.6979</code></pre>
 </div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="results_classification_tree_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="1920"></p>
-</figure>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training Cohen's Kappa (without max_depth): 0.8888</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test Cohen's Kappa (without max_depth): 0.6836</code></pre>
 </div>
 </div>
-</div>
-<p>As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than the accuracy of the test set, attesting that our model is overfitting.</p>
+<p>As we can see, the tree resulting from our training is muchff complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than the accuracy of the test set, attesting that our model is overfitting.</p>
 </section>
 <section id="training-the-decision-tree-with-pruning-method" class="level3">
 <h3 class="anchored" data-anchor-id="training-the-decision-tree-with-pruning-method">Training the Decision Tree with Pruning method</h3>
-<p>In order to have a less complex tree and to fight overfittingness, we have decided to prune our tree and then train it. We chose to prune the tree by trying a few max_depth parameter values to control the tree’s growth (none, 5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. “None” is actually the training without any max_depth parameter. Here are our new results:</p>
+<p>In order to have a less complex tree and to fight overfittingness, we have decided to prune our tree and then train it. We chose to prune the tree by trying a few max_depth parameter values to control the tree’s growth (none, 5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. “None” is actually the training without any max_depth parameter. Here are our new results:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>max_depth   Training Accuracy   Test Accuracy</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>5       0.2605      0.2550
-10      0.4887      0.4674
-15      0.7203      0.6352
-20      0.8520      0.6926
-25      0.8898      0.6972
-30      0.8939      0.6971
-None        0.8939      0.6979</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="results_classification_tree_files/figure-html/unnamed-chunk-3-5.png" class="img-fluid figure-img" width="1920"></p>
-</figure>
+<pre><code>    Train Accuracy  Test Accuracy  Train Cohen's Kappa  Test Cohen's Kappa
+5         0.260476       0.254972             0.217796            0.211947
+10        0.488666       0.467448             0.462008            0.439267
+15        0.720348       0.635180             0.706778            0.617217
+20        0.852006       0.692590             0.845006            0.678054
+25        0.889796       0.697206             0.884545            0.682865
+30        0.893880       0.697088             0.888805            0.682739</code></pre>
 </div>
 </div>
-</div>
-<p>The model’s accuracy improved as the tree’s depth increased up to a point, with a max_depth of 25 or 30 providing the best test accuracy up to 70%. We see that reducing the max_depth to 10 or 15 improves the balance between, therefore reduce drastically the case of overfitting but this is at the expense of the accuracy of our model on new data. But we can see that pruning the tree with a max depth of 25 allows us to increase our accuracy from 69.84% to 70% therefore increasing the accuracy of our model and at the same time, it reduce the gap between the test set and the trainig set. In our case, pruning the Decision Tree helps in improving its generalization performance by preventing it from becoming too complex and reduce overfitting the training data.</p>
+<p>The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen’s kappa reaching up to 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting.</p>
+<p>Pruning the tree with a max_depth of 25 increased the accuracy from 69.84% to 70%, reducing the gap between the test and training sets. This pruning helps to improve the generalisation performance of the model by preventing it from becoming too complex and overfitting the training data.</p>
 </section>
 </section>
 
