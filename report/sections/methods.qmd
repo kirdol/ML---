@@ -194,7 +194,7 @@ We first encode the categorical variables and normalized the numercial features.
 
 This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.
 
-Note that this section was written and based on the course website ([ML_BA](https://do-unil.github.io/mlba/)). The parts on the dropout layers is based on the following links: [towardsdatascience](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9) and [python-course](https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.)
+Note that this section was written and based on the course website ([ML_BA](https://do-unil.github.io/mlba/)). The parts on the dropout layers is based on the following articles: [towardsdatascience](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9) and [python-course](https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.)
 
 ## Unsupervised Learning
 
