@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the graph (((((((((((((((add graph reference))))))))))))))), there’s still big differences between the classes.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x355409340&gt;, &lt;matplotlib.lines.Line2D object at 0x38d3081d0&gt;, &lt;matplotlib.lines.Line2D object at 0x38d30a690&gt;, &lt;matplotlib.lines.Line2D object at 0x38d30a900&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38d308a10&gt;, &lt;matplotlib.lines.Line2D object at 0x38d308e30&gt;, &lt;matplotlib.lines.Line2D object at 0x38d309370&gt;, &lt;matplotlib.lines.Line2D object at 0x38d30aed0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x36981fd10&gt;, &lt;matplotlib.lines.Line2D object at 0x38d309d90&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38d309220&gt;, &lt;matplotlib.lines.Line2D object at 0x38d30b140&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38d309670&gt;, &lt;matplotlib.lines.Line2D object at 0x38d30b410&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x35b1f4f80&gt;, &lt;matplotlib.lines.Line2D object at 0x35c594bc0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c5968d0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c595490&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x35c594ce0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c5958e0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c596f30&gt;, &lt;matplotlib.lines.Line2D object at 0x35c597200&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x34868cb60&gt;, &lt;matplotlib.lines.Line2D object at 0x35c596150&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x35c596d50&gt;, &lt;matplotlib.lines.Line2D object at 0x35c597470&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x35c595cd0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c5976e0&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This technique has been explained in the methods section but in a nutshell, it is a way to penalize the model for misclassifying the minority class more than the majority class. This helps the model to learn the patterns in the minority class better and improve its performance on the test set.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38f5c6210&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c62a0&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c7b60&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c5a30&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38f5c6840&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c70b0&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c5220&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c4ce0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x38d742330&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c78c0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38f5c73b0&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c4830&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38f5c7680&gt;, &lt;matplotlib.lines.Line2D object at 0x38f5c7dd0&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3831c8f50&gt;, &lt;matplotlib.lines.Line2D object at 0x3831c9490&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cb950&gt;, &lt;matplotlib.lines.Line2D object at 0x3831c8770&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3831c9970&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cae10&gt;, &lt;matplotlib.lines.Line2D object at 0x3831c9eb0&gt;, &lt;matplotlib.lines.Line2D object at 0x3831ca3c0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x35e94f1d0&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cb650&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3831cb110&gt;, &lt;matplotlib.lines.Line2D object at 0x3831ca5d0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3831cb410&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cbb60&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -163,13 +163,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Performance of the model with weighted class:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 51.91%</code></pre>
+<pre><code>Final Training Accuracy: 51.88%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 52.90%</code></pre>
+<pre><code>Final Validation Accuracy: 53.14%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 52.24%</code></pre>
+<pre><code>Test Set Accuracy: 51.94%</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting, we will introduce Dropout layers in the neural network.</p>
@@ -224,16 +224,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Performance of the model with weighted class and dropout layers:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 40.54%</code></pre>
+<pre><code>Final Training Accuracy: 41.54%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 46.29%</code></pre>
+<pre><code>Final Validation Accuracy: 46.89%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 45.66%</code></pre>
+<pre><code>Test Set Accuracy: 46.33%</code></pre>
 </div>
 </div>
-<p>Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data.</p>
+<p>Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data. We aslo have a high Cohen’s Kappa score which is a good indicator of the model’s performance.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Cohen's Kappa Score: 0.4542</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import shap</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy as np</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># import matplotlib.pyplot as plt</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # Create a SHAP explainer</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># explainer = shap.DeepExplainer(model, X_train_split[:100])  # Using a subset of training data for efficiency</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># shap_values = explainer.shap_values(X_val[:100])  # Using a subset of validation data for efficiency</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># # Plot feature importance for each class</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># for i in range(len(shap_values)):</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     shap.summary_plot(shap_values[i], X_val[:100], feature_names=feature_names, plot_type="bar")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
 </section>
