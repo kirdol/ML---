@@ -28,7 +28,7 @@ from keras.optimizers import Adam
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import KFold
 
-num_epochs = 100
+num_epochs = 5
 ```
 
 # Neural Network
