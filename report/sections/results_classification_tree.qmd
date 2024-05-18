@@ -112,7 +112,7 @@ plt.show()
 
 ```
 
-### Training the Decision Tree without Pruning
+### Training the Decision Tree without Pruning - Results
 
 Starting to train our Decision Tree, we have first decided to do it without any constraints and see the results of it. 
 
@@ -143,17 +143,17 @@ print(f"Training Cohen's Kappa (without max_depth): {kappa_train_no_prune:.4f}")
 print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 
 # Visualize the Decision Tree without pruning
-plt.figure(figsize=(20, 10))
-plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-plt.title("Decision Tree (without max_depth)")
-plt.show()
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title("Decision Tree (without max_depth)")
+# plt.show()
 ```
 
 As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. 
 
-### Training the Decision Tree with Pruning method
+### Training the Decision Tree with Pruning method - Results
 
-In order to have a less complex tree and to fight overfittingness, we have decided to prune our tree and then train it. We chose to prune the tree by trying a few max_depth parameter values to control the tree's growth (none, 5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. "None" is actually the training without any max_depth parameter. Here are our new results: 
+In order to have a less complex tree and to fight overfittingness, we have decided to prune our tree and then train it. We chose to prune the tree by trying a few max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. "None" is actually the training without any max_depth parameter. Here are our new results: 
 
 ```{python, echo = FALSE}
 # Define a function to train and evaluate the Decision Tree with different max_depth values
@@ -189,13 +189,33 @@ results_df = pd.DataFrame.from_dict(results, orient='index')
 # Print the DataFrame
 print(results_df)
 
+# Extract test accuracies to find the best depth
+test_scores = results_df["Test Accuracy"].tolist()
+
+# Extract feature importances
+# Extract feature importances from the best tree (based on test accuracy)
+best_depth = max_depth_values[test_scores.index(max(test_scores))]
+best_clf = clfs[best_depth]
+
+# Assuming 'features' is a list of feature names
+feature_importances = best_clf.feature_importances_
+
+# Create a DataFrame for easy visualization
+importances_df = pd.DataFrame({
+    'Feature': features,
+    'Importance': feature_importances
+})
+
+# Sort the DataFrame by feature importance in descending order
+importances_df = importances_df.sort_values(by='Importance', ascending=False)
+
 # Visualize the Decision Tree for specific max_depth values (e.g., 10, 20)
-depths_to_visualize = [5]
-for depth in depths_to_visualize:
-    plt.figure(figsize=(20, 10))
-    plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-    plt.title(f"Decision Tree (max_depth={depth})")
-    plt.show()
+# depths_to_visualize = [10, 20]
+# for depth in depths_to_visualize:
+#     plt.figure(figsize=(20, 10))
+#     plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+#     plt.title(f"Decision Tree (max_depth={depth})")
+#     plt.show()
 ```
 
 ```{python, echo = FALSE}
@@ -226,3 +246,23 @@ for depth in depths_to_visualize:
 The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen's kappa reaching up to 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting.
 
 Pruning the tree with a max_depth of 25 increased the accuracy from 69.84% to 70%, reducing the gap between the test and training sets. This pruning helps to improve the generalisation performance of the model by preventing it from becoming too complex and overfitting the training data.
+
+### Variable Importance 
+
+As we have used a classification tree for the prediction, the most important variable in the model are the ones at the top of the graph. Let's visualize the ranking of the features importance. 
+
+```{python}
+# Visualize the feature importances
+plt.figure(figsize=(10, 6))
+plt.barh(importances_df['Feature'], importances_df['Importance'], color='skyblue')
+plt.xlabel('Feature Importance')
+plt.ylabel('Feature')
+plt.title('Feature Importance in Pruned Decision Tree')
+plt.gca().invert_yaxis()  # To display the most important feature at the top
+plt.show()
+
+# Print the sorted feature importances
+# print(importances_df)
+```
+
+We can see that among the top 3 most important features figure in order : the engine displacement, the model of the year and the class of the vehicle. On another hand, we can see that some features such as range_ev_city_fuel_type_2, range_ev_highway_fuel_type_2 and range_ev_city_fuel_type_1 are not important for our model for making predictions. This is certainly due to the quantity of EV and hybrid cars in the dataset and these features that are only concerning these types of vehicles.
