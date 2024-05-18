@@ -119,7 +119,7 @@ Starting to train our Decision Tree, we have first decided to do it without any 
 ```{python, echo = FALSE}
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.metrics import accuracy_score, cohen_kappa_score
 from sklearn.preprocessing import LabelEncoder
@@ -150,6 +150,75 @@ print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 ```
 
 As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. 
+
+### Training the Decision Tree with K-fold cross-validation - Results
+
+In
+
+```{python}
+
+# !pip install matplotlib seaborn scikit-learn ------- INSTALL IF NEEDED
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.columns:
+    if data[column].dtype == 'object':
+        le = LabelEncoder()
+        data[column] = le.fit_transform(data[column])
+        label_encoders[column] = le
+
+# Split the data into features and target
+target = 'make'
+features = data.columns.drop(target)
+X = data[features]
+y = data[target]
+
+# Initialize the classifier
+clf = DecisionTreeClassifier(random_state=42)
+
+# Initialize KFold cross-validator
+kf = KFold(n_splits=10, shuffle=True, random_state=42)
+
+# Perform k-fold cross-validation
+cv_scores = cross_val_score(clf, X, y, cv=kf, scoring='accuracy')
+
+# Print the cross-validation scores
+print("Cross-validation scores: ", cv_scores)
+print("Mean cross-validation score: ", cv_scores.mean())
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the classifier on the training set
+clf.fit(X_train, y_train)
+
+# Predict on the training set and test set
+y_train_pred = clf.predict(X_train)
+y_test_pred = clf.predict(X_test)
+
+# Calculate the training and test set accuracies
+train_accuracy = accuracy_score(y_train, y_train_pred)
+test_accuracy = accuracy_score(y_test, y_test_pred)
+
+print(f"Training set accuracy: {train_accuracy:.4f}")
+print(f"Test set accuracy: {test_accuracy:.4f}")
+
+# Visualize the decision tree
+from sklearn.tree import plot_tree
+
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title('Decision Tree')
+# plt.show()
+```
+
 
 ### Training the Decision Tree with Pruning method - Results
 
