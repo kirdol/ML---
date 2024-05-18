@@ -106,7 +106,57 @@ This sequence ensures a systematic approach to model development and evaluation,
 
 Note that this section was written and based on the course website found at this adress: [ML_BA](https://do-unil.github.io/mlba/)
 
-### Unsupervised Learning
+## Unsupervised Learning
+
+### Principal Component Analysis
+
+- combination of features
+- scaling
+- projection & variance proportion
+- circle of correlation
+- cos2
+- biplot
+- screeplot
+
+
+To inspect the data, find/explain clusters, find dependence between the features. PCA can be used for EDA.
+
+To diminish the number of features when there are too many: dimension reduction 
+ only keep few first PC.
+ 
+ PCA can only be performed on numerical features. When categorical features are also included in the analysis,
+
+for ordinal data, quick and dirty solution: modalities can be mapped to numbers (
+) respecting their order,
+
+for nominal data: there is no correct solution; especially replacing by numbers is incorrect.
+
+With only categorical data, (Multiple) Correspondence Analysis is a solution. And for mixed data type (categorical and numerical), Factor Analysis of Mixed Data (FAMD) is a solution. However, they are not adapted to large data set.
+
+### Clustering
+
+- Partitioning Method
+- Numerical --> as we converted into numerical & factors into numerical, use K-Means
+
+For 
+ clusters:
+
+The initial clustering is random: assign each instance to one cluster at random.
+
+Compute the centers of the clusters.
+
+Each instance is then re-assigned to the cluster with the closest center.
+
+Step 2. and 3. are repeated until a convergence criterion is satisfied.
+
+-K-means
+
+- Number of cluster
+- TWCS
+- Elbow
+- Silhouette
+
+
 
 As we have seen several unsupervised learning tools in class, we have looked at our dataset and decided to start with a Principal Component Analysis, as we have some categorical variables as well as numerical ones. This technique allows to combine features in fewer dimensions according to their similarities. We then proceeded with a clustering method and combined both of them into a vizualisation in order to have a clearer result.
 
