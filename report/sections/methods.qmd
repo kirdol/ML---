@@ -198,7 +198,7 @@ Note that this section was written and based on the course website ([ML_BA](http
 
 ## Unsupervised Learning
 
-In order to see the link between features, we decided to proceed with two unsupervised learning methods which are the Principal Component Analysis and the Clustering methods.
+In order to check for some dependence between features, we decided to proceed with two unsupervised learning methods which are the Principal Component Analysis and the Clustering methods.
 
 ### Principal Component Analysis
 
@@ -207,59 +207,20 @@ In order to see the link between features, we decided to proceed with two unsupe
 - Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
 - Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
 - Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
-- Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features
+- Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
+- Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
 
-
--   combination of features
--   scaling
--   projection & variance proportion
--   circle of correlation
--   cos2
--   biplot
--   screeplot
-
-To inspect the data, find/explain clusters, find dependence between the features. PCA can be used for EDA.
-
-To diminish the number of features when there are too many: dimension reduction only keep few first PC.
-
-PCA can only be performed on numerical features. When categorical features are also included in the analysis,
-
-for ordinal data, quick and dirty solution: modalities can be mapped to numbers ( ) respecting their order,
-
-for nominal data: there is no correct solution; especially replacing by numbers is incorrect.
-
-With only categorical data, (Multiple) Correspondence Analysis is a solution. And for mixed data type (categorical and numerical), Factor Analysis of Mixed Data (FAMD) is a solution. However, they are not adapted to large data set.
+The aim of doing a PCA is to potentially diminish the number of features as there are several features in our dataset. By doing a dimension reduction, we can only select the first few principal components.
 
 ### Clustering
 
-In our
+Doing a clustering analysis allowed us to find some clusters that share similar characteristics measured by the features. In our case, we have decided to go with a partitioning method.
 
--   Partitioning Method
--   Numerical --\> as we converted into numerical & factors into numerical, use K-Means
+- Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
+- K-means: Method for numerical data.
+- Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
+- Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
+- Cluster Plot: Plot to visualize the clusters.
+- Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
 
-For clusters:
-
-The initial clustering is random: assign each instance to one cluster at random.
-
-Compute the centers of the clusters.
-
-Each instance is then re-assigned to the cluster with the closest center.
-
-Step 2. and 3. are repeated until a convergence criterion is satisfied.
-
--K-means
-
--   Number of cluster
--   TWCS
--   Elbow
--   Silhouette
-
-As we have seen several unsupervised learning tools in class, we have looked at our dataset and decided to start with a Principal Component Analysis, as we have some categorical variables as well as numerical ones. This technique allows to combine features in fewer dimensions according to their similarities. We then proceeded with a clustering method and combined both of them into a vizualisation in order to have a clearer result.
-
-To begin the method, it is crucial to standardize the data, meaning to transform the categorical variables into factors, which in turn is transformed into numerical. Then, to have a small idea of the link between the features before attacking the PCA, we will a correlation heatmap, showing which variable really seem to be somewhat correlated, whether positively and negatively. We will start with the PCA right after and then a screeplot, all of this in order to see the weight of the dimensions as well as the observations in the PCA graph.
-
-Depending on the results of the PCA, we might consider proceeding with a clustering to have a clearer overview of the similarities in the observations and divide them into clusters
-
-To achieve this, the main aspect to consider is to take the results from the PCA. So, to begin with, we will take the PCA coordinates and then proceed with a K-means method. We will then perform an elbow method to check for the optimal number of clusters. Depending on the results, we might consider doing a silhouette plot to check for heterogeneity in the clusters. Finally, as we are doing the PCA right before the clustering, we plan to create a 3D biplot where both the features and the clustered observations can be seen in order to interpret the final results for the unsupervised learning part.
-
-The final aim is to see the link between the features as well as the similarities of the observations.
+The clustering was aimed to provide better insights on the similarities of the instances. We started by taking the results from the PCA to add clustering in it. For a better visualization, a 3D biplot was of interest to have the overview of the clusters and the features within 3 dimensions. The final aim is to see the link between the features as well as the similarities of the observations.
