@@ -100,11 +100,11 @@ Once the separation done, we finally trained our decision tree, using the parame
 
 Then we pruned the tree, by setting different max_depth value \[5 to 30\] in order to see which tradeoff between accuracy and performance (at fighting overfitting) was the best.
 
-In addition, we decided to address class unbalances by Re-Sampling our dataset. We selected a threshold among our observation per make of 100 for not having brands with too little observations, then used the new dataset on our "base" Classification Tree.
+In addition, we decided to address class unbalances by Re-Sampling our dataset. We established a threshold of 100 observations per make to avoid including brands with insufficient data. The resulting dataset was then utilized for our “base” Classification Tree.
 
 ### Neural Network
 
-The use of a neural network was used for a classification task. As already discussed, we want to predict the make of a car utilizing the other features.
+We also used a neural network for the classification task. As already discussed, we want to predict the make of a car utilizing the other features.
 
 A neural network is a computational model inspired by the way biological neural networks in the human brain process information. It consists of interconnected layers of nodes (neurons) where each connection has an associated weight. The network learns to map input data to the desired output by adjusting these weights through a process called training. The model can be tuned using hyperparameters set before the learning process begins that governs the overall behavior and performance of the machine learning model.
 
@@ -142,9 +142,7 @@ An important step before training our model has been to separate numerical and c
 
 3.  And a Dropout-Enhanced Neural Network Model (also using class-weight)
 
-All three models used the cleaned data set prepared in the data cleaning section. We chose the version with more than 10 observation for each car brands to avoid over imbalanced classes.
-
-Each model’s architecture, training process, and evaluation metrics are described in the following sections.
+All three models used the cleaned data set prepared in the data cleaning section. We chose the version with more than 10 observation for each car brands to avoid over imbalanced classes. Each model’s architecture, training process, and evaluation metrics are described in the following sections.
 
 ##### Simple Neural Network Model
 
@@ -154,9 +152,7 @@ The simple neural network model serves as the baseline. It consists of the follo
 
 -   Hidden Layers: Two dense layers with ReLU activation functions.
 
--   Output Layer: A dense layer with a softmax activation function for classification. The softmax activation function output a probability for each features input to belong to a specific class (brand).
-
-The model is trained using the Adam optimizer, categorical cross-entropy loss function, and accuracy as the primary metric.
+-   Output Layer: A dense layer with a softmax activation function for classification. The softmax activation function output a probability for each features input to belong to a specific class (brand). The model is trained using the Adam optimizer, categorical cross-entropy loss function, and accuracy as the primary metric.
 
 ##### Class-Weighted Neural Network Model
 
@@ -166,11 +162,11 @@ To address class imbalances, a class-weighted approach has then been applied. Th
 
 -   Model Training: Incorporating class weights into the loss function.
 
-The use of class weights helps in penalizing misclassifications of the minority classes more heavily, thereby improving the model’s performance on imbalanced data.
+The use of class weights helps in penalizing misclassification of the minority classes more heavily, thereby improving the model’s ability to predict the minority classes.
 
 ##### Dropout-Enhanced Neural Network Model
 
-The third model incorporates dropout layers to mitigate overfitting while keeping the modification applied in our second model. Dropout layers randomly set a fraction of neurons to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons. The deactivation of some neurons only happend during the training phases. When the model is used against the validation and test set, all neurons are active. This has the consequence of seeing higher accuracy on the validation set than the training set.
+The third model incorporates dropout layers to mitigate overfitting while keeping the modification applied in our second model. Dropout layers randomly set a fraction of neurons to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons. The deactivation of some neurons only happens during the training phases. When the model is used against the validation and test set, all neurons are active. This has the consequence of seeing higher accuracy on the validation set than the training set.
 
 -   Model Architecture: Similar to the simple model with additional dropout layers after each dense hidden layer.
 
@@ -192,17 +188,15 @@ The following software and tools were used to implement and evaluate the models 
 
 #### Metrics
 
-In our machine learning analysis, we used several key metrics to evaluate our model. The main metrics are the training, validation and test accuracies. The **validation accuracy** shows how well the model performs on the validation set, helping us tune the model during training. **Training accuracy** indicates the model’s performance on the training data, which helps identify overfitting. The difference between the training and validation accuracy is useful to detect the presence of overfitting in our models. The **test accuracy** measures the model’s performance on new, unseen data, providing an unbiased evaluation.
+In our machine learning analysis, we used several key metrics to evaluate our model. The main metrics are the training, validation and test accuracies. The validation accuracy shows how well the model performs on the validation set, helping us tune the model during training. Training accuracy indicates the model’s performance on the training data, which helps identify overfitting. The difference between the training and validation accuracy is useful to detect the presence of overfitting in our models. The test accuracy measures the model’s performance on new, unseen data, providing an unbiased evaluation.
 
-We also used the **sensitivity** to measure the model’s ability to correctly identify positive casesand the **specificity** that measures the ability to correctly identify negative cases. Even though, when we started to create our model, we already knew that we had unbalanced classes, these metrics confirmed this with numbers. The last metric that has been used is the **Cohen’s kappa** that evaluates the agreement between predicted and true labels, accounting for chance, making it more reliable than simple accuracy, especially with imbalanced datasets. These metrics together give a comprehensive view of the model’s performance.
+We also used the sensitivity to measure the model’s ability to correctly identify positive cases and the specificity that measures the ability to correctly identify negative cases. Even though, when we started to create our model, we already knew that we had unbalanced classes, these metrics confirmed this with numbers. The last metric that has been used is the Cohen’s kappa that evaluates the agreement between predicted and true labels, accounting for chance, making it more reliable than simple accuracy because it takes into account the number of classes that we want to predict. These metrics together give a comprehensive view of the model’s performance.
 
 #### Sequence of Analysis
 
-We first encode the categorical variables and normalized the numercial features. We then trained the models and evaluated each one. By evaluating and investigating the model at each step we managed to deal with the different challenges that we faced. We also managed to tune the dropout rate to insure to keep a good model performance while highly decreasing the case of overfitting we were having.
+We first encode the categorical variables and normalized the numerical features. We then trained the models and evaluated each one. By evaluating and investigating the model at each step we managed to deal with the different challenges that we faced. We also managed to tune the dropout rate to insure to keep a good model performance while highly decreasing the case of overfitting we were having.
 
 This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.
-
-Note that this section was written and based on the course website ([ML_BA](https://do-unil.github.io/mlba/)). The parts on the dropout layers is based on the following articles: [towardsdatascience](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9) and [python-course](https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.)
 
 ## Unsupervised Learning
 
@@ -210,7 +204,7 @@ In order to check for some dependence between features, we decided to proceed wi
 
 ### Principal Component Analysis
 
--   Features: The features are the ones from the data_cleaned data frame.
+-   Features: The features from the data_cleaned dataframe.
 
 -   Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
 
@@ -222,9 +216,9 @@ In order to check for some dependence between features, we decided to proceed wi
 
 -   Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
 
--   Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
+-   Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated. The more dimensions are required, the more the features are independent.
 
-The aim of doing a PCA is to potentially diminish the number of features as there are several features in our dataset. By doing a dimension reduction, we can only select the first few principal components.
+The aim of doing a PCA is to potentially diminish the number of features as we have several features in our dataset. By doing a dimension reduction, we can only select the first few principal components.
 
 ### Clustering
 
@@ -234,7 +228,7 @@ Doing a clustering analysis allowed us to find some clusters that share similar 
 
 -   K-means: Method for numerical data.
 
--   Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
+-   Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centroid. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
 
 -   Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
 
@@ -255,3 +249,5 @@ The following software and tools were used to implement and evaluate the models 
 -   FactoMineR: Provides functions to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
 
 -   Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).
+
+Note that this section has been written and is based on the course website ([ML_BA](https://do-unil.github.io/mlba/)). The parts on the dropout layers is based on the following articles: [towardsdatascience](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9) and [python-course](https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.)
