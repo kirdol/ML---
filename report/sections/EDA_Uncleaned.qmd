@@ -12,11 +12,13 @@ source(here::here("scripts","setup.R"))
 data <- read_csv(here("data","data_initial_underscores.csv"))
 ```
 
-# EDA
+# Exploratory Data Analysis
 
-Now that we have presented the variables contained in the dataset, let's try to understand the data structure, characteristics and underlying patterns thanks to an EDA.
+Now that we have presented the variables contained in the dataset, let's try to understand the data structure, characteristics and underlying patterns thanks to an exploratory data analysis.
 
-### Dataset overview 
+### Dataset overview
+
+Find below a preview of our raw dataset.
 
 ```{r, echo = FALSE, message = TRUE, warning = FALSE}
 # Cleaned dataset
@@ -29,7 +31,7 @@ datatable(data, options = list(pageLength = 5,
 
 ### Columns description
 
-Let's have a quick look at the characteristics of the columns. You will find more statistical details about it in the annexe. 
+Let's have a quick look at the characteristics of the columns. You will find more statistical details about it in the [Annex -@sec-data_column_details]. 
 
 ```{r, echo= FALSE}
 
@@ -60,7 +62,7 @@ kable(summary_df, format = "html", table.attr = "style='width:50%;'") %>%
 ```
 
 
-The dataset that we are working with contains approx. 46'000 rows and 26 columns, each row representing a model from one of the 141 brands. From the data overview, we can see that most of our features are concerning the consumption of the cars. If we now check more in details in the annex, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will handle these issues in the section "Data cleaning".
+The dataset that we are working with contains approximately 46'000 rows and 26 columns, each row representing a model from one of the 141 brands. From the data overview, we can see that most of our features are concerning the consumption of the cars. If we now check more in details in the annex, we notice that some variables contain a lot of missing and that the variable "Time.to.Charge.EV..hours.at.120v." is only containing 0s. We will handle these issues in the section "Data cleaning".
 
 ### Exploration of the distribution
 
@@ -79,7 +81,7 @@ As the majority of models in our dataset are neither electric vehicles (EVs) nor
 
 ### Outliers Detection
 
-In order identify occurences that deviate significantly for the rest of the observations, and in order to potentially improve the global quality of the data, we have decided to analyse outliers thanks to boxplots. Here are the result on the numerical columns of the dataset: 
+In order to identify occurrences that deviate significantly for the rest of the observations, and in order to potentially improve the global quality of the data, we decided to analyse outliers thanks to boxplots. Here are the result on the numerical features of the dataset: 
 
 ```{r, fig.height=10, fig.width=12, echo= FALSE}
 #tentative boxplots
@@ -112,7 +114,8 @@ ggplot(data_long, aes(x = variable, y = value, fill = variable)) +
 
 ```
 
-Most of our boxplots are showing extreme values. Again, this is due to the small amount of EV and hybrid cars in our dataset compared to the rest of the models and due to the nature of some features, concerning only those type of vehicles. 
+Most of our boxplots are showing extreme values. Again, this is due to the small amount of EV and hybrid cars in our dataset compared to the rest of the models and due to the nature of some features, concerning only those type of vehicles.
+
 ```{r, echo=FALSE}
 #Now 
 # plot_correlation(data) #drop time charge EV 120V
@@ -122,7 +125,7 @@ Most of our boxplots are showing extreme values. Again, this is due to the small
 
 ### Number of models per make
 
-Now let's check how many models per make we have in our dataset. In order to have a clear plot, we have decided to keep the top 20 brands among all the make on the graph. All the remaining makes are accessible on the table just below. 
+Now let's check how many models per make we have in our dataset. In order to have a clear plot, we decided to keep only the top 20 brands among all the make in our dataset to create the plot. All the remaining makes are accessible on in [Annex -@sec-data_n_make]. 
 
 ```{r, echo= FALSE}
 #Number of occurences/model per make 
@@ -168,11 +171,9 @@ ggplot(top_n_makes, aes(x = reorder(make, Number), y = Number)) +
         axis.text.y = element_text(hjust = 1, size = 10),
         plot.title = element_text(size = 14)) +
   coord_flip()  # Flip coordinates for better readability
-
-
 ```
 
-On the 141 brands, we notice that only 13 brands have more than 1000 models in the dataset. Among these, only one of them (Chevrolet) have more than 4000 models presents. In addition, as we can see in the appendix, we noticed that many car brands have 1 observation, which would lead to class unbalanced and would lead to bias toward majority classes. Therefore, we have decided to address this issue later. 
+On the 141 brands, we notice that only 13 brands have more than 1000 models in the dataset. Among these, only one of them (Chevrolet) have more than 4000 models presents. In addition, we saw that many car brands have 1 observation, which would lead to class unbalanced and would lead to bias toward majority classes. We will address this issue later.
 
 ```{r, fig.height=7, echo= FALSE}
 #table only 1 model

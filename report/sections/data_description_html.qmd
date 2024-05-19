@@ -52,7 +52,7 @@ D1_1_SDG_table_info <- data.frame(
               "Combined city and highway car consumption in miles per gallon, for fuel type 2",
               "Number of cylinders of the car",
               "Measure of the cylinder volume swept by all of the pistons of a piston engine, excluding the combustion chambers",
-              "Type of powertrain distribution system that places rotational propulsion, such as rear-wheel,4-Wheel Drive,...",
+              "Type of powertrain distribution system that places rotational propulsion, such as rear-wheel, 4-Wheel Drive,...",
               "Description of some features of the car, such as turbo engine, Stop-Start system, ...",
               "Manual/Automatic transmission, with number of gears and/or model of transmission",
               "Type of vehicle, such as Minivan, Trucks,...",

@@ -8,23 +8,23 @@ editor_options:
 
 # Methods
 
-This section provides a detailed explanation of the methods used in this study, aimed at ensuring reproducibility. The global strategy and each specific tool employed are described concisely, with relevant properties highlighted. Clear references are provided for further details where necessary.
+This section provides a detailed explanation of the methods used in this study, aimed at ensuring reproducibility. The global strategy and the specific tools employed are described concisely, with relevant properties highlighted. Clear references are provided for further details where necessary.
 
 ## Supervised Learning
 
 ### Classification Tree
 
-As our dataset is dealing with classes, we have decided to use a Classification tree to predict the make of the car.
+As our dataset is dealing with classes, we decided to use a Classification Tree to predict the make of the car.
 
-Classification Trees are constituted of one root node and a hierarchical set of binary rules. Each node represent a decision on an attribute, each branch the outcome of the decision and each leaf a class label (The most important features are located at the top of the graph). Thus, the name is coming from the shape of the representation, that looks like a tree. Even if it can be also applied to regressions, we are using it in our case for classification tasks.
+Classification Trees are constituted of one root node and a hierarchical set of binary rules. Each node represents a decision on an attribute, each branch the outcome of the decision and each leaf a class label (The most important features are located at the top of the graph). Thus, the name is coming from the shape of the representation, that looks like a tree. Even if it can also be applied to regressions, we are using it in our case for classification tasks.
 
-Key parameters and hyperparameters used in classification tree include:
+Key parameters and hyperparameters used in Classification Tree include (non-exhaustive):
 
 **Parameters**
 
 -   Data observations
 
--   Method (usually class, which specifies that the decision tree being constructed is for classification tasks)
+-   Method (usually "class", which specifies that the decision tree being constructed is for classification tasks)
 
 **Hyperparameters**
 
@@ -32,19 +32,17 @@ Key parameters and hyperparameters used in classification tree include:
 
 -   **minbucket** : controls the minimum size of terminal nodes
 
--   **complexity parameter cp** : controls the size of the decision tree. Also prevent overfitting.
+-   **complexity parameter (cp)** : controls the size of the decision tree. Also prevents overfitting.
 
 -   **Maximum depth** : Set a maximum "length" of the tree, starting from the root node.
 
--   **Random state** : Set a specific number (usually 42) to control the randomness of the estimator.
+-   **Random state** : Set a specific number to control the randomness of the estimator.
 
--   **xval** : Helps in model validation by performing cross-validation
-
-We had in must of our models to encod categorical variables using **Label Encoding** to convert them into numerical values. In addition, we had to split the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
+We had in must of our models to encode categorical variables using Label Encoding to convert them into numerical values. In addition, we had to split the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
 
 ### Our models
 
-1.  Classification Tree without constraints
+1.  Classification Tree without Base model
 
 2.  Classification Tree with 10 K-fold CV
 
@@ -54,31 +52,31 @@ We had in must of our models to encod categorical variables using **Label Encodi
 
 ### Classification Tree without constraints
 
-The classification tree model serves as the baseline for knowing how is the model without any constraints added.
+The base model serves as a baseline that will be used to measure the added values of the different techniques that we will apply later.
 
-In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split).
+In our case, the Decision Tree Classifier creates the decision tree. It initializes the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criterias : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split).
 
 ### 10 K-fold CV
 
-K-Fold cross-validation is a method for assessing the performance of a model. It has the following steps :
+K-Fold cross-validation is a method to assess the performance of a model. It has the following steps :
 
 -   Divide the Data: The dataset is split into k equally sized subsets or "folds."
 -   Train and Validate: The model is trained k times. In each iteration, one fold is used as the validation set, and the remaining k−1 folds are used as the training set.
 -   Evaluate: The model's performance is evaluated using the validation set in each iteration. Average Performance: The results from each iteration are averaged to provide a single performance metric.
 
-We have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree.
+We decided to use a K-fold cross-validation with 10 folds to fight overfitting. The rest remained as in our base classification tree.
 
 ### Classification Tree with Pruning
 
-Now let's talk about the classification tree using pruning. It is basicaly reducing the complexity of the tree by removing unnecessary sections. This helps a lot against overfitting but at the expense of accuracy.
+Now let's talk about the classification tree using pruning. The idea is to reduce the complexity of the tree by removing unnecessary sections. This helps a lot against overfitting but at the expense of accuracy.
 
-In our case, we have the same components as in the base method at the beginning. Nevertheless, some part of the process is different. In this case we are using a complexity parameter (max_depth) to control the size of the tree. We tried to play with the tuning of the hyperparameter \[5 to 30\] to check which value had the best tradeoff between accuracy and overfitting.
+In our case, we have the same components as in the base method at the beginning. Nevertheless, some parts of the process are different. In this case we are using a complexity parameter (max_depth) to control the size of the tree. We tried to play with the tuning of the hyperparameter \[5 to 30\] to check which value had the best tradeoff between accuracy and overfitting.
 
 ### Re-Sampling
 
-Re-Sampling is a method used to address class unbalanced. As it's name suppose, it creates new observations for classes to take the number of observation of the class with the most occurences.
+Re-Sampling is a method used to address class imbalance. As it's name suppose, it creates new observations for the minority classes to match the majority classes, thus balancing the classes.
 
-In our case, we have used a threshold in order to avoid too little observations in our dataset, which would have reduced the quality of our prediction. We then used the new dataset on our "base" classification tree.
+In our case, we have used a threshold in order to avoid observations with a small number of occurrences in our dataset, which would have reduced the quality of our prediction. We then used the new dataset on our "base" Classification Tree.
 
 #### Software and Tools
 
@@ -94,15 +92,15 @@ In our case, we have used a threshold in order to avoid too little observations 
 
 #### Sequence of Analysis
 
-After loading and importing our necessary functions R and Python functions, we have prepared the data by first defining the make as the target variable, then encoding categorical variables using **Label Encoding** to convert them into numerical values. This step is essential as classification tree needs numerical value to work.
+After loading and importing our necessary functions R and Python functions, we prepared the data by first defining the make as the target variable, then encoded categorical variables using Label Encoding to convert them into dummy variables. This step is essential as Classification Tree needs numerical value to work.
 
-We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
+We then split the dataset into a training set (80%) and a testing set (20%). This step is essential to prevent overfitting. We then tried to select the best model configuration by training the model, then assessed the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
 
-Once the separation done, we finally have trained our decision tree, using the parameters but first without tuning the  hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting. After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to use the K-Fold CV to assess the performance of our "base" model. 
+Once the separation done, we finally trained our decision tree, using the parameters but first without tuning the hyperparameters that we talked about earlier. Then, after training the model, we have been able to use the model on the test set to compute the accuracies. This step is essential to control the performance of the model, also to control the presence of overfitting. After verification, we found overfitting after constructing the base Classification Tree model. We then decided to use the K-Fold CV to assess the performance of our "base" model.
 
-Then we have pruned the tree, by setting different max_depth value [5 to 30] in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best. 
+Then we pruned the tree, by setting different max_depth value \[5 to 30\] in order to see which tradeoff between accuracy and performance (at fighting overfitting) was the best.
 
-In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations, then used the new dataset on our "base" classification tree.
+In addition, we decided to address class unbalances by Re-Sampling our dataset. We selected a threshold among our observation per make of 100 for not having brands with too little observations, then used the new dataset on our "base" Classification Tree.
 
 ### Neural Network
 

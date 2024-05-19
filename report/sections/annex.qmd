@@ -8,13 +8,15 @@ format:
 source(here::here("scripts","setup.R"))
 ```
 
-## Data Columns Detailed
+## Data Columns Detailed {#sec-data_column_details}
+
 ```{r, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
 data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 skim(data)
 ```
 
-## Number of models per make
+## Number of models per make {#sec-data_n_make}
+
 ```{r Number of models per make, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
 #table globale
 datatable(nb_model_per_make,
