@@ -202,13 +202,19 @@ In order to check for some dependence between features, we decided to proceed wi
 
 ### Principal Component Analysis
 
-- Features: The features are the ones from the data_cleaned data frame. 
-- Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
-- Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
-- Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
-- Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
-- Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
-- Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
+-  Features: The features are the ones from the data_cleaned data frame. 
+
+-  Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
+
+-  Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
+
+-  Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
+
+-  Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
+
+-  Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
+
+-  Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
 
 The aim of doing a PCA is to potentially diminish the number of features as there are several features in our dataset. By doing a dimension reduction, we can only select the first few principal components.
 
@@ -216,11 +222,28 @@ The aim of doing a PCA is to potentially diminish the number of features as ther
 
 Doing a clustering analysis allowed us to find some clusters that share similar characteristics measured by the features. In our case, we have decided to go with a partitioning method.
 
-- Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
-- K-means: Method for numerical data.
-- Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
-- Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
-- Cluster Plot: Plot to visualize the clusters.
-- Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
+-  Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
+
+-  K-means: Method for numerical data.
+
+-  Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
+
+-  Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
+
+-  Cluster Plot: Plot to visualize the clusters.
+
+-  Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
 
 The clustering was aimed to provide better insights on the similarities of the instances. We started by taking the results from the PCA to add clustering in it. For a better visualization, a 3D biplot was of interest to have the overview of the clusters and the features within 3 dimensions. The final aim is to see the link between the features as well as the similarities of the observations.
+
+#### Software and Tools
+
+The following software and tools were used to implement and evaluate the models (non-exhaustive list):
+
+-  R Studio: The programming language used to implement the unsupervised learning methods.
+
+-  Factoextra: Provides tools to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
+
+-  FactoMineR: Provides functions to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
+
+- Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).
