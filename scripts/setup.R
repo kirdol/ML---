@@ -29,7 +29,8 @@ packages_loaded <- c(
   "neuralnet", 
   "corrplot",
   "reshape2",
-  "cluster"
+  "cluster",
+  "vtable"
 )
 
 # Function that install the packages if not already installed on your computer

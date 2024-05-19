@@ -1,9 +1,8 @@
 ---
-output: html_document
-editor_options: 
-  chunk_output_type: console
+format:
+  html
 ---
-# Annex {#sec-Annex}
+# Annex
 
 ```{r echo = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
@@ -15,17 +14,31 @@ data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 skim(data)
 ```
 
-## Data Summary
-```{r, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
-data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
-# print(dfSummary(data), method = "render")
+## Data Summary {#sec-data_summary}
 
-dfSummary(data, plain.ascii = FALSE, style = "grid", tmp.img.dir = "/tmp")
+```{r, echo=FALSE}
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
+
+st(data)
 ```
 
 ## 3D Biplot for 6 clusters
 
-```{r child = paste0("sections/", c("results_unsupervised_learning.qmd"))}
+```{r, echo = FALSE}
+data_cleaned <- read.csv(here("data", "data_cleaned.csv"))
+
+# Prepare data for PCA
+data_prepared <- data_cleaned %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(across(where(is.factor), as.numeric)) %>%
+  scale()  # Standardizes numeric data including converted factors
+
+# Perform PCA
+pca_results <- PCA(data_prepared, graph = FALSE)
+
+# Get PCA coordinates
+pca_coords_df <- data.frame(pca_results$ind$coord)
+
 # Looking at Elbow, Optimal nb of clusters = 3
 optimal_clusters2 <- 6
 km_result <- kmeans(pca_coords_df[, 1:3], centers = optimal_clusters2)
@@ -119,7 +132,6 @@ fig6 <- fig6 %>%
 
 # Display the plot
 fig6
-
 ```
 
 After looking at the silhouette plot in the unsupervised learning part, we decided to provide a 3D biplot for 6 clusters, as we can also see in the elbow plot that 6 seem to be optimal in a way. In this biplot, we can observe that it is possible to divide into 6 clusters. When comparing it to the 3D biplot in the 'results_unsupervised_learning' part, we clearly notice that cluster 2 could be divided into four smaller clusters, which indicates heterogeneity in this cluster when using only 3 clusters. However, with 6 clusters in hand, it is more difficult to interpret the 4 distinct clusters. In addition to that, it explains the second elbow in the elbow method: at 3 clusters, we obtained optimality, but we get another steep curve between cluster 5 and 6, meaning that selecting 4 or 5 clusters would not be too much of a benefit, but adding a 6th cluster could be worth capturing. Stopping at 3 cluster still is significant for us and it makes our clustering anaylsis more interpretable than 6, that's why we selected only 3 clusters for our analysis. 
