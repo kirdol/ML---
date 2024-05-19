@@ -6,7 +6,7 @@ format:
 
 # Classification Tree
 
-In this section we are going to perform a classification tree analysis on the dataset. We start first to load the necessary packages and the dataset. We then have prepared the data by encoding categorical variables and splitted it into training and testing sets. We then pruned the tree with different max_depth values to find the optimal tree depth that balances between training and test accuracy.
+In this section we are going to perform a classification tree analysis on the dataset. We start first to load the necessary packages and the dataset. We then have prepared the data by encoding categorical variables and splitted it into training and testing sets. We start by showing the result of our classification tree without any tuning, then with a K-fold CV and also a pruned classification tree with different max_depth values to find the optimal tree depth that balances between training and test accuracy. Finally, we dealt with class imbalance by doing a Re-sampling. 
 
 ### Loading R packages, Python libraries and Data Preparation
 ```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
@@ -24,68 +24,24 @@ open(here("scripts/setup.py"))
 ```{python Importing necessayry functions and the data, echo = FALSE, message = FALSE}
 # !pip3 install pyprojroot ----- TO INSTALL IF MISSING
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import classification_report, accuracy_score, cohen_kappa_score
 from sklearn.preprocessing import LabelEncoder
+# !pip install matplotlib seaborn ------- INSTALL IF NEEDED
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pyprojroot.here import here
+# !pip install matplotlib seaborn scikit-learn ------- INSTALL IF NEEDED
 
 # Load the dataset
 file_path = here("data/data_cleaned_reduced.csv")
 data = pd.read_csv(file_path)
 ```
 
-```{r, message = FALSE}
-
-# Load the dataset in R
-data <- read_csv(here("data","data_cleaned_reduced.csv"))
-
-#nb of occurences per make
-nb_model_per_make <- data %>%
-  group_by(make) %>%
-  summarise(Number = n(), .groups = 'drop')
-
-#filter for re-sampling
-nb_model_per_make <- nb_model_per_make %>% 
-  filter(Number > 1000)
-
-# Determine the target number of occurrences for resampling (e.g., maximum occurrences of a single make)
-target_occurrences <- max(nb_model_per_make$Number) # 4239
-
-# Initialize an empty dataframe to store the resampled data
-resampled_data <- data.frame()
-
-# Perform resampling for each make
-for (make_name in nb_model_per_make$make) {
-  make_data <- data %>% filter(make == make_name)
-  
-  if (nrow(make_data) < target_occurrences) {
-    # Resample with replacement if the number of occurrences is less than the target
-    resampled_make_data <- make_data[sample(nrow(make_data), target_occurrences, replace = TRUE), ]
-  } else {
-    # If the number of occurrences is already sufficient, use the original data
-    resampled_make_data <- make_data
-  }
-  
-  # Combine the resampled data
-  resampled_data <- rbind(resampled_data, resampled_make_data)
-}
-
-# Display the number of occurrences per make in the resampled dataset
-table(resampled_data$make)
-
-# Save the cleaned dataset
-write_csv(resampled_data,
-          here("data","resampled_data.csv"))
-
-```
-
 After importing all the necessary libraries and packages, we first started by loading the dataset and identified make as the target variable. We also encoded categorical variables using **Label Encoding** to convert them into numerical values.
 
 ```{python Preparing the data, echo = FALSE}
-
-# Load the dataset
-file_path = here("data/resampled_data.csv")
-data = pd.read_csv(file_path)
 
 # Preprocess the data
 # Assuming 'make' is the target variable and all other columns are features
@@ -111,29 +67,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 ```
 
 ```{python, echo = FALSE}
-# !pip install matplotlib seaborn ------- INSTALL IF NEEDED
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-
-# Encode categorical variables
-label_encoders = {}
-for column in data.columns:
-    if data[column].dtype == 'object':
-        le = LabelEncoder()
-        data[column] = le.fit_transform(data[column])
-        label_encoders[column] = le
-
-# Split the data into features and target
-target = 'make'
-features = data.columns.drop(target)
-X = data[features]
-y = data[target]
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Combine the train and test data for visualization
 train_data = X_train.copy()
@@ -147,13 +80,13 @@ test_data['Set'] = 'Test'
 combined_data = pd.concat([train_data, test_data])
 
 # Visualize the data split
-plt.figure(figsize=(10, 6))
-sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
-plt.title('Visualization of Training and Testing Data Split')
-plt.xlabel('Data Index')
-plt.ylabel('Target Variable (make)')
-plt.legend(title='Dataset')
-plt.show()
+# plt.figure(figsize=(10, 6))
+# sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
+# plt.title('Visualization of Training and Testing Data Split')
+# plt.xlabel('Data Index')
+# plt.ylabel('Target Variable (make)')
+# plt.legend(title='Dataset')
+# plt.show()
 
 ```
 
@@ -162,14 +95,7 @@ plt.show()
 Starting to train our Decision Tree, we have first decided to do it without any constraints and see the results of it. 
 
 ```{python, echo = FALSE}
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
-from sklearn.tree import DecisionTreeClassifier, plot_tree
-from sklearn.metrics import accuracy_score, cohen_kappa_score
-from sklearn.preprocessing import LabelEncoder
-from pyprojroot.here import here
-# Train the Decision Tree without specifying max_depth
+
 # Train the Decision Tree without specifying max_depth
 clf_no_prune = DecisionTreeClassifier(random_state=42)
 clf_no_prune.fit(X_train, y_train)
@@ -187,42 +113,19 @@ print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
 print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 
 # Visualize the Decision Tree without pruning
-plt.figure(figsize=(20, 10))
-plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-plt.title("Decision Tree (without max_depth)")
-plt.show()
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title("Decision Tree (without max_depth)")
+# plt.show()
 ```
 
 As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. 
 
 ### Training the Decision Tree with K-fold cross-validation - Results
 
-In
+In order to fight overfitting, we tried to implement a K-fold cross-validation.
 
 ```{python}
-
-# !pip install matplotlib seaborn scikit-learn ------- INSTALL IF NEEDED
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
-from sklearn.preprocessing import LabelEncoder
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-
-# Encode categorical variables
-label_encoders = {}
-for column in data.columns:
-    if data[column].dtype == 'object':
-        le = LabelEncoder()
-        data[column] = le.fit_transform(data[column])
-        label_encoders[column] = le
-
-# Split the data into features and target
-target = 'make'
-features = data.columns.drop(target)
-X = data[features]
-y = data[target]
 
 # Initialize the classifier
 clf = DecisionTreeClassifier(random_state=42)
@@ -257,16 +160,17 @@ print(f"Test set accuracy: {test_accuracy:.4f}")
 # Visualize the decision tree
 from sklearn.tree import plot_tree
 
-plt.figure(figsize=(20, 10))
-plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-plt.title('Decision Tree')
-plt.show()
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title('Decision Tree')
+# plt.show()
 ```
 
+With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy. 
 
 ### Training the Decision Tree with Pruning method - Results
 
-In order to have a less complex tree and to fight overfittingness, we have decided to prune our tree and then train it. We chose to prune the tree by trying a few max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. "None" is actually the training without any max_depth parameter. Here are our new results: 
+Then, we have decided to prune our tree and then train it to have a less complex tree and to fight overfittingness. We set different max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. "None" is actually the training without any max_depth parameter. Here are our new results: 
 
 ```{python, echo = FALSE}
 # Define a function to train and evaluate the Decision Tree with different max_depth values
@@ -322,42 +226,15 @@ importances_df = pd.DataFrame({
 importances_df = importances_df.sort_values(by='Importance', ascending=False)
 
 # Visualize the Decision Tree for specific max_depth values (e.g., 10, 20)
-depths_to_visualize = [10, 20]
-for depth in depths_to_visualize:
-    plt.figure(figsize=(20, 10))
-    plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-    plt.title(f"Decision Tree (max_depth={depth})")
-    plt.show()
+# depths_to_visualize = [5]
+# for depth in depths_to_visualize:
+#     plt.figure(figsize=(20, 10))
+#     plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+#     plt.title(f"Decision Tree (max_depth={depth})")
+#     plt.show()
 ```
 
-```{python, echo = FALSE}
-# Define a function to train and evaluate the Decision Tree with different max_depth values
-# def train_and_evaluate_tree(max_depth):
-#     clf = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
-#     clf.fit(X_train, y_train)
-#     y_pred_train = clf.predict(X_train)
-#     y_pred_test = clf.predict(X_test)
-#     accuracy_train = accuracy_score(y_train, y_pred_train)
-#     accuracy_test = accuracy_score(y_test, y_pred_test)
-#     return accuracy_train, accuracy_test
-# 
-# # Evaluate the model with different max_depth values
-# max_depth_values = [5, 10, 15, 20, 25, 30, None]
-# results = {}
-# 
-# for depth in max_depth_values:
-#     accuracy_train, accuracy_test = train_and_evaluate_tree(depth)
-#     results[depth] = (accuracy_train, accuracy_test)
-# 
-# # Print the results
-# print("max_depth\tTraining Accuracy\tTest Accuracy")
-# for depth, (train_acc, test_acc) in results.items():
-#     print(f"{depth}\t\t{train_acc:.4f}\t\t{test_acc:.4f}")
-```
-
-The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen's kappa reaching up to 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting.
-
-Pruning the tree with a max_depth of 25 increased the accuracy from 69.84% to 70%, reducing the gap between the test and training sets. This pruning helps to improve the generalisation performance of the model by preventing it from becoming too complex and overfitting the training data.
+The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen's kappa reaching up to approximatively 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting. This pruning helps to improve the generalisation performance of the model by preventing it from becoming too complex and overfitting the training data.
 
 ### Variable Importance 
 
@@ -378,3 +255,113 @@ plt.show()
 ```
 
 We can see that among the top 3 most important features figure in order : the engine displacement, the model of the year and the class of the vehicle. On another hand, we can see that some features such as range_ev_city_fuel_type_2, range_ev_highway_fuel_type_2 and range_ev_city_fuel_type_1 are not important for our model for making predictions. This is certainly due to the quantity of EV and hybrid cars in the dataset and these features that are only concerning these types of vehicles.
+
+### With Re-Sampling 
+
+In order to fight class unbalances, we have decided to Re-Sample our dataset.
+
+```{r, message = FALSE, echo=FALSE}
+
+# Load the dataset in R
+data <- read_csv(here("data","data_cleaned_reduced.csv"))
+
+#nb of occurences per make
+nb_model_per_make <- data %>%
+  group_by(make) %>%
+  summarise(Number = n(), .groups = 'drop')
+
+#filter for re-sampling
+nb_model_per_make <- nb_model_per_make %>%
+  filter(Number > 1000)
+
+# Determine the target number of occurrences for resampling (e.g., maximum occurrences of a single make)
+target_occurrences <- max(nb_model_per_make$Number) # 4239
+
+# Initialize an empty dataframe to store the resampled data
+resampled_data <- data.frame()
+
+# Perform resampling for each make
+for (make_name in nb_model_per_make$make) {
+  make_data <- data %>% filter(make == make_name)
+
+  if (nrow(make_data) < target_occurrences) {
+    # Resample with replacement if the number of occurrences is less than the target
+    resampled_make_data <- make_data[sample(nrow(make_data), target_occurrences, replace = TRUE), ]
+  } else {
+    # If the number of occurrences is already sufficient, use the original data
+    resampled_make_data <- make_data
+  }
+
+  # Combine the resampled data
+  resampled_data <- rbind(resampled_data, resampled_make_data)
+}
+
+# Display the number of occurrences per make in the resampled dataset
+table(resampled_data$make)
+
+# Save the cleaned dataset
+write_csv(resampled_data,
+          here("data","resampled_data.csv"))
+
+```
+
+```{python, echo = FALSE}
+
+# Load the dataset
+file_path = here("data/resampled_data.csv")
+data = pd.read_csv(file_path)
+
+# Preprocess the data
+# Assuming 'make' is the target variable and all other columns are features
+target = 'make'
+features = data.columns.drop(target)
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.columns:
+    if data[column].dtype == 'object':
+        le = LabelEncoder()
+        data[column] = le.fit_transform(data[column])
+        label_encoders[column] = le
+        
+        # Split the data into training and testing sets
+X = data[features]
+y = data[target]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Combine the train and test data for visualization
+train_data = X_train.copy()
+train_data[target] = y_train
+train_data['Set'] = 'Train'
+
+test_data = X_test.copy()
+test_data[target] = y_test
+test_data['Set'] = 'Test'
+
+combined_data = pd.concat([train_data, test_data])
+
+# Train the Decision Tree without specifying max_depth
+clf_no_prune = DecisionTreeClassifier(random_state=42)
+clf_no_prune.fit(X_train, y_train)
+
+# Predict and calculate accuracies
+y_pred_train_no_prune = clf_no_prune.predict(X_train)
+y_pred_test_no_prune = clf_no_prune.predict(X_test)
+accuracy_train_no_prune = accuracy_score(y_train, y_pred_train_no_prune)
+accuracy_test_no_prune = accuracy_score(y_test, y_pred_test_no_prune)
+kappa_train_no_prune = cohen_kappa_score(y_train, y_pred_train_no_prune)
+kappa_test_no_prune = cohen_kappa_score(y_test, y_pred_test_no_prune)
+
+print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
+print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
+print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
+
+# Visualize the Decision Tree without pruning
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title("Decision Tree (without max_depth)")
+# plt.show()
+```
+
+We notice that thanks to the Re-Sampling, we overfitting seems to have disappeared even if it was not the first intention. In addition, as shown, the classes are now balanced. Therefore, the chances of returning any class is equally distributed. 
+

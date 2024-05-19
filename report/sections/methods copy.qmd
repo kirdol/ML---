@@ -1,0 +1,267 @@
+---
+title: "Methods"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Methods
+
+This section provides a detailed explanation of the methods used in this study, aimed at ensuring reproducibility. The global strategy and each specific tool employed are described concisely, with relevant properties highlighted. Clear references are provided for further details where necessary.
+
+## Supervised Learning
+
+### Classification Tree
+
+As our dataset is dealing with classes, we have decided to use a Classification tree to predict the make of the car.
+
+Classification Trees are constituted of one root node and a hierarchical set of binary rules. Each node represent a decision on an attribute, each branch the outcome of the decision and each leaf a class label (The most important features are located at the top of the graph). Thus, the name is coming from the shape of the representation, that looks like a tree. Even if it can be also applied to regressions, we are using it in our case for classification tasks.
+
+Key parameters and hyperparameters used in classification tree include:
+
+**Parameters**
+
+-   Data observations
+
+-   Method (usually class, which specifies that the decision tree being constructed is for classification tasks)
+
+**Hyperparameters**
+
+-   **Minsplit** : minimum number of observations that must exist in a node for a split to be attempted
+
+-   **minbucket** : controls the minimum size of terminal nodes
+
+-   **complexity parameter cp** : controls the size of the decision tree. Also prevent overfitting.
+
+-   **Maximum depth** : Set a maximum "length" of the tree, starting from the root node.
+
+-   **Random state** : Set a specific number (usually 42) to control the randomness of the estimator.
+
+-   **xval** : Helps in model validation by performing cross-validation
+
+### Our two primary models
+
+1.  Classification Tree without constraints
+
+2.  Classification Tree with 10 K-fold CV
+
+3.  Classification Tree with Pruning (Setting a limit for the max depth)
+
+4.  Classification Tree with Re-Sampling 
+
+### Classification Tree without constraints
+
+The classification tree model serves as the baseline for knowing how is the model without any constraints added. 
+
+In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split).
+
+### 10 K-fold CV
+
+Then we have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree. 
+
+### Classification Tree with Pruning
+
+Now let's talk about the classification tree using pruning.
+
+We have the same components as in the base method. Nevertheless, some part of the process is different. In this case we are using a complexity parameter to control the size of the tree. This threshold prevents overfitting.
+
+One popular method for pruning is the 1-SE rule, which involves the following steps: first build a fully grown tree using standard stopping rules; then calculate the error for all possible sub-trees. The best tree with the lowest error is identified and its standard error (SE) is calculated. Trees with an error within one SE of the error of the best tree are considered equivalent, and among these the shortest tree is selected.
+
+In our case, we have decided to tune the max_depth hyperparameter to limit the maximum depth of the decision tree.
+
+#### Software and Tools
+
+-   rpart : Used for building classification and regression trees
+
+-   pandas : Library used for data manipulation and analysis.
+
+-   Scikit-learn: Used for data preprocessing, splitting the dataset, and calculating class weights.
+
+-   matplotlib : Used for creating static, animated, and interactive visualizations
+
+-   seaborn : Provides a high-level interface for drawing attractive and informative statistical graphics
+
+#### Sequence of Analysis
+
+After loading and importing our necessary functions R and Python functions, we have prepared the data by first defining the make as the target variable, then encoding categorical variables using **Label Encoding** to convert them into numerical values. This step is essential as classification tree needs numerical value to work.
+
+We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
+
+Once the separation done, we finally have trained our decision tree, using the parameters and hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting.
+
+After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to use the K-Fold CV and then to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.
+In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations.
+
+### Neural Network
+
+The use of a neural network was used for a classification task. As already discussed, we want to predict the make of a car utilizing the other features.
+
+A neural network is a computational model inspired by the way biological neural networks in the human brain process information. It consists of interconnected layers of nodes (neurons) where each connection has an associated weight. The network learns to map input data to the desired output by adjusting these weights through a process called training. The model can be tuned using hyperparameters set before the learning process begins that governs the overall behavior and performance of the machine learning model.
+
+Key parameters and hyperparameters used in neural networks include:
+
+-   **Learning Rate:** Controls how much the model’s weights are updated with respect to the gradient of the loss function.
+
+-   **Number of Epochs:** The number of complete passes through the training dataset.
+
+-   **Batch Size:** The number of training examples used in one iteration to update the model’s weights.
+
+-   **Number of Layers:** Determines the depth of the network, including input, hidden, and output layers.
+
+-   **Number of Neurons per Layer:** The size of each layer, influencing the capacity of the model to learn from data.
+
+-   **Activation Functions:** Non-linear functions applied to the output of each neuron, such as ReLU, sigmoid, or softmax.
+
+-   **Optimizer:** The algorithm used to update the weights, such as Adam, SGD, or RMSprop.
+
+-   **Loss Function:** Measures the difference between the predicted and actual output, guiding the optimizer, e.g., categorical cross-entropy for classification tasks.
+
+-   **Dropout Rate:** The fraction of neurons to drop during training to prevent overfitting.
+
+-   **Class Weights:** Used to handle imbalanced datasets by giving more importance to underrepresented classes.
+
+##### Preprocessing the data
+
+An important step before training our model has been to separate numerical and categorical columns in our data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.
+
+#### Our three primary models
+
+1.  A Simple Neural Network Model
+
+2.  A Class-Weighted Neural Network Model
+
+3.  And a Dropout-Enhanced Neural Network Model (also using class-weight)
+
+All three models used the cleaned data set prepared in the data cleaning section. We chose the version with more than 10 observation for each car brands to avoid over imbalanced classes.
+
+Each model’s architecture, training process, and evaluation metrics are described in the following sections.
+
+##### Simple Neural Network Model
+
+The simple neural network model serves as the baseline. It consists of the following components:
+
+-   Input Layer: Matches the number of features in the dataset.
+
+-   Hidden Layers: Two dense layers with ReLU activation functions.
+
+-   Output Layer: A dense layer with a softmax activation function for classification. The softmax activation function output a probability for each features input to belong to a specific class (brand).
+
+The model is trained using the Adam optimizer, categorical cross-entropy loss function, and accuracy as the primary metric.
+
+##### Class-Weighted Neural Network Model
+
+To address class imbalances, a class-weighted approach has then been applied. This involves assigning higher weights to the minority classes during training. The architecture of the network remains the same as the simple model. The following steps were taken:
+
+-   Class Weights Calculation: Inverse proportionality to class frequencies.
+
+-   Model Training: Incorporating class weights into the loss function.
+
+The use of class weights helps in penalizing misclassifications of the minority classes more heavily, thereby improving the model’s performance on imbalanced data.
+
+##### Dropout-Enhanced Neural Network Model
+
+The third model incorporates dropout layers to mitigate overfitting while keeping the modification applied in our second model. Dropout layers randomly set a fraction of neurons to zero at each update during training, which helps prevent the network from becoming overly reliant on specific neurons. The deactivation of some neurons only happend during the training phases. When the model is used against the validation and test set, all neurons are active. This has the consequence of seeing higher accuracy on the validation set than the training set.
+
+-   Model Architecture: Similar to the simple model with additional dropout layers after each dense hidden layer.
+
+-   Dropout Rate: Will be tuned during the modeling.
+
+The dropout-enhanced model helps improve generalization by reducing the risk of overfitting to the training data.
+
+#### Software and Tools
+
+The following software and tools were used to implement and evaluate the models (non-exhaustive list):
+
+-   Python: The programming language used for all implementations.
+
+-   TensorFlow and Keras: Libraries used for building and training neural network models.
+
+-   Scikit-learn: Used for data preprocessing, splitting the dataset, and calculating class weights.
+
+-   Pandas and NumPy: Libraries used for data manipulation and numerical computations.
+
+#### Metrics
+
+In our machine learning analysis, we used several key metrics to evaluate our model. The main metrics are the training, validation and test accuracies. The **validation accuracy** shows how well the model performs on the validation set, helping us tune the model during training. **Training accuracy** indicates the model’s performance on the training data, which helps identify overfitting. The difference between the training and validation accuracy is useful to detect the presence of overfitting in our models. The **test accuracy** measures the model’s performance on new, unseen data, providing an unbiased evaluation.
+
+We also used the **sensitivity** to measure the model’s ability to correctly identify positive casesand the **specificity** that measures the ability to correctly identify negative cases. Even though, when we started to create our model, we already knew that we had unbalanced classes, these metrics confirmed this with numbers. The last metric that has been used is the **Cohen’s kappa** that evaluates the agreement between predicted and true labels, accounting for chance, making it more reliable than simple accuracy, especially with imbalanced datasets. These metrics together give a comprehensive view of the model’s performance.
+
+#### Sequence of Analysis
+
+We first encode the categorical variables and normalized the numercial features. We then trained the models and evaluated each one. By evaluating and investigating the model at each step we managed to deal with the different challenges that we faced. We also managed to tune the dropout rate to insure to keep a good model performance while highly decreasing the case of overfitting we were having.
+
+This sequence ensures a systematic approach to model development and evaluation, providing a clear understanding of each step involved.
+
+Note that this section was written and based on the course website ([ML_BA](https://do-unil.github.io/mlba/)). The parts on the dropout layers is based on the following articles: [towardsdatascience](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9) and [python-course](https://python-course.eu/machine-learning/dropout-neural-networks-in-python.php#:~:text=The%20dropout%20approach%20means%20that,learn%20set%20with%20this%20network.)
+
+## Unsupervised Learning
+
+In order to check for some dependence between features, we decided to proceed with two unsupervised learning methods which are the Principal Component Analysis and the Clustering methods.
+
+### Principal Component Analysis
+
+<<<<<<< Updated upstream
+-  Features: The features are the ones from the data_cleaned data frame. 
+
+-  Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
+
+-  Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
+
+-  Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
+
+-  Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
+
+-  Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
+
+-  Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
+=======
+-   Features: The features are the ones from the data_cleaned data frame.
+-   Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
+-   Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
+-   Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
+-   Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
+-   Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
+-   Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
+>>>>>>> Stashed changes
+
+The aim of doing a PCA is to potentially diminish the number of features as there are several features in our dataset. By doing a dimension reduction, we can only select the first few principal components.
+
+### Clustering
+
+Doing a clustering analysis allowed us to find some clusters that share similar characteristics measured by the features. In our case, we have decided to go with a partitioning method.
+
+<<<<<<< Updated upstream
+-  Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
+
+-  K-means: Method for numerical data.
+
+-  Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
+
+-  Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
+
+-  Cluster Plot: Plot to visualize the clusters.
+
+-  Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
+=======
+-   Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
+-   K-means: Method for numerical data.
+-   Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
+-   Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
+-   Cluster Plot: Plot to visualize the clusters.
+-   Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
+>>>>>>> Stashed changes
+
+The clustering was aimed to provide better insights on the similarities of the instances. We started by taking the results from the PCA to add clustering in it. For a better visualization, a 3D biplot was of interest to have the overview of the clusters and the features within 3 dimensions. The final aim is to see the link between the features as well as the similarities of the observations.
+
+#### Software and Tools
+
+The following software and tools were used to implement and evaluate the models (non-exhaustive list):
+
+-  R Studio: The programming language used to implement the unsupervised learning methods.
+
+-  Factoextra: Provides tools to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
+
+-  FactoMineR: Provides functions to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
+
+- Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).
