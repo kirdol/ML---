@@ -80,8 +80,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p><strong><em>EDA:</em></strong></p>
-<p><strong>Columns description</strong></p>
+<section id="eda" class="level1">
+<h1>EDA:</h1>
+<section id="columns-description" class="level2">
+<h2 class="anchored" data-anchor-id="columns-description">Columns description</h2>
 <p>To begin with our EDA, let’s have a look at our dataset and in particular the characteristics of the columns.</p>
 <div class="cell">
 <details class="code-fold">
@@ -404,7 +406,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The dataset that we are working with contains approx. 46’000 rows and 26 columns. We can see that most of our features are concerning the consumption of the cars. In addition, we notice that some variables contain a lot of missing and that the variable “Time.to.Charge.EV..hours.at.120v.” is only containing 0s. We will be handle these in the section “data cleaning”.</p>
-<p><strong>Exploration of the distribution</strong></p>
+</section>
+<section id="exploration-of-the-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="exploration-of-the-distribution">Exploration of the distribution</h2>
 <p>Here are more details about the distribution of the numerical features.</p>
 <div class="cell">
 <details class="code-fold">
@@ -425,7 +429,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We notice that most of our observations of our features are 0s because of the nature of the features. For instance, as most of our cars are not hybrids, they have a unique type of fuel and don’t have any type 2, which results in a 0 in the concerned features. Also, some features are numerical discrete, as we can see on the plot of the column “Engine Cylinders”.</p>
-<p><strong>Outliers Detection</strong></p>
+</section>
+<section id="outliers-detection" class="level2">
+<h2 class="anchored" data-anchor-id="outliers-detection">Outliers Detection</h2>
 <p>For each one of our numerical column, let’s check thank to the boxplot the outliers per feature</p>
 <div class="cell">
 <details class="code-fold">
@@ -463,9 +469,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#nb cars per brand</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p><strong>number of models per make</strong></p>
+</section>
+<section id="number-of-models-per-make" class="level2">
+<h2 class="anchored" data-anchor-id="number-of-models-per-make">number of models per make</h2>
 <p>As we got rid of XXX, …..</p>
-<p><strong>Correlation matrix for numerical features</strong></p>
+</section>
+<section id="correlation-matrix-for-numerical-features" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-matrix-for-numerical-features">Correlation matrix for numerical features</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -524,6 +534,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+</section>
 
 </main>
 <!-- /main column -->

@@ -31,7 +31,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, cohen_kapp
 from sklearn.model_selection import KFold
 
 # Set random seed for reproducibility
-num_epochs = 2
+num_epochs = 1
 ```
 
 # Neural Networks
@@ -134,7 +134,7 @@ Overall, the model perform well but we have't dealt with the issue of unbalanced
 
 ##### Issue of unbalanced classes
 
-The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the graph (((((((((((((((add graph reference))))))))))))))), there's still big differences between the classes.
+The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section [EDA -@sec-make_n_plot], there's still big differences between the classes.
 
 ```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
@@ -168,7 +168,7 @@ for i, class_label in enumerate(unique_labels):
     print(f"Class {class_label} - Sensitivity: {sensitivity[i]:.4f}, Specificity: {specificity[i]:.4f}")
 ```
 
-```{python, echo = FALSE, warning = FALSE}
+```{python, echo = FALSE, warning = FALSE, message = FALSE}
 # Create boxplots
 data = [sensitivity, specificity]
 fig, ax = plt.subplots()
@@ -176,6 +176,8 @@ ax.boxplot(data, labels=["Sensitivity", "Specificity"])
 ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
 plt.show()
+
+plt.close(fig)
 ```
 
 By examining the boxplot representing the distribution of sensitivity and specificity across the classes, we observe clear evidence of class imbalance. Sensitivity and specificity are not consistent across the classes. Specificity, which measures how well the model identifies true negatives, is very high for every class. This indicates that the model is effective at detecting instances that do not belong to a given class. However, sensitivity, which measures the true positive rate and reflects how well the model correctly predicts the make of a car for a specific brand, is not as high. This suggests that the model is not performing well for all classes.

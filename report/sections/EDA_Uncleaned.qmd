@@ -134,7 +134,7 @@ Most of our boxplots are showing extreme values. Again, this is due to the small
 #nb cars per brand
 ```
 
-### Number of models per make
+### Number of models per make {#sec-make_n_plot}
 
 Now let's check how many models per make we have in our dataset. In order to have a clear plot, we have decided to keep the top 20 brands among all the make on the graph. All the remaining makes are accessible on the table just below. 
 
@@ -162,6 +162,8 @@ datatable(nb_model_per_make,
                          class = "hover",
                          searchHighlight = TRUE))
 ```
+
+
 
 ```{r}
 # Option to limit to top 20 makes for better readability
