@@ -6,7 +6,7 @@ format:
 
 # Classification Tree
 
-After loading the necessary packages, the dataset and then prepared it, here are the results of our classification tree models. 
+Let's now dive into the implementation of a classification tree model to predict the make of a vehicle based on its attributes. We first load the necessary packages and the dataset. We then prepared the data to use for the classification tree models. 
 
 ```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
@@ -38,9 +38,7 @@ data = pd.read_csv(file_path)
 ```
 
 ```{python Preparing the data, echo = FALSE}
-
 # Preprocess the data
-# Assuming 'make' is the target variable and all other columns are features
 target = 'make'
 features = data.columns.drop(target)
 
@@ -60,7 +58,7 @@ y = data[target]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
 
-You will find here an plot showing the actual data splitting effectuated. The x axis represent the number of observations in our dataset and the y axis the number of makes. 
+You will find here an plot showing the actual data splitting effectuated. The x axis represent all the observations in our dataset and the y axis the different brand. 
 
 ```{python, echo = FALSE}
 
@@ -88,10 +86,9 @@ plt.show()
 
 ### Training the Decision Tree without Pruning
 
-Starting to train our Decision Tree, we have first decided to do it without any constraints and see the results of it. 
+We then proceeded to train the base Decision Tree model. This will allow us to get a baseline. You can find below the accuracy of the training and the visualization of the tree.
 
 ```{python, echo = FALSE}
-
 # Train the Decision Tree without specifying max_depth
 clf_no_prune = DecisionTreeClassifier(random_state=42)
 clf_no_prune.fit(X_train, y_train)
@@ -107,7 +104,11 @@ kappa_test_no_prune = cohen_kappa_score(y_test, y_pred_test_no_prune)
 print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
 print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
 print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
+```
 
+And below you  have the actual Classification Tree of our model.
+
+```{python, echo = FALSE}
 #Visualize the Decision Tree without pruning
 plt.figure(figsize=(20, 10))
 plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
@@ -115,14 +116,13 @@ plt.title("Decision Tree (without max_depth)")
 plt.show()
 ```
 
-As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. Therefore, let's see the the assessment of the model performance with the K-fold method.
+As we can see, the tree resulting is complex, takes a lot of time to train and is difficult to interpret. We can also see that the accuracy of the training set is higher than the test set accuracy and cohen's kappa accuracy, attesting that our model is overfitting. Therefore, let's see the the assessment of the model performance with the K-fold Cross Validation method.
 
-### Training the Decision Tree with 10 K-fold cross-validation
+### Training the Decision Tree with 10-fold Cross Validation
 
-In order to assess the performance of the model, we also tried to use a K-fold cross-validation with 10 folds. Here are our results.
+Here are our results of a 10-fold Cross Validation.
 
 ```{python, echo= FALSE}
-
 # Initialize the classifier
 clf = DecisionTreeClassifier(random_state=42)
 
@@ -133,7 +133,7 @@ kf = KFold(n_splits=10, shuffle=True, random_state=42)
 cv_scores = cross_val_score(clf, X, y, cv=kf, scoring='accuracy')
 
 # Print the cross-validation scores
-print("Cross-validation scores: ", cv_scores)
+# print("Cross-validation scores: ", cv_scores)
 print("Mean cross-validation score: ", cv_scores.mean())
 
 # Split the data into training and testing sets
@@ -162,11 +162,11 @@ plt.title('Decision Tree')
 plt.show()
 ```
 
-With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is good. nevertheless, in order have a better model, we need to address overfitting. 
+With ten folds, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is good. nevertheless, in order have a better model, we need to address overfitting. 
 
 ### Training the Decision Tree with Pruning method 
 
-Now we will show you the results with a pruned tree. This one is less complex than the previous trees and fight overfittingness. We have set different max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. Here are our results: 
+Now we will show you the results with a pruned tree. This one is less complex than the previous trees and fight overfitting. We have set different max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. Here are our results: 
 
 ```{python, echo = FALSE}
 # Define a function to train and evaluate the Decision Tree with different max_depth values
