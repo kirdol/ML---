@@ -12,6 +12,10 @@ For the neural networks model to predict the make (brand) of a vehicle based on 
 
 To enhance the performance of our neural network models, we should explore novel techniques and alternative methodologies to address the various challenges encountered. In dealing with unbalanced data, techniques such as downsampling or resampling, similar to those utilized in our classification model, may prove beneficial. To address the issue of overfitting, the application of cross-validation or bootstrap methods is recommended. Furthermore, optimizing additional hyperparameters could contribute to further improvements in our model’s performance.
 
+Then, using unsupervised learning methods had the purpose of finding patterns that are interesting to see links between the features. We have observed that seven dimensions were required to fulfill at least 80% of the variance and it has been confirmed with the screeplot. We observed while adding an extra dimension in the biplot that Dimension 1 links the "non-hybrid" characteristics of vehicles, Dimension 2 seem to take into account to some extent the "hybrid" characteristics and Dimension 3 more the technical aspects of a vehicle. in addition to that, the observations seem to somewhat follow in a way. Clustering into three shows a clear differentiation between hybrid and non-hybrid cars, but with a less interpretable cluster that seemingly groups the observations related to the vehicle characteristics.
+
+Regarding the limitations for the unsupervised learning, it seems that it could be of benefit to push the analysis by looking at all seven dimensions and six clusters. This all means that the features are not that much correlated.
+
 # Implications for the business (link with the context and the initial objectives of the study)
 
 # Limitations (this may be the subject of a separated section). An opening is often expected here: “What next?” “What can be done for improvement”, etc.?
