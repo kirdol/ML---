@@ -21,7 +21,7 @@ open(here("scripts/setup.py"))
 ```
 
 
-```{python Importing necessayry functions and the data, echo = FALSE}
+```{python Importing necessayry functions and the data, echo = FALSE, message = FALSE}
 # !pip3 install pyprojroot ----- TO INSTALL IF MISSING
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -34,10 +34,59 @@ file_path = here("data/data_cleaned_reduced.csv")
 data = pd.read_csv(file_path)
 ```
 
+```{r, message = FALSE}
+
+# Load the dataset in R
+data <- read_csv(here("data","data_cleaned_reduced.csv"))
+
+#nb of occurences per make
+nb_model_per_make <- data %>%
+  group_by(make) %>%
+  summarise(Number = n(), .groups = 'drop')
+
+#filter for re-sampling
+nb_model_per_make <- nb_model_per_make %>% 
+  filter(Number > 1000)
+
+# Determine the target number of occurrences for resampling (e.g., maximum occurrences of a single make)
+target_occurrences <- max(nb_model_per_make$Number) # 4239
+
+# Initialize an empty dataframe to store the resampled data
+resampled_data <- data.frame()
+
+# Perform resampling for each make
+for (make_name in nb_model_per_make$make) {
+  make_data <- data %>% filter(make == make_name)
+  
+  if (nrow(make_data) < target_occurrences) {
+    # Resample with replacement if the number of occurrences is less than the target
+    resampled_make_data <- make_data[sample(nrow(make_data), target_occurrences, replace = TRUE), ]
+  } else {
+    # If the number of occurrences is already sufficient, use the original data
+    resampled_make_data <- make_data
+  }
+  
+  # Combine the resampled data
+  resampled_data <- rbind(resampled_data, resampled_make_data)
+}
+
+# Display the number of occurrences per make in the resampled dataset
+table(resampled_data$make)
+
+# Save the cleaned dataset
+write_csv(resampled_data,
+          here("data","resampled_data.csv"))
+
+```
 
 After importing all the necessary libraries and packages, we first started by loading the dataset and identified make as the target variable. We also encoded categorical variables using **Label Encoding** to convert them into numerical values.
 
 ```{python Preparing the data, echo = FALSE}
+
+# Load the dataset
+file_path = here("data/resampled_data.csv")
+data = pd.read_csv(file_path)
+
 # Preprocess the data
 # Assuming 'make' is the target variable and all other columns are features
 target = 'make'
@@ -68,10 +117,6 @@ import seaborn as sns
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-
-# Load the dataset
-file_path = here("data/data_cleaned.csv")
-data = pd.read_csv(file_path)
 
 # Encode categorical variables
 label_encoders = {}
@@ -139,14 +184,13 @@ kappa_test_no_prune = cohen_kappa_score(y_test, y_pred_test_no_prune)
 
 print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
 print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
-print(f"Training Cohen's Kappa (without max_depth): {kappa_train_no_prune:.4f}")
 print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 
 # Visualize the Decision Tree without pruning
-# plt.figure(figsize=(20, 10))
-# plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-# plt.title("Decision Tree (without max_depth)")
-# plt.show()
+plt.figure(figsize=(20, 10))
+plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+plt.title("Decision Tree (without max_depth)")
+plt.show()
 ```
 
 As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. 
@@ -213,10 +257,10 @@ print(f"Test set accuracy: {test_accuracy:.4f}")
 # Visualize the decision tree
 from sklearn.tree import plot_tree
 
-# plt.figure(figsize=(20, 10))
-# plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-# plt.title('Decision Tree')
-# plt.show()
+plt.figure(figsize=(20, 10))
+plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+plt.title('Decision Tree')
+plt.show()
 ```
 
 
@@ -247,7 +291,6 @@ for depth in max_depth_values:
     results[depth] = {
         "Train Accuracy": accuracy_train,
         "Test Accuracy": accuracy_test,
-        "Train Cohen's Kappa": kappa_train,
         "Test Cohen's Kappa": kappa_test
     }
     clfs[depth] = clf  # Store the classifier for visualization
@@ -279,12 +322,12 @@ importances_df = pd.DataFrame({
 importances_df = importances_df.sort_values(by='Importance', ascending=False)
 
 # Visualize the Decision Tree for specific max_depth values (e.g., 10, 20)
-# depths_to_visualize = [10, 20]
-# for depth in depths_to_visualize:
-#     plt.figure(figsize=(20, 10))
-#     plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-#     plt.title(f"Decision Tree (max_depth={depth})")
-#     plt.show()
+depths_to_visualize = [10, 20]
+for depth in depths_to_visualize:
+    plt.figure(figsize=(20, 10))
+    plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+    plt.title(f"Decision Tree (max_depth={depth})")
+    plt.show()
 ```
 
 ```{python, echo = FALSE}

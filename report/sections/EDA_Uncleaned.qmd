@@ -47,11 +47,6 @@ Let's have a quick look at the characteristics of the columns. You will find mor
 ```
 
 ```{r}
-# Load necessary packages
-library(dplyr)
-library(knitr)
-library(kableExtra)
-# Assuming your dataset is named 'data'
 
 # Get the number of rows and columns
 num_rows <- nrow(data)
@@ -145,16 +140,20 @@ Now let's check how many models per make we have in our dataset. In order to hav
 
 ```{r}
 #Number of occurences/model per make 
+# nb_model_per_make <- data %>%
+#   group_by(make, model) %>%
+#   summarise(Number = n(), .groups = 'drop') %>%
+#   group_by(make) %>%
+#   summarise(nb_model_per_make = n(), .groups = 'drop') %>%
+#   arrange(desc(nb_model_per_make))
+
 nb_model_per_make <- data %>%
-  group_by(make, model) %>%
-  summarise(Number = n(), .groups = 'drop') %>%
   group_by(make) %>%
-  summarise(Models_Per_Make = n(), .groups = 'drop') %>%
-  arrange(desc(Models_Per_Make))
+  summarise(Number = n(), .groups = 'drop')
 
 #makes with only 1 model 
 only_one_model_cars <- nb_model_per_make %>% 
-  filter(Models_Per_Make == 1 )
+  filter(Number == 1 )
 
 #table globale
 datatable(nb_model_per_make,
@@ -164,10 +163,10 @@ datatable(nb_model_per_make,
                          searchHighlight = TRUE))
 
 # Option to limit to top 20 makes for better readability
-top_n_makes <- nb_model_per_make %>% top_n(20, Models_Per_Make)
+top_n_makes <- nb_model_per_make %>% top_n(20, nb_model_per_make)
 
 #plot
-ggplot(top_n_makes, aes(x = reorder(make, Models_Per_Make), y = Models_Per_Make)) +
+ggplot(top_n_makes, aes(x = reorder(make, nb_model_per_make), y = nb_model_per_make)) +
   geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
   labs(title = "Models per Make (Top 20)",
        x = "Make",
@@ -191,7 +190,7 @@ datatable(only_one_model_cars,
                          class = "hover",
                          searchHighlight = TRUE))
 
-ggplot(only_one_model_cars, aes(x = make, y = Models_Per_Make)) +
+ggplot(only_one_model_cars, aes(x = make, y = nb_model_per_make)) +
   geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
   labs(title = "Makes with only 1 model in the dataset",
        x = "Make",

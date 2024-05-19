@@ -30,7 +30,8 @@ packages_loaded <- c(
   "corrplot",
   "reshape2",
   "cluster",
-  "vtable"
+  "vtable",
+  "knitr"
 )
 
 # Function that install the packages if not already installed on your computer
