@@ -14,7 +14,7 @@ To enhance the performance of our neural network models, we should explore novel
 
 Then, using unsupervised learning methods had the purpose of finding patterns that are interesting to see links between the features. We have observed that seven dimensions were required to fulfill at least 80% of the variance and it has been confirmed with the screeplot. We observed while adding an extra dimension in the biplot that Dimension 1 links the "non-hybrid" characteristics of vehicles, Dimension 2 seem to take into account to some extent the "hybrid" characteristics and Dimension 3 more the technical aspects of a vehicle. in addition to that, the observations seem to somewhat follow in a way. Clustering into three shows a clear differentiation between hybrid and non-hybrid cars, but with a less interpretable cluster that seemingly groups the observations related to the vehicle characteristics.
 
-Regarding the limitations for the unsupervised learning, it seems that it could be of benefit to push the analysis by looking at all seven dimensions and six clusters. This all means that the features are not that much correlated.
+Regarding the limitations for the unsupervised learning, it seems that it could be of benefit to push the analysis by looking at all seven dimensions and six clusters. This all means that the features are not that much correlated and could be analyzed further.
 
 # Implications for the business (link with the context and the initial objectives of the study)
 

@@ -257,7 +257,9 @@ equal_sampled_data <- do.call(rbind, lapply(1:optimal_clusters, function(cluster
   cluster_sample_indices <- sample(1:nrow(cluster_subset), samples_per_cluster)
   return(cluster_subset[cluster_sample_indices, ])
 }))
+```
 
+```{r, echo = F, message = F, warning = F}
 # Calculate silhouette values for the sampled data
 equal_sampled_silhouette_values <- silhouette(equal_sampled_data$cluster, dist(equal_sampled_data[, 1:3]))
 

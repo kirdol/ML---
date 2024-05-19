@@ -23,6 +23,7 @@ datatable(nb_model_per_make,
                          class = "hover",
                          searchHighlight = TRUE))
 ```
+
 ## Data summary {#sec-data_summary}
 
 The table below provides an overview of the dataset.
@@ -136,7 +137,7 @@ summary(pca_results)
 
 After looking at the silhouette plot in the unsupervised learning part, we decided to provide a 3D biplot for six clusters, as we can also see in the elbow plot that six seem to be optimal in a way.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, message = F, warning = F}
 data_cleaned <- read.csv(here("data", "data_cleaned.csv"))
 
 # Prepare data for PCA
