@@ -100,11 +100,7 @@ pca_coords_df <- data.frame(pca_results$ind$coord)
 set.seed(123) # for reproducibility
 ```
 
-<<<<<<< Updated upstream
 Then, we proceed with the calculation of the Total Within-Cluster Sum of Squares (TWCSS) and vizualize the results using the Elbow method in order to select the optimal number of clusters.
-=======
-Then, we proceed with the calculation of the Total Within-Cluster Sum of Squares (TWCSS) and visualize the results using the Elbow method in order to select the optimal number of clusters.
->>>>>>> Stashed changes
 
 ```{r, echo = F, message = F, warning = F}
 # Total Within-Cluster Sum of Squares
