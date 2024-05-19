@@ -150,9 +150,6 @@ y_test_pred = clf.predict(X_test)
 train_accuracy = accuracy_score(y_train, y_train_pred)
 test_accuracy = accuracy_score(y_test, y_test_pred)
 
-print(f"Training set accuracy: {train_accuracy:.4f}")
-print(f"Test set accuracy: {test_accuracy:.4f}")
-
 # Visualize the decision tree
 from sklearn.tree import plot_tree
 
@@ -162,7 +159,7 @@ plt.title('Decision Tree')
 plt.show()
 ```
 
-With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is good. nevertheless, in order have a better model, we need to address overfitting. 
+With a number of fold of 10, we notice that our mean accuracy is approx. 70%, which is good. nevertheless, in order have a better model, we need to address overfitting. 
 
 ### Training the Decision Tree with Pruning method 
 
