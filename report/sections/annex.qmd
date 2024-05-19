@@ -14,6 +14,15 @@ data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 skim(data)
 ```
 
+## Number of models per make
+```{r Number of models per make, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+#table globale
+datatable(nb_model_per_make,
+          rownames = FALSE,
+          options = list(pageLength = 5,
+                         class = "hover",
+                         searchHighlight = TRUE))
+```
 ## Data summary {#sec-data_summary}
 
 The table below provides an overview of the dataset.
@@ -24,6 +33,11 @@ data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 st(data)
 ```
 
+```{r, echo=FALSE}
+data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
+
+st(data)
+```
 
 ## Data cleaned overview {#sec-data_cleaned_overview}
 

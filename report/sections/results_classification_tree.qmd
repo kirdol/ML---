@@ -6,9 +6,8 @@ format:
 
 # Classification Tree
 
-After loading the necessary packages, the dataset and then prepared it, here are the results of our Classification Tree models. 
+After loading the necessary packages, the dataset and then prepared it, here are the results of our classification tree models. 
 
-### Loading R packages, Python libraries and Data Preparation
 ```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
 source(here::here("scripts","setup.R"))
 ```
@@ -54,8 +53,6 @@ for column in data.columns:
         label_encoders[column] = le
 ```
 
-After importing the necessary libraries and imported our dataset, we splitted it into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data. Unfortunately, we will see later that our model is overfitting, meaning that it performs poorly when seeing new data. We will address this issue later. You will find here an plot showing the actual data splitting effectuated. The x axis represent the number of observations in our dataset and the y axis the number of makes. 
-
 ```{python Splitting the data, echo = FALSE}
 # Split the data into training and testing sets
 X = data[features]
@@ -77,17 +74,17 @@ test_data['Set'] = 'Test'
 combined_data = pd.concat([train_data, test_data])
 
 # Visualize the data split
-plt.figure(figsize=(10, 6))
-sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
-plt.title('Visualization of Training and Testing Data Split')
-plt.xlabel('Data Index')
-plt.ylabel('Target Variable (make)')
-plt.legend(title='Dataset')
-plt.show()
+# plt.figure(figsize=(10, 6))
+# sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
+# plt.title('Visualization of Training and Testing Data Split')
+# plt.xlabel('Data Index')
+# plt.ylabel('Target Variable (make)')
+# plt.legend(title='Dataset')
+# plt.show()
 
 ```
 
-### Training the Decision Tree without Pruning - Results
+### Training the Decision Tree without Pruning
 
 Starting to train our Decision Tree, we have first decided to do it without any constraints and see the results of it. 
 
@@ -110,19 +107,19 @@ print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
 print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 
 # Visualize the Decision Tree without pruning
-plt.figure(figsize=(20, 10))
-plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-plt.title("Decision Tree (without max_depth)")
-plt.show()
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title("Decision Tree (without max_depth)")
+# plt.show()
 ```
 
-As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. 
+As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. Therefore, let's see the the assessment of the model performance with the K-fold method.
 
-### Training the Decision Tree with K-fold cross-validation - Results
+### Training the Decision Tree with 10 K-fold cross-validation
 
-In order to assess the performance of the model, we also tried to use a K-fold cross-validation with 10 folds. 
+In order to assess the performance of the model, we also tried to use a K-fold cross-validation with 10 folds. Here are our results.
 
-```{python}
+```{python, echo= FALSE}
 
 # Initialize the classifier
 clf = DecisionTreeClassifier(random_state=42)
@@ -157,17 +154,17 @@ print(f"Test set accuracy: {test_accuracy:.4f}")
 # Visualize the decision tree
 from sklearn.tree import plot_tree
 
-plt.figure(figsize=(20, 10))
-plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-plt.title('Decision Tree')
-plt.show()
+# plt.figure(figsize=(20, 10))
+# plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+# plt.title('Decision Tree')
+# plt.show()
 ```
 
-With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is quite good. nevertheless, we need to address overfitting. 
+With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is good. nevertheless, in order have a better model, we need to address overfitting. 
 
-### Training the Decision Tree with Pruning method - Results
+### Training the Decision Tree with Pruning method 
 
-Then, we have decided to prune our tree and then train it to have a less complex tree and to fight overfittingness. We set different max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. "None" is actually the training without any max_depth parameter. Here are our new results: 
+Now we will show you the results with a pruned tree. This one is less complex than the previous trees and fight overfittingness. We have set different max_depth parameter values to control the tree's growth (5, 10, 15, 20, 25, 30). We want here to find the optimal tree depth that balances between training and test accuracy. for visibility reasons, we have decided to represent a classification tree with only 5 max_depth. Here are our results: 
 
 ```{python, echo = FALSE}
 # Define a function to train and evaluate the Decision Tree with different max_depth values
@@ -223,21 +220,21 @@ importances_df = pd.DataFrame({
 importances_df = importances_df.sort_values(by='Importance', ascending=False)
 
 # Visualize the Decision Tree for specific max_depth values (e.g., 10, 20)
-depths_to_visualize = [5]
-for depth in depths_to_visualize:
-    plt.figure(figsize=(20, 10))
-    plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-    plt.title(f"Decision Tree (max_depth={depth})")
-    plt.show()
+# depths_to_visualize = [5]
+# for depth in depths_to_visualize:
+#     plt.figure(figsize=(20, 10))
+#     plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+#     plt.title(f"Decision Tree (max_depth={depth})")
+#     plt.show()
 ```
 
-The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen's kappa reaching up to approximatively 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting. This pruning helps to improve the generalisation performance of the model by preventing it from becoming too complex and overfitting the training data.
+The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen's kappa reaching up to approx. 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting. This pruning helps to improve the generalization performance of the model by preventing it from becoming too complex and overfitting the training data.
 
 ### Variable Importance 
 
 As we have used a classification tree for the prediction, the most important variable in the model are the ones at the top of the graph. Let's visualize the ranking of the features importance. 
 
-```{python}
+```{python, echo= FALSE}
 # Visualize the feature importances
 plt.figure(figsize=(10, 6))
 plt.barh(importances_df['Feature'], importances_df['Importance'], color='skyblue')
@@ -253,9 +250,9 @@ plt.show()
 
 We can see that among the top 3 most important features figure in order : the engine displacement, the model of the year and the class of the vehicle. On another hand, we can see that some features such as range_ev_city_fuel_type_2, range_ev_highway_fuel_type_2 and range_ev_city_fuel_type_1 are not important for our model for making predictions. This is certainly due to the quantity of EV and hybrid cars in the dataset and these features that are only concerning these types of vehicles.
 
-### With Re-Sampling 
+### Classification Tree with re-sampling 
 
-In order to fight class unbalances, we have decided to Re-Sample our dataset.
+We had seen during our EDA that the classes of the dataset were not well balanced. Now, we are fixing this by re-sampling our classes. Thus, you will find here the number of models per brand equally distributed.
 
 ```{r, message = FALSE, echo=FALSE}
 
@@ -360,5 +357,4 @@ print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 # plt.show()
 ```
 
-We notice that thanks to the Re-Sampling, we overfitting seems to have disappeared even if it was not the first intention. In addition, as shown, the classes are now balanced. Therefore, the chances of returning any class is equally distributed. 
-
+We notice that thanks to the re-sampling method, the overfitting seems to have disappeared even if it was not the first intention. In addition, as shown, the classes are now balanced. Therefore, the chances of returning any class is equally distributed.

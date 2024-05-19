@@ -50,36 +50,35 @@ We had in must of our models to encod categorical variables using **Label Encodi
 
 3.  Classification Tree with Pruning (Setting a limit for the max depth)
 
-4.  Classification Tree with Re-Sampling 
+4.  Classification Tree with Re-Sampling
 
 ### Classification Tree without constraints
 
-The classification tree model serves as the baseline for knowing how is the model without any constraints added. 
+The classification tree model serves as the baseline for knowing how is the model without any constraints added.
 
 In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split).
 
 ### 10 K-fold CV
 
-K-Fold cross-validation is a method for assessing the performance of a model. It has the following steps : 
+K-Fold cross-validation is a method for assessing the performance of a model. It has the following steps :
 
 -   Divide the Data: The dataset is split into k equally sized subsets or "folds."
 -   Train and Validate: The model is trained k times. In each iteration, one fold is used as the validation set, and the remaining k−1 folds are used as the training set.
--   Evaluate: The model's performance is evaluated using the validation set in each iteration.
-Average Performance: The results from each iteration are averaged to provide a single performance metric.
+-   Evaluate: The model's performance is evaluated using the validation set in each iteration. Average Performance: The results from each iteration are averaged to provide a single performance metric.
 
-We have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree. 
+We have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree.
 
 ### Classification Tree with Pruning
 
-Now let's talk about the classification tree using pruning. It is basicaly reducing the complexity of the tree by removing unnecessary sections. This helps a lot against overfitting but at the expense of accuracy. 
+Now let's talk about the classification tree using pruning. It is basicaly reducing the complexity of the tree by removing unnecessary sections. This helps a lot against overfitting but at the expense of accuracy.
 
-In our case, we have the same components as in the base method at the beginning. Nevertheless, some part of the process is different. In this case we are using a complexity parameter (max_depth) to control the size of the tree. We tried to play with the tuning of the hyperparameter [5 to 30] to check which value had the best tradeoff between accuracy and overfitting.
+In our case, we have the same components as in the base method at the beginning. Nevertheless, some part of the process is different. In this case we are using a complexity parameter (max_depth) to control the size of the tree. We tried to play with the tuning of the hyperparameter \[5 to 30\] to check which value had the best tradeoff between accuracy and overfitting.
 
-### Re-Sampling 
+### Re-Sampling
 
-Re-Sampling is a method used to address class unbalanced. As it's name suppose, it creates new observations for classes to take the number of observation of the class with the most occurences. 
+Re-Sampling is a method used to address class unbalanced. As it's name suppose, it creates new observations for classes to take the number of observation of the class with the most occurences.
 
-In our case, we have used a threshold in order to avoid too little observations in our dataset, which would have reduced the quality of our prediction. We then used the new dataset on our "base" classification tree. 
+In our case, we have used a threshold in order to avoid too little observations in our dataset, which would have reduced the quality of our prediction. We then used the new dataset on our "base" classification tree.
 
 #### Software and Tools
 
@@ -99,11 +98,11 @@ After loading and importing our necessary functions R and Python functions, we h
 
 We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
 
-Once the separation done, we finally have trained our decision tree, using the parameters and hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting.
+Once the separation done, we finally have trained our decision tree, using the parameters but first without tuning the  hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting. After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to use the K-Fold CV to assess the performance of our "base" model. 
 
-After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to use the K-Fold CV and then to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.
+Then we have pruned the tree, by setting different max_depth value [5 to 30] in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best. 
 
-In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations, then used the new dataset on our "base" classification tree. 
+In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations, then used the new dataset on our "base" classification tree.
 
 ### Neural Network
 
@@ -213,19 +212,19 @@ In order to check for some dependence between features, we decided to proceed wi
 
 ### Principal Component Analysis
 
--  Features: The features are the ones from the data_cleaned data frame. 
+-   Features: The features are the ones from the data_cleaned data frame.
 
--  Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
+-   Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
 
--  Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
+-   Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
 
--  Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
+-   Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
 
--  Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
+-   Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
 
--  Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
+-   Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features from the circle of correlation.
 
--  Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
+-   Screeplot: Indicates the number of dimensions to select, usually it's by looking at the variance proportion (see above). It also indicates if features are correlated, so the more dimensions are required, the more the features are independent.
 
 The aim of doing a PCA is to potentially diminish the number of features as there are several features in our dataset. By doing a dimension reduction, we can only select the first few principal components.
 
@@ -233,17 +232,17 @@ The aim of doing a PCA is to potentially diminish the number of features as ther
 
 Doing a clustering analysis allowed us to find some clusters that share similar characteristics measured by the features. In our case, we have decided to go with a partitioning method.
 
--  Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
+-   Partitioning Method: It begins with assigning each instance to one cluster at random, then to compute the centers and then re-assign with the closest cluster center.
 
--  K-means: Method for numerical data.
+-   K-means: Method for numerical data.
 
--  Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
+-   Total Within-Cluster Sum of Squares: Sum of the squared distances between each data point and its corresponding cluster centrois. It measures the compactness of the clusters. For every added cluster, the TWCSS decreases.
 
--  Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
+-   Elbow method: It is the plot to show the optimal number of clusters to select with TWCSS. At the "elbow", we have the optimal number of cluster k to select.
 
--  Cluster Plot: Plot to visualize the clusters.
+-   Cluster Plot: Plot to visualize the clusters.
 
--  Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
+-   Silhouette Plot: Indicates the how goodly-fitted an instance is within its cluster and also how well-separated it is from the other clusters. A good silhouette shows homogeneity within a cluster.
 
 The clustering was aimed to provide better insights on the similarities of the instances. We started by taking the results from the PCA to add clustering in it. For a better visualization, a 3D biplot was of interest to have the overview of the clusters and the features within 3 dimensions. The final aim is to see the link between the features as well as the similarities of the observations.
 
@@ -251,10 +250,10 @@ The clustering was aimed to provide better insights on the similarities of the i
 
 The following software and tools were used to implement and evaluate the models (non-exhaustive list):
 
--  R Studio: The programming language used to implement the unsupervised learning methods.
+-   R Studio: The programming language used to implement the unsupervised learning methods.
 
--  Factoextra: Provides tools to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
+-   Factoextra: Provides tools to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
 
--  FactoMineR: Provides functions to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
+-   FactoMineR: Provides functions to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
 
--  Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).
+-   Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).
