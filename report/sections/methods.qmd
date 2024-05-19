@@ -245,4 +245,4 @@ The following software and tools were used to implement and evaluate the models 
 
 -  FactoMineR: Provides functions to visualize and interpret multivariate data analyses such as the principal component analysis and clustering.
 
-- Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).
+-  Cluster: Provides methods for cluster analysis such as hierarchical clustering and partitioning methods (K-means, Partitioning Around the Medoid).

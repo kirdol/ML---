@@ -101,7 +101,26 @@ kable(summary_df, format = "html", table.attr = "style='width:50%;'") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-## 3D Biplot for 6 clusters
+## Eigenvalues for the Principal Components Analysis {#sec-PCA}
+
+Looking at the eigenvalues, we notice that we have in total 18 dimensions, for which 7 are required to reach at least 80% of the cumulative percentage of variance. We can also see the first ten observations as well as variables, where information such as the distance, cos2 or dimension are shown.
+
+```{r, echo = F, message = F, warning = F}
+data_cleaned <- read.csv(here("data", "data_cleaned.csv"))
+
+# Prepare data for PCA
+data_prepared <- data_cleaned %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(across(where(is.factor), as.numeric)) %>%
+  scale()  # Standardizes numeric data including converted factors
+
+pca_results <- PCA(data_prepared, graph = FALSE)
+summary(pca_results)
+```
+
+## 3D Biplot for 6 clusters {#sec-3D_Biplot}
+
+After looking at the silhouette plot in the unsupervised learning part, we decided to provide a 3D biplot for six clusters, as we can also see in the elbow plot that six seem to be optimal in a way.
 
 ```{r, echo = FALSE}
 data_cleaned <- read.csv(here("data", "data_cleaned.csv"))
@@ -213,4 +232,4 @@ fig6 <- fig6 %>%
 fig6
 ```
 
-After looking at the silhouette plot in the unsupervised learning part, we decided to provide a 3D biplot for 6 clusters, as we can also see in the elbow plot that 6 seem to be optimal in a way. In this biplot, we can observe that it is possible to divide into 6 clusters. When comparing it to the 3D biplot in the 'results_unsupervised_learning' part, we clearly notice that cluster 2 could be divided into four smaller clusters, which indicates heterogeneity in this cluster when using only 3 clusters. However, with 6 clusters in hand, it is more difficult to interpret the 4 distinct clusters. In addition to that, it explains the second elbow in the elbow method: at 3 clusters, we obtained optimality, but we get another steep curve between cluster 5 and 6, meaning that selecting 4 or 5 clusters would not be too much of a benefit, but adding a 6th cluster could be worth capturing. Stopping at 3 cluster still is significant for us and it makes our clustering anaylsis more interpretable than 6, that's why we selected only 3 clusters for our analysis. 
+In this biplot, we can observe that it is possible to divide into 6 clusters. When comparing it to the 3D biplot in the 'results_unsupervised_learning' part, we clearly notice that Cluster 2 could be divided into four smaller clusters, which indicates heterogeneity in this cluster when using only three clusters. However, with six clusters in hand, it is more difficult to interpret the foue distinct clusters. In addition to that, it explains the second elbow in the elbow method: at three clusters, we obtained optimality, but we get another steep curve between Clusters 5 and 6, meaning that selecting four or five clusters would not be too much of a benefit, but adding a sixth cluster could be worth capturing. Stopping at three clusters still is significant for us and it makes our clustering analysis more interpretable than by using six, that's why we selected only 3 clusters for our analysis. 
