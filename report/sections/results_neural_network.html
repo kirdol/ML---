@@ -80,12 +80,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="neural-network" class="level1">
-<h1>Neural Network</h1>
+<section id="neural-networks" class="level1">
+<h1>Neural Networks</h1>
 <p>In this section, we will build a neural network model to predict the make of a car based on the features at our disposal. We will preprocess the data, split it into training and testing sets, define the neural network architecture, compile the model, train it and evaluate its performance.</p>
 <section id="preprocessing-and-splitting-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="preprocessing-and-splitting-the-data">Preprocessing and splitting the data</h2>
-<p>The dataset contains different types of data. Some columns are numerical (like “city_mpg_fuel_type_1” or “charge_time_240v”), and some are categorical (“vehicle_class” or “fuel_type”). We identify and separate these two types of columns. Separating numerical and categorical columns is an essential step in data preprocessing because they require different types of handling to prepare them for machine learning algorithms. The numerical columns need to be scaled by adjusting them so they have a mean of zero and a standard deviation of one, which helps the machine learning algorithm perform better. While the categorical columns need to be one-hot encoded which creates a binary column a format that the machine learning model can understand.</p>
+<p>The dataset contains different types of data. Some columns are numerical (like “city_mpg_fuel_type_1” or “charge_time_240v”), and some are categorical (“vehicle_class” or “fuel_type”). We identify and separate these two types of columns and preprocessed them.</p>
 <p>The data is split into two parts: training and testing. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.</p>
 <section id="building-the-neural-network-models-and-training-them" class="level3">
 <h3 class="anchored" data-anchor-id="building-the-neural-network-models-and-training-them">Building the neural network models and training them</h3>
@@ -93,8 +93,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="base-neural-network">Base Neural Network</h4>
 <p>We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. In the end, the output layer predicts the probability of each car manufacturer. The first layes, the input layer, takes the input features. The second layers is set to 128 neurons, the third to 64 neurons and the last layer, the output layer, has as many neurons as there are car manufacturers. The activation function used in the hidden layers is the Rectified Linear Unit (ReLU), and the output layer uses the Softmax activation function. The model is compiled with the Adam optimizer and the categorical crossentropy loss function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the neural network model</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>model_no_dropout <span class="op">=</span> Sequential([</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Base neural network model</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>model_base <span class="op">=</span> Sequential([</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    Input(shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="we-used-the-following-hyperparameters-non-exhaustive-list" class="level7">
 <p class="heading">We used the following hyperparameters (non-exhaustive list):</p>
 <ul>
-<li><strong>epochs:</strong> 5 (Corresponds to the number of times the model sees the entire dataset during training.)</li>
+<li><strong>epochs:</strong> 150 (Corresponds to the number of times the model sees the entire dataset during training.)</li>
 <li><strong>batch_size:</strong> 32 (Corresponds to the number of samples that the model processes before updating the weights.)</li>
 <li><strong>validation_split:</strong> 0.2 (Corresponds to the fraction of the training data to be used as validation data.)</li>
 </ul>
@@ -113,15 +113,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="issue-of-unbalanced-classes" class="level5">
 <h5 class="anchored" data-anchor-id="issue-of-unbalanced-classes">Issue of unbalanced classes</h5>
-<p>The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the graph (((((((((((((((add graph reference))))))))))))))), there’s still big differences between the classes.</p>
+<p>The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section <strong>?@sec-make_n_plot</strong>, there’s still big differences between the classes.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x35b1f4f80&gt;, &lt;matplotlib.lines.Line2D object at 0x35c594bc0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c5968d0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c595490&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x35c594ce0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c5958e0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c596f30&gt;, &lt;matplotlib.lines.Line2D object at 0x35c597200&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x34868cb60&gt;, &lt;matplotlib.lines.Line2D object at 0x35c596150&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x35c596d50&gt;, &lt;matplotlib.lines.Line2D object at 0x35c597470&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x35c595cd0&gt;, &lt;matplotlib.lines.Line2D object at 0x35c5976e0&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38bd82c30&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0560&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc1520&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0470&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38bdc0140&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0230&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc1bb0&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc1df0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x34fa303e0&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0fb0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38bdc1a30&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc20c0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38bd866f0&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc2330&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -134,12 +134,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This technique has been explained in the methods section but in a nutshell, it is a way to penalize the model for misclassifying the minority class more than the majority class. This helps the model to learn the patterns in the minority class better and improve its performance on the test set.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3831c8f50&gt;, &lt;matplotlib.lines.Line2D object at 0x3831c9490&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cb950&gt;, &lt;matplotlib.lines.Line2D object at 0x3831c8770&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x3831c9970&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cae10&gt;, &lt;matplotlib.lines.Line2D object at 0x3831c9eb0&gt;, &lt;matplotlib.lines.Line2D object at 0x3831ca3c0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x35e94f1d0&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cb650&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x3831cb110&gt;, &lt;matplotlib.lines.Line2D object at 0x3831ca5d0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x3831cb410&gt;, &lt;matplotlib.lines.Line2D object at 0x3831cbb60&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38e3bcaa0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bd940&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3be9c0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bc9e0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38e3bdc70&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bdf70&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bd2b0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bd160&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x38e3bc770&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3be6c0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38e3be210&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bea20&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38e3be4b0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bec90&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -153,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-10-5.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-12-5.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -163,13 +163,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Performance of the model with weighted class:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 51.88%</code></pre>
+<pre><code>Final Training Accuracy: 21.58%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 53.14%</code></pre>
+<pre><code>Final Validation Accuracy: 32.67%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 51.94%</code></pre>
+<pre><code>Test Set Accuracy: 31.63%</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting, we will introduce Dropout layers in the neural network.</p>
@@ -181,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="we-used-the-following-hyperparameters-non-exhaustive-list-1" class="level7">
 <p class="heading">We used the following hyperparameters (non-exhaustive list):</p>
 <ul>
-<li><strong>epochs:</strong> 5 (Corresponds to the number of times the model sees the entire dataset during training.)</li>
+<li><strong>epochs:</strong> 150 (Corresponds to the number of times the model sees the entire dataset during training.)</li>
 <li><strong>batch_size:</strong> 32 (Corresponds to the number of samples that the model processes before updating the weights.)</li>
 <li><strong>validation_split:</strong> 0.2 (Corresponds to the fraction of the training data to be used as validation data.)</li>
 <li><strong>dropout_rate:</strong> varies (Corresponds to the fraction of neurons to drop during training.)</li>
@@ -201,59 +201,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(optimizer<span class="op">=</span>Adam(), loss<span class="op">=</span><span class="st">'categorical_crossentropy'</span>, metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="selection-of-the-best-dropout-rate" class="level5">
+<h5 class="anchored" data-anchor-id="selection-of-the-best-dropout-rate">Selection of the best dropout rate</h5>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-16-7.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-18-7.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We can see that the model with a dropout rate of 0.2 has the best performance on the test set. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate of 0.2 to train the final model with dropout layers.</p>
+<p>We can see that the model with a dropout rate of 0.1 has the best balance between reducing drastically the overfitting problem and keeping a good overall accuracy. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate of 0.1 to train the final model with dropout layers.</p>
+</section>
+<section id="model-performance-1" class="level5">
+<h5 class="anchored" data-anchor-id="model-performance-1">Model performance</h5>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-19-9.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-21-9.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is not overfitting anymore.</p>
+<p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work. The model does not need early stopping in our case since the accuracies are not deacreasing and the loss is not increasing.</p>
 <p><strong>Performance of the model with weighted class and dropout layers:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 41.54%</code></pre>
+<pre><code>Final Training Accuracy: 19.41%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 46.89%</code></pre>
+<pre><code>Final Validation Accuracy: 34.83%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 46.33%</code></pre>
+<pre><code>Test Set Accuracy: 34.17%</code></pre>
 </div>
 </div>
-<p>Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data. We aslo have a high Cohen’s Kappa score which is a good indicator of the model’s performance.</p>
+<p>Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data. We aslo computed the Cohen’s Kappa score which is a good indicator of the model’s performance. And as we can see, the model performs well.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Cohen's Kappa Score: 0.4542</code></pre>
+<pre><code>Cohen's Kappa Score: 33.09%</code></pre>
 </div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import shap</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy as np</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># import matplotlib.pyplot as plt</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # Create a SHAP explainer</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># explainer = shap.DeepExplainer(model, X_train_split[:100])  # Using a subset of training data for efficiency</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># shap_values = explainer.shap_values(X_val[:100])  # Using a subset of validation data for efficiency</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># # Plot feature importance for each class</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># for i in range(len(shap_values)):</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     shap.summary_plot(shap_values[i], X_val[:100], feature_names=feature_names, plot_type="bar")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 </section>
