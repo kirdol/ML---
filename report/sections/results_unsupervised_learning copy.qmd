@@ -1,0 +1,287 @@
+---
+title: "Unsupervised Learning"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = F, message = F, warning = F}
+source(here::here("scripts","setup.R"))
+library(data.table)
+data_cleaned <- fread(here::here("data", "data_cleaned.csv"))
+```
+
+# Principal Component Analysis
+
+In order to see the link between the features, we can use a dimension reduction technique such as the Principal Component Analysis, aiming to link the features according to their similarities across instances and combine features in fewer dimensions.
+
+We begin by standardizing our data, meaning transforming our character variables into factors and then the factors into numeric.
+
+```{r, echo = F, message = F, warning = F}
+data_prepared <- data_cleaned %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(across(where(is.factor), as.numeric)) %>%
+  scale()  # Standardizes numeric data including converted factors
+```
+
+## Heatmap
+
+As it is interesting for us to see the relationship between the variables, we decided to start with a heatmap to get a small overview of the correlations between them.
+
+```{r, echo = F, message = F, warning = F}
+cor_matrix <- cor(data_prepared)  # Calculate correlation matrix
+
+# Melt Correlation Matrix
+melted_cor_matrix <- melt(cor_matrix)
+
+# Heatmap
+ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
+  geom_tile(color = "white") + 
+  scale_fill_gradient2(low = "lightblue", high = "darkblue", mid = "blue", midpoint = 0, limit = c(-1,1),
+                       name = "Spearman\nCorrelation") +  
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.text.y = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(hjust = 0.5),  
+        plot.title.position = "plot") +
+  labs(x = 'Variables', y = 'Variables', 
+       title = 'Correlations Heatmap of Features') 
+```
+
+As we can observe, some variables are strongly correlated, but most of them don't appear to be too strongly correlated (with a value lower than 0.5), whether positively or negatively. Let's now look into the link between the features using a biplot, which combines the observations as well as the features.
+
+## Biplot
+
+Using the `PCA` function, we take the standardized data and check for the result. We provided the summary in the [Annex -@sec-PCA], containing the Eigenvalues and the percentages of cumulative variance per dimension. We then use the `fviz_pca_biplot` function to visualize it.
+
+```{r, echo = F, message = F, warning = F}
+pca_results <- PCA(data_prepared, graph = FALSE)
+
+# Biplot Graph
+fviz_pca_biplot(pca_results,
+                geom.ind = "point",  
+                geom.var = c("arrow", "text"), 
+                col.ind = "cos2",  
+                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),  
+                repel = TRUE 
+)
+```
+
+The biplot shows several informations. First, the two dimensions explain almost 50% of the total variance of the data. Then, each point represents an observation and its color represent the quality of the representation of the variables. Looking at the cos2 gradient, the redder the dot, the better the quality of representation. Then, the arrows (or vectors) represent the features. The vectors pointing in similar directions represent some positive correlations, whereas the ones going opposite represent negative correlations. Orthogonal variables are not correlated.
+
+Taking all of these into account, we can interpret this graph in the following way: we notice that the variables linking the mpg and the range for a fuel type (e.g. fuel type 1) go in the same direction and all seem to be positively correlated, and they are uncorrelated to the same characteristics of the other fuel type (e.g. fuel type 2). Also, the mpg and range seem to be negatively correlated to their own fuel type. Moreover, fuel type 1 is uncorrelated to fuel type 2. Thus, we can infer that Dimension 1 represents the "non-hybrid" characteristics of vehicles whereas dimension 2 is more difficult to interpret with this graph. It could potentially be linked to "hybrid" characteristics of vehicles, but it is not clear.
+
+## Scree plot
+
+The scree plot allows to see the number of dimensions needed to reach most of the variance. To visualize it, we will use the `fviz_eig` function.
+
+```{r, echo = F, message = F, warning = F}
+# Use PCA results to generate the scree plot
+fviz_eig(pca_results, 
+         addlabels = TRUE,  
+         ylim = c(0, 100),  
+         barfill = "lightblue",  
+         barcolor = "black",  
+         main = "Scree Plot of PCA") 
+```
+
+The results of the scree plot show that 7 dimensions are required to reach at least 80% of the variance, meaning the features might be relatively independent. It is already shown in the biplot above, as most arrows in the middle appear to be shorter and the cos2 are low, meaning that the features might be more linked to other dimensions than the first 2 dimensions.
+
+# Clustering
+
+## Clusters Selection
+
+In order to continue with the clustering section, we decided to obtain the coordinates from the PCA.
+
+```{r, echo = F, message = F, warning = F}
+# Get PCA coordinates
+pca_coords_df <- data.frame(pca_results$ind$coord)
+set.seed(123) # for reproducibility
+```
+
+<<<<<<< Updated upstream
+Then, we proceed with the calculation of the Total Within-Cluster Sum of Squares (TWCSS) and vizualize the results using the Elbow method in order to select the optimal number of clusters.
+=======
+Then, we proceed with the calculation of the Total Within-Cluster Sum of Squares (TWCSS) and visualize the results using the Elbow method in order to select the optimal number of clusters.
+>>>>>>> Stashed changes
+
+```{r, echo = F, message = F, warning = F}
+# Total Within-Cluster Sum of Squares
+wcss <- vector()
+for (i in 1:10) {
+  km <- kmeans(pca_coords_df[, 1:3], centers = i)
+  wcss[i] <- sum(km$withinss)
+}
+
+# Elbow Plot
+elbow_data <- data.frame(Clusters = 1:10, WCSS = wcss)
+elbow_plot <- ggplot(elbow_data, aes(x = Clusters, y = WCSS)) +
+  geom_point() +
+  geom_line() +
+  geom_text(aes(label = Clusters), vjust = -0.5) +
+  ggtitle("Elbow Method for Optimality") +
+  xlab("Number of Clusters") +
+  ylab("Total Within-Cluster Sum of Squares (TWCSS)")
+
+# Print the elbow plot
+elbow_plot
+```
+
+In our elbow method, we seem to obtain two elbows, indicating that optimality is reached at three clusters, but making it to six clusters makes it even better. However, clustering to only four or five is not relevant. We will begin by working with three clusters and check if increasing it to six would be relevant. We will follow by performing a K-Means method.
+
+```{r, echo = F, message = F, warning = F}
+# Looking at Elbow, Optimal number of clusters = 3
+optimal_clusters <- 3
+km_result <- kmeans(pca_coords_df[, 1:3], centers = optimal_clusters) # KMeans
+
+# Add cluster assignments to PCA coordinates
+pca_coords_df$cluster <- km_result$cluster
+
+# Cluster Plot
+cluster_plot <- ggplot(pca_coords_df, aes(x = Dim.1, y = Dim.2, color = factor(cluster))) +
+  geom_point() +
+  ggtitle("Cluster") +
+  xlab(paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")) +
+  ylab(paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")) +
+  scale_color_manual(values = c("lightblue", "lightpink", "lightgreen"))
+
+cluster_plot
+```
+
+Above is the separation into three clusters. We will provide a 3D biplot for a better visualization, as Dimension 2 doesn't give us much insight.
+
+## 3D Biplot
+
+As we notice in the Principal Components Analysis, we require at least 7 dimensions to explain most of our percentages of variance, so adding a third dimension in our visualization would be of benefit. To begin with, we need to provide the cluster centers and get the loadings for the variables. We will provide a `plotly` biplot in order to be able to move around the three dimensions.
+
+```{r, message = F, warning = F}
+# Calculate Cluster Centers
+cluster_centers <- aggregate(pca_coords_df[, 1:3], by = list(cluster = pca_coords_df$cluster), FUN = mean)
+
+# Get loadings for variables
+loadings <- data.frame(
+  variable = rownames(pca_results$var$coord),
+  pca_results$var$coord[, 1:3]
+)
+
+# Create the 3D scatter plot with clusters and loadings
+fig <- plot_ly() %>%
+  add_trace(
+    data = pca_coords_df,
+    x = ~Dim.1,
+    y = ~Dim.2,
+    z = ~Dim.3,
+    color = ~factor(km_result$cluster),
+    colors = c("lightblue", "lightpink", "lightgreen"),
+    type = 'scatter3d',
+    mode = 'markers',
+    marker = list(size = 3)
+  ) %>%
+  add_trace(
+    data = cluster_centers,
+    x = ~Dim.1,
+    y = ~Dim.2,
+    z = ~Dim.3,
+    text = ~paste("Cluster", cluster),
+    type = 'scatter3d',
+    mode = 'text',
+    textposition = 'top center',
+    textfont = list(color = 'black', size = 10)
+  )
+
+# Scale factor for loadings arrows, we put 10 in order to get a better view of the directions of the arrows
+scale.loads <- 10.0
+
+# Add loadings as arrows
+for (k in 1:nrow(loadings)) {
+  fig <- fig %>%
+    add_trace(
+      x = c(0, loadings$Dim.1[k]) * scale.loads,
+      y = c(0, loadings$Dim.2[k]) * scale.loads,
+      z = c(0, loadings$Dim.3[k]) * scale.loads,
+      type = 'scatter3d',
+      mode = 'lines+markers',
+      line = list(width = 4, color = 'blue'),
+      marker = list(size = 2, color = 'blue'),
+      showlegend = FALSE
+    ) %>%
+    add_trace(
+      x = loadings$Dim.1[k] * scale.loads,
+      y = loadings$Dim.2[k] * scale.loads,
+      z = loadings$Dim.3[k] * scale.loads,
+      text = loadings$variable[k],
+      type = 'scatter3d',
+      mode = 'text',
+      textposition = 'top center',
+      textfont = list(color = 'blue', size = 10),
+      showlegend = FALSE
+    )
+}
+
+# Layout
+fig <- fig %>%
+  layout(
+    title = "PCA - 3D Biplot with Features",
+    scene = list(
+      xaxis = list(title = paste("Dim1 (", round(pca_results$eig[1, 2], 1), "%)", sep = "")),
+      yaxis = list(title = paste("Dim2 (", round(pca_results$eig[2, 2], 1), "%)", sep = "")),
+      zaxis = list(title = paste("Dim3 (", round(pca_results$eig[3, 2], 1), "%)", sep = ""))
+    )
+  )
+
+# Display the plot
+fig
+```
+
+Looking at this 3D biplot, we can clearly see the 3 different clusters. Cluster 1 seems to englobe the observations from characteristics of the vehicle with fuel type 2, meaning the hybrid cars. Then, cluster 2 links observations from the different car characteristics such as the vehicle class, the engine displacement and cylinders, the drive, the make, the fuel types and the model year. Finally, Cluster 3 takes in the characteristics of vehicles with fuel type 1, meaning normal gas cars. Moreover, we can observe that Dimension 3 can be linked to the vehicle characteristics, which allows us to better understand the observations repartition. Finally, we will analyze the goodness-of-fit of the variables within their own clusters.
+
+## Silhouette Plot
+
+The silhouette plot will provide insights on the homogeneity within the clusters. We will use the `fviz_silhouette` function for this.
+
+```{r, echo = F, message = F, warning = F, output = F}
+# Set seed for reproducibility
+set.seed(123)
+
+# Sample a subset of the data if needed
+sample_indices <- sample(1:nrow(pca_coords_df), 30000) # Adjust sample size as needed
+sampled_data <- pca_coords_df[sample_indices, 1:3]
+
+# Perform KMeans clustering
+optimal_clusters <- 3 # Replace with your optimal number of clusters
+kmeans_result <- kmeans(sampled_data, centers = optimal_clusters)
+
+# Create a data frame with the clustering results
+clustered_data <- data.frame(sampled_data, cluster = kmeans_result$cluster)
+
+# Define the number of samples per cluster
+samples_per_cluster <- min(table(clustered_data$cluster))
+
+# Sample equal number of points from each cluster
+equal_sampled_data <- do.call(rbind, lapply(1:optimal_clusters, function(cluster_num) {
+  cluster_subset <- clustered_data[clustered_data$cluster == cluster_num, ]
+  cluster_sample_indices <- sample(1:nrow(cluster_subset), samples_per_cluster)
+  return(cluster_subset[cluster_sample_indices, ])
+}))
+```
+
+```{r, echo = F, message = F, warning = F}
+# Calculate silhouette values for the sampled data
+equal_sampled_silhouette_values <- silhouette(equal_sampled_data$cluster, dist(equal_sampled_data[, 1:3]))
+
+# Define the colors for each cluster
+colors <- c("lightblue", "lightpink", "lightgreen")
+
+# Plot silhouette values for the sampled data with custom colors
+fviz_silhouette(equal_sampled_silhouette_values, palette = colors) +
+  ggtitle("Silhouette Plot for Sampled KMeans Clustering") +
+  xlab("Cluster") +
+  ylab("Silhouette Width")
+```
+
+In order to provide the silhouette plot, we considered taking only a sample of the dataset, as it would have been to heavy to run otherwise. Here, we can notice that Clusters 1 and 3 both seem to have a high silhouette width, indicating that they are well-clustered. The widths are also mainly above the average width (the red line), meaning that there is a good consistency within the cluster. On the other hand, there is more variation in the 2nd cluster, indicating some heterogeneity within the cluster. The cluster contains some negative silhouette widths and a lot of the observations are below the red line, all of these meaning that some observations would potentially fit better in another cluster.
+
+In the [Annex -@sec-3D_Biplot], we have also provided the same clustering method but for six clusters. We observe that Cluster 2 can be divided into four clusters, but it is more difficult to analyze. As this is the unsupervised learning part, the interest is to discover patterns in the data, so for simplification purposes, we decided to stay with three clusters.
+
+To sum the unsupervised learning part, we can clearly say that there seems to be some factors that are linked together and some observations that can be linked into three clusters. These clusters being "Hybrid Vehicles", "Vehicle Characteristics" and "Non-Hybrid Vehicles" makes sense, as we either have a 1 propulsion type of car or hybrid cars, and the vehicle characteristics being another cluster can be explained in the fact both hybrid and non-hybrid vehicles can share some same vehicle characteristics (not all). As for the features, we need 7 dimensions to explain at least 80% of the total variance, meaning that not all the features are concretely linked together and the links between these are "moderately strong".
