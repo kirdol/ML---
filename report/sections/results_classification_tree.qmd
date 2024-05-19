@@ -60,6 +60,8 @@ y = data[target]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
 
+You will find here an plot showing the actual data splitting effectuated. The x axis represent the number of observations in our dataset and the y axis the number of makes. 
+
 ```{python, echo = FALSE}
 
 # Combine the train and test data for visualization
@@ -74,13 +76,13 @@ test_data['Set'] = 'Test'
 combined_data = pd.concat([train_data, test_data])
 
 # Visualize the data split
-# plt.figure(figsize=(10, 6))
-# sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
-# plt.title('Visualization of Training and Testing Data Split')
-# plt.xlabel('Data Index')
-# plt.ylabel('Target Variable (make)')
-# plt.legend(title='Dataset')
-# plt.show()
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
+plt.title('Visualization of Training and Testing Data Split')
+plt.xlabel('Data Index')
+plt.ylabel('Target Variable (make)')
+plt.legend(title='Dataset')
+plt.show()
 
 ```
 
@@ -106,11 +108,11 @@ print(f"Training Accuracy (without max_depth): {accuracy_train_no_prune:.4f}")
 print(f"Test Accuracy (without max_depth): {accuracy_test_no_prune:.4f}")
 print(f"Test Cohen's Kappa (without max_depth): {kappa_test_no_prune:.4f}")
 
-# Visualize the Decision Tree without pruning
-# plt.figure(figsize=(20, 10))
-# plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-# plt.title("Decision Tree (without max_depth)")
-# plt.show()
+#Visualize the Decision Tree without pruning
+plt.figure(figsize=(20, 10))
+plot_tree(clf_no_prune, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+plt.title("Decision Tree (without max_depth)")
+plt.show()
 ```
 
 As we can see, the tree resulting from our training is much complex, takes a lot of time to train and is not interpretable at all. Also, we can see that the accuracy of the training set is higher than both the observed accuracy and cohen's kappa of the test set, attesting that our model is overfitting. Therefore, let's see the the assessment of the model performance with the K-fold method.
@@ -154,10 +156,10 @@ print(f"Test set accuracy: {test_accuracy:.4f}")
 # Visualize the decision tree
 from sklearn.tree import plot_tree
 
-# plt.figure(figsize=(20, 10))
-# plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-# plt.title('Decision Tree')
-# plt.show()
+plt.figure(figsize=(20, 10))
+plot_tree(clf, filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+plt.title('Decision Tree')
+plt.show()
 ```
 
 With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is good. nevertheless, in order have a better model, we need to address overfitting. 
@@ -220,12 +222,12 @@ importances_df = pd.DataFrame({
 importances_df = importances_df.sort_values(by='Importance', ascending=False)
 
 # Visualize the Decision Tree for specific max_depth values (e.g., 10, 20)
-# depths_to_visualize = [5]
-# for depth in depths_to_visualize:
-#     plt.figure(figsize=(20, 10))
-#     plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
-#     plt.title(f"Decision Tree (max_depth={depth})")
-#     plt.show()
+depths_to_visualize = [5]
+for depth in depths_to_visualize:
+    plt.figure(figsize=(20, 10))
+    plot_tree(clfs[depth], filled=True, feature_names=features, class_names=label_encoders[target].classes_)
+    plt.title(f"Decision Tree (max_depth={depth})")
+    plt.show()
 ```
 
 The accuracy of the model improved as the depth of the tree increased, with a max_depth of 25 or 30 providing the best test accuracy and Cohen's kappa reaching up to approx. 70%. A max_depth of 5 resulted in significantly lower accuracy, indicating that it is not the optimal choice. A max_depth of 10 or 15 seems to be the best compromise between overall accuracy and avoiding overfitting. This pruning helps to improve the generalization performance of the model by preventing it from becoming too complex and overfitting the training data.
