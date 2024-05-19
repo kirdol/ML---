@@ -44,23 +44,21 @@ Key parameters and hyperparameters used in classification tree include:
 
 1.  Classification Tree without constraints
 
-2.  Classification Tree with Pruning (Setting a limit for the max depth)
+2.  Classification Tree with 10 K-fold CV
 
-In both cases, we are using training and test accuracy in order to know when there is overfitting.
+3.  Classification Tree with Pruning (Setting a limit for the max depth)
+
+4.  Classification Tree with Re-Sampling 
 
 ### Classification Tree without constraints
 
-The classification tree model serves as the baseline. It consists of the following components:
+The classification tree model serves as the baseline for knowing how is the model without any constraints added. 
 
--   A Root Node: the highest node in a tree. It represents the entire dataset, before being splitting according to the best features that are going to separate the observations according to specific criterions.
+In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split).
 
--   Internal Nodes: the remaining nodes that are not the root or a leaf node. Each internal node splits the data into two or more subsets based on a feature and a threshold value.
+### 10 K-fold CV
 
--   Branches and Edges: connections between the nodes. Represent the outcome of a decision performed at each node.
-
--   Leaf node: final decision/classification. Each node correspond to a class label.
-
-In our case, the Decision Tree Classifier creates the decision tree. It initialize the process of recursively splitting the dataset into subsets based on the value of the features. It also implicitly defines the loss function, with the two following most common criteria : Gini Impurity (measuring how mixed are the classes in a node, also selecting the best features) and Entropy (different from the Logistic Regression, measure of chaos, indicating the uncertainty reduced by the split). Even by using the stopping rules seen in class (minsplit, cp, minbucket), the tree can sometimes grow too long. Therefore, we need to prune the tree.
+Then we have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree. 
 
 ### Classification Tree with Pruning
 
@@ -92,7 +90,8 @@ We then splited the dataset into training (80%) and testing (20%). This step is 
 
 Once the separation done, we finally have trained our decision tree, using the parameters and hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting.
 
-After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.
+After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to use the K-Fold CV and then to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.
+In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations.
 
 ### Neural Network
 
