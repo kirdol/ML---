@@ -51,7 +51,7 @@ ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
 
 As we can observe, some variables seem to be strongly correlated, but most of them don't seem to be too strongly correlated (less than 0.5), whether positively or negatively. Let's now look into the link between the features using a biplot, which combines the observations as well as the features.
 
-## Biplot {Annex - sec-data_cleaned_overview}
+## Biplot
 
 Using the `PCA` function, we take the standardized data and check for the result. We provided the summary in the [Annex -@sec-PCA], containing the Eigenvalues and the percentages of cumulative variance per dimension. We then use the `fviz_pca_biplot` function to vizualise it.
 
@@ -93,12 +93,15 @@ Taking the screeplot into account, 7 dimensions are needed to reach at least 80%
 ## Cluster Selection
 
 In order to continue with the clustering section, we decided to obtain the coordinates from the PCA.
+
 ```{r, echo = F, message = F, warning = F}
 # Get PCA coordinates
 pca_coords_df <- data.frame(pca_results$ind$coord)
 set.seed(123) # for reproducibility
 ```
+
 Then, we proceed with the calculation of the Total Within-Cluster Sum of Squares (TWCSS) and vizualize the results using the Elbow method in order to select the optimal number of clusters.
+
 ```{r, echo = F, message = F, warning = F}
 # Total Within-Cluster Sum of Squares
 wcss <- vector()
@@ -233,7 +236,7 @@ Looking at this 3D biplot, we can clearly see the 3 different clusters. Cluster 
 
 The silhouette plot will provide insights on the homogeneity within the clusters. We will use the `fviz_silhouette` function for this.
 
-```{r, echo = F, message = F, warning = F}
+```{r, echo = F, message = F, warning = F, output = F}
 # Set seed for reproducibility
 set.seed(123)
 
