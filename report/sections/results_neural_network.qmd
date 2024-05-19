@@ -40,7 +40,7 @@ In this section, we will build a neural network model to predict the make of a c
 
 ## Preprocessing and splitting the data
 
-The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and separate these two types of columns and preprocessed them.
+The dataset contains different types of data. Some columns are numerical (like "city_mpg_fuel_type_1" or "charge_time_240v"), and some are categorical ("vehicle_class" or "fuel_type"). We identify and differentiate these two types of columns, subsequently preprocessing them accordingly.
 
 
 ```{python, echo = FALSE}
@@ -61,10 +61,10 @@ if 'make' in numerical_cols:
 preprocessor = ColumnTransformer(
     transformers=[
         ('num', StandardScaler(), numerical_cols),
-        ('cat', OneHotEncoder(sparse_output=False), categorical_cols)])
+        ('cat', OneHotEncoder(sparse_output = False), categorical_cols)])
 
 # Split data into features and target
-X = data.drop('make', axis=1)
+X = data.drop('make', axis = 1)
 y = data['make']
 
 # Apply preprocessing
@@ -74,57 +74,57 @@ X_preprocessed = preprocessor.fit_transform(X)
 y_encoded = pd.get_dummies(y).values
 ```
 
-The data is split into two parts: training and testing. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.
+The data is split into a training set and a testing set. The training set is used to train the model, and the testing set is used to evaluate its performance. This split ensures that we can test how well the model generalizes to new, unseen data.
 
 ```{python, echo = FALSE}
 # Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y_encoded, test_size=0.2, random_state=123)
+X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y_encoded, test_size = 0.2, random_state = 123)
 
 # Calculate class weights
 from sklearn.utils.class_weight import compute_class_weight
-class_weights = compute_class_weight(class_weight='balanced', classes=np.unique(y), y=y)
+class_weights = compute_class_weight(class_weight = 'balanced', classes=np.unique(y), y = y)
 class_weights_dict = {i: class_weights[i] for i in range(len(class_weights))}
 ```
 
 ### Building the neural network models and training them
 
 #### Base Neural Network
-We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. In the end, the output layer predicts the probability of each car manufacturer. The first layes, the input layer, takes the input features. The second layers is set to 128 neurons, the third to 64 neurons and the last layer, the output layer, has as many neurons as there are car manufacturers. The activation function used in the hidden layers is the Rectified Linear Unit (ReLU), and the output layer uses the Softmax activation function. The model is compiled with the Adam optimizer and the categorical crossentropy loss function.
+We chose to use a neural network. This neural network consists of layers of neurons, where each layer applies transformations to the data. The first layer takes the input features. Then some Hidden layers help the model learn complex patterns. In the end, the output layer predicts the probability of each car manufacturer. The first layer, the input layer, takes the preprocessed input features. The second layer is set to 128 neurons, the third to 64 neurons and the last layer, the output layer, has as many neurons as there are car manufacturers (66 in our case). The activation function used in the hidden layers is the Rectified Linear Unit (ReLU), and the output layer uses the Softmax activation function. The model is compiled with the Adam optimizer and the categorical cross-entropy loss function.
 
 ```{python}
 #| code-fold: false
 
-# Define the Base neural network model
+# Base neural network model
 model_base = Sequential([
-    Input(shape=(X_train.shape[1],)),
-    Dense(128, activation='relu'),
-    Dense(64, activation='relu'),
-    Dense(y_train.shape[1], activation='softmax')])
+    Input(shape = (X_train.shape[1],)),
+    Dense(128, activation = 'relu'),
+    Dense(64, activation = 'relu'),
+    Dense(y_train.shape[1], activation = 'softmax')])
 ```
 
 We used activation functions in the hidden layers to introduce non-linearity into the model. The ReLU activation function is used in the hidden layers because it is computationally efficient and helps the model learn complex patterns in the data. The Softmax activation function is used in the output layer because it converts the model's raw output into probabilities that sum to one. This allows us to interpret the model's output as the probability of each car manufacturer.
 
-####### We used the following hyperparameters (non-exhaustive list):
+####### We used the following hyperparameters for the base model (non-exhaustive list):
 
 * **epochs:** 150 (Corresponds to the number of times the model sees the entire dataset during training.)
 * **batch_size:** 32 (Corresponds to the number of samples that the model processes before updating the weights.)
 * **validation_split:** 0.2 (Corresponds to the fraction of the training data to be used as validation data.)
 
-The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is used for validation.
+The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is kept to be used as a validation set.
 
 ```{python, echo = FALSE, output = FALSE}
 # Compile the model
-model_base.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model_base.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_base.fit(X_train, y_train, epochs=num_epochs, batch_size=32, validation_split=0.2, verbose=0)
+history_no_dropout = model_base.fit(X_train, y_train, epochs = num_epochs, batch_size = 32, validation_split = 0.2, verbose = 0)
 
 # Evaluate the model
 loss_no_dropout, accuracy_no_dropout = model_base.evaluate(X_test, y_test)
 print(f'Test accuracy without Dropout: {accuracy_no_dropout}')
 
 # Make predictions
-predictions_no_dropout = np.argmax(model_base.predict(X_test), axis=1)
+predictions_no_dropout = np.argmax(model_base.predict(X_test), axis = 1)
 
 # Print predictions
 print(predictions_no_dropout)
@@ -134,25 +134,25 @@ Overall, the model perform well but we have't dealt with the issue of unbalanced
 
 ##### Issue of unbalanced classes
 
-The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section [EDA -@sec-make_n_plot], there's still big differences between the classes.
+The isse of unbalanced classes, as explained previously can highly weaken the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section [EDA -@sec-make_n_plot], there's still big differences between the classes.
 
 ```{python, echo = FALSE, output = FALSE}
 # Generate predictions on the test set
 y_pred = model_base.predict(X_test)
-y_pred_classes = np.argmax(y_pred, axis=1)
-y_true_classes = np.argmax(y_test, axis=1)
+y_pred_classes = np.argmax(y_pred, axis = 1)
+y_true_classes = np.argmax(y_test, axis = 1)
 
 # Compute confusion matrix
 cm = confusion_matrix(y_true_classes, y_pred_classes)
 
 # Calculate specificity and sensitivity for each class
 tp = np.diag(cm)
-fp = cm.sum(axis=0) - np.diag(cm)
-fn = cm.sum(axis=1) - np.diag(cm)
+fp = cm.sum(axis = 0) - np.diag(cm)
+fn = cm.sum(axis = 1) - np.diag(cm)
 tn = cm.sum() - (fp + fn + tp)
 
 # Handle potential division by zero
-with np.errstate(divide='ignore', invalid='ignore'):
+with np.errstate(divide = 'ignore', invalid = 'ignore'):
     sensitivity = np.divide(tp, tp + fn)
     specificity = np.divide(tn, tn + fp)
     # Ensure that the data is in the correct format
@@ -186,28 +186,28 @@ For some classes with more vehicle models, the model tends to predict those clas
 
 ##### Adding class weights to the model
 
-This technique has been explained in the methods section but in a nutshell, it is a way to penalize the model for misclassifying the minority class more than the majority class. This helps the model to learn the patterns in the minority class better and improve its performance on the test set.
+This technique, detailed in the methods section, essentially penalizes the model more for misclassifying the minority class than the majority class. By doing so, the model is encouraged to learn the patterns of the minority class more effectively, thereby enhancing its performance on the test set.
 
 ```{python, echo = FALSE, output = FALSE}
 # Define the neural network model
 model_base2 = Sequential([
-    Input(shape=(X_train.shape[1],)),
-    Dense(128, activation='relu'),
-    Dense(64, activation='relu'),
-    Dense(y_train.shape[1], activation='softmax')])
+    Input(shape = (X_train.shape[1],)),
+    Dense(128, activation = 'relu'),
+    Dense(64, activation = 'relu'),
+    Dense(y_train.shape[1], activation = 'softmax')])
 
 # Compile the model
-model_base2.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model_base2.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
 # Train the model with class weights
-history_no_dropout = model_base2.fit(X_train, y_train, epochs=num_epochs, batch_size=32, validation_split=0.2, class_weight=class_weights_dict, verbose=0)
+history_no_dropout = model_base2.fit(X_train, y_train, epochs = num_epochs, batch_size = 32, validation_split = 0.2, class_weight = class_weights_dict, verbose = 0)
 
 # Evaluate the model
 loss_no_dropout, accuracy_no_dropout = model_base2.evaluate(X_test, y_test)
 print(f'Test accuracy without Dropout: {accuracy_no_dropout}')
 
 # Make predictions
-predictions_no_dropout = np.argmax(model_base2.predict(X_test), axis=1)
+predictions_no_dropout = np.argmax(model_base2.predict(X_test), axis = 1)
 
 # Print predictions
 print(predictions_no_dropout)
@@ -224,12 +224,12 @@ cm = confusion_matrix(y_true_classes, y_pred_classes)
 
 # Calculate specificity and sensitivity for each class
 tp = np.diag(cm)
-fp = cm.sum(axis=0) - np.diag(cm)
-fn = cm.sum(axis=1) - np.diag(cm)
+fp = cm.sum(axis = 0) - np.diag(cm)
+fn = cm.sum(axis = 1) - np.diag(cm)
 tn = cm.sum() - (fp + fn + tp)
 
 # Handle potential division by zero
-with np.errstate(divide='ignore', invalid='ignore'):
+with np.errstate(divide = 'ignore', invalid = 'ignore'):
     sensitivity = np.divide(tp, tp + fn)
     specificity = np.divide(tn, tn + fp)
     # Set sensitivities and specificities to 0 where division by zero occurred
@@ -246,7 +246,7 @@ for i, class_label in enumerate(unique_labels):
 # Create boxplots
 data = [sensitivity, specificity]
 fig, ax = plt.subplots()
-ax.boxplot(data, labels=["Sensitivity", "Specificity"])
+ax.boxplot(data, labels = ["Sensitivity", "Specificity"])
 ax.set_title("Sensitivity and Specificity for Each Class")
 ax.set_ylabel("Proportion")
 plt.show()
@@ -260,7 +260,7 @@ We can now look at the evolution of the accuracy of our model during the trainin
 
 ```{python, echo = FALSE}
 # Plot the accuracy and loss for the model without Dropout
-fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+fig, axs = plt.subplots(2, 1, figsize = (10, 10))
 
 # Plot training & validation accuracy values
 axs[0].plot(history_no_dropout.history['accuracy'])
@@ -268,7 +268,7 @@ axs[0].plot(history_no_dropout.history['val_accuracy'])
 axs[0].set_title('Model accuracy')
 axs[0].set_ylabel('Accuracy')
 axs[0].set_xlabel('Epoch')
-axs[0].legend(['Train', 'Validation'], loc='upper left')
+axs[0].legend(['Train', 'Validation'], loc = 'upper left')
 
 # Plot training & validation loss values
 axs[1].plot(history_no_dropout.history['loss'])
@@ -276,7 +276,7 @@ axs[1].plot(history_no_dropout.history['val_loss'])
 axs[1].set_title('Model loss')
 axs[1].set_ylabel('Loss')
 axs[1].set_xlabel('Epoch')
-axs[1].legend(['Train', 'Validation'], loc='upper left')
+axs[1].legend(['Train', 'Validation'], loc = 'upper left')
 
 plt.tight_layout()
 plt.show()
@@ -305,11 +305,11 @@ Overall, the performance of the model is still good. However the quality can be 
 
 #### Neural Network with Dropout layers
 
-Dropout layers randomly set a fraction of input units to zero during training, which helps prevent overfitting by forcing the model to learn more robust features. We will tune the dropout rate to find the optimal value that balances training and validation accuracy and that insure to reduce overfitting.
+Dropout layers randomly set a fraction of neurons to zero during training, which helps prevent overfitting by forcing the model to learn more robust features. We will tune the dropout rates to find the optimal value that balances training and validation accuracy and that insure to reduce overfitting.
 
 ```{python, echo = FALSE}
 # Split the data into training and validation sets
-X_train_split, X_val, y_train_split, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
+X_train_split, X_val, y_train_split, y_val = train_test_split(X_train, y_train, test_size = 0.2, random_state = 42)
 ```
 
 ####### We used the following hyperparameters (non-exhaustive list):
@@ -324,17 +324,17 @@ We will try 5 different dropout rates in addition of the case of no dropout. We 
 ```{python}
 #| code-fold: false
 
-# Function to create and compile the model
-def create_model(dropout_rate=0.0):
+# Model with Dropout layers
+def create_model(dropout_rate = 0.0):
     model = Sequential([
-        Input(shape=(X_train.shape[1],)),
-        Dense(128, activation='relu'),
+        Input(shape = (X_train.shape[1],)),
+        Dense(128, activation = 'relu'),
         Dropout(dropout_rate),
-        Dense(64, activation='relu'),
+        Dense(64, activation = 'relu'),
         Dropout(dropout_rate),
-        Dense(y_train.shape[1], activation='softmax')
+        Dense(y_train.shape[1], activation = 'softmax')
     ])
-    model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer = Adam(), loss = 'categorical_crossentropy', metrics = ['accuracy'])
     return model
 ```
 
@@ -350,16 +350,16 @@ test_accuracies = []
 # Iterate over the dropout rates
 for rate in dropout_rates:
     print(f"Testing model with dropout rate: {rate}")
-    model = create_model(dropout_rate=rate)
+    model = create_model(dropout_rate = rate)
     
     # Train the model and collect training accuracy
-    history = model.fit(X_train_split, y_train_split, epochs=num_epochs, batch_size=32, class_weight=class_weights_dict, verbose=0)
+    history = model.fit(X_train_split, y_train_split, epochs = num_epochs, batch_size = 32, class_weight = class_weights_dict, verbose = 0)
     
     # Evaluate the model on the validation set
-    val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
+    val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose = 0)
     
     # Evaluate the model on the test set
-    test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+    test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose = 0)
     
     # Store the last epoch's training accuracy, validation accuracy, and test accuracy
     training_accuracy = history.history['accuracy'][-1]
@@ -387,7 +387,7 @@ plt.show()
 ```
 
 We can see that the model with a dropout rate of 0.1 has the best balance between reducing drastically the overfitting problem and keeping a good overall accuracy. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue.
-We will use this dropout rate of 0.1 to train the final model with dropout layers.
+We will use this dropout rate of 0.1 to train the final model that utilize class weights and dropout layers.
 
 ```{python, echo = FALSE}
 # Out best dropout rate used for the following model.
@@ -396,10 +396,10 @@ final_dropout_rate = 0.1
 
 ```{python, echo = FALSE, output = FALSE}
 # Train the model with the specified dropout rate
-model = create_model(dropout_rate=final_dropout_rate)
+model = create_model(dropout_rate = final_dropout_rate)
 
 # Train the model and collect training accuracy and loss
-history = model.fit(X_train_split, y_train_split, epochs=num_epochs, batch_size=32, class_weight=class_weights_dict, validation_data=(X_val, y_val), verbose=0)
+history = model.fit(X_train_split, y_train_split, epochs = num_epochs, batch_size=32, class_weight = class_weights_dict, validation_data = (X_val, y_val), verbose = 0)
 
 # Extract accuracy and loss data
 training_accuracy = history.history['accuracy']
@@ -420,7 +420,7 @@ axs[0].plot(validation_accuracy)
 axs[0].set_title('Model accuracy with Dropout')
 axs[0].set_ylabel('Accuracy')
 axs[0].set_xlabel('Epoch')
-axs[0].legend(['Train', 'Validation'], loc='upper left')
+axs[0].legend(['Train', 'Validation'], loc = 'upper left')
 
 # Plot training & validation loss values
 axs[1].plot(training_loss)
@@ -428,14 +428,14 @@ axs[1].plot(validation_loss)
 axs[1].set_title('Model loss with Dropout')
 axs[1].set_ylabel('Loss')
 axs[1].set_xlabel('Epoch')
-axs[1].legend(['Train', 'Validation'], loc='upper left')
+axs[1].legend(['Train', 'Validation'], loc = 'upper left')
 
 # Show the plot
 plt.tight_layout()
 plt.show()
 ```
 
-We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work. The model does not need early stopping in our case since the accuracies are not deacreasing and the loss is not increasing.
+We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work. The model does not need early stopping in our case (150 epochs) since the accuracies are not deacreasing and the loss is not increasing.
 
 **Performance of the model with weighted class and dropout layers:**
 
@@ -446,23 +446,23 @@ final_training_accuracy = history.history['accuracy'][-1]
 final_validation_accuracy = history.history['val_accuracy'][-1]
 
 # Evaluate the model on the test set
-test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose = 0)
 print(f"Final Training Accuracy: {final_training_accuracy * 100:.2f}%")
 print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
 print(f"Test Set Accuracy: {test_accuracy * 100:.2f}%")
 ```
 
-Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data. We aslo computed the Cohen's Kappa score which is a good indicator of the model's performance. And as we can see, the model performs well.
+Our final accuracy of our model are not as great as we had with our first model but the model that we are using is at least better at representing the data and generalizing to new data. We aslo computed the Cohen's Kappa score which is a good indicator of the model's performance. And as we can see, the model performs well.
 
 ```{python, echo = FALSE, output = FALSE}
 # Make predictions on the validation set
 y_val_pred = model.predict(X_val)
 
 # Convert probabilities to class labels for multi-class classification
-y_val_pred_class = np.argmax(y_val_pred, axis=1)
+y_val_pred_class = np.argmax(y_val_pred, axis = 1)
 
 # Calculate Cohen's Kappa
-kappa_score = round(cohen_kappa_score(np.argmax(y_val, axis=1), y_val_pred_class),4)
+kappa_score = round(cohen_kappa_score(np.argmax(y_val, axis = 1), y_val_pred_class),4)
 ```
 
 ```{python, echo = FALSE}

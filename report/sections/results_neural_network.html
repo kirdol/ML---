@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The isse of unbalanced classes, as explained previously can highly weekend the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section <strong>?@sec-make_n_plot</strong>, there’s still big differences between the classes.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x365a51100&gt;, &lt;matplotlib.lines.Line2D object at 0x366bb8440&gt;, &lt;matplotlib.lines.Line2D object at 0x366bb9790&gt;, &lt;matplotlib.lines.Line2D object at 0x366bb89e0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x366bb9640&gt;, &lt;matplotlib.lines.Line2D object at 0x366bb9a60&gt;, &lt;matplotlib.lines.Line2D object at 0x366bb9fd0&gt;, &lt;matplotlib.lines.Line2D object at 0x366bba270&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x365a50d10&gt;, &lt;matplotlib.lines.Line2D object at 0x366bb8050&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x366bb9d60&gt;, &lt;matplotlib.lines.Line2D object at 0x366bba510&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x366bb8bf0&gt;, &lt;matplotlib.lines.Line2D object at 0x366bba810&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38bd82c30&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0560&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc1520&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0470&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38bdc0140&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0230&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc1bb0&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc1df0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x34fa303e0&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc0fb0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38bdc1a30&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc20c0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38bd866f0&gt;, &lt;matplotlib.lines.Line2D object at 0x38bdc2330&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This technique has been explained in the methods section but in a nutshell, it is a way to penalize the model for misclassifying the minority class more than the majority class. This helps the model to learn the patterns in the minority class better and improve its performance on the test set.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38addcce0&gt;, &lt;matplotlib.lines.Line2D object at 0x38adddac0&gt;, &lt;matplotlib.lines.Line2D object at 0x38addeb70&gt;, &lt;matplotlib.lines.Line2D object at 0x38addce90&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38addddf0&gt;, &lt;matplotlib.lines.Line2D object at 0x38adde090&gt;, &lt;matplotlib.lines.Line2D object at 0x38addd700&gt;, &lt;matplotlib.lines.Line2D object at 0x38addd5b0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x38ad7ee10&gt;, &lt;matplotlib.lines.Line2D object at 0x38adde8a0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38adde300&gt;, &lt;matplotlib.lines.Line2D object at 0x38addebd0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38adde600&gt;, &lt;matplotlib.lines.Line2D object at 0x38addee70&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38e3bcaa0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bd940&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3be9c0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bc9e0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38e3bdc70&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bdf70&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bd2b0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bd160&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x38e3bc770&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3be6c0&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38e3be210&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bea20&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38e3be4b0&gt;, &lt;matplotlib.lines.Line2D object at 0x38e3bec90&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -163,13 +163,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Performance of the model with weighted class:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 22.31%</code></pre>
+<pre><code>Final Training Accuracy: 21.58%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 35.42%</code></pre>
+<pre><code>Final Validation Accuracy: 32.67%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 34.17%</code></pre>
+<pre><code>Test Set Accuracy: 31.63%</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting, we will introduce Dropout layers in the neural network.</p>
@@ -230,19 +230,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Performance of the model with weighted class and dropout layers:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 18.72%</code></pre>
+<pre><code>Final Training Accuracy: 19.41%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 36.79%</code></pre>
+<pre><code>Final Validation Accuracy: 34.83%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 36.62%</code></pre>
+<pre><code>Test Set Accuracy: 34.17%</code></pre>
 </div>
 </div>
 <p>Our final accuracy of our model are not as great as we had with our first model but the model we are using is at least better at representing the data and generalizing to new data. We aslo computed the Cohen’s Kappa score which is a good indicator of the model’s performance. And as we can see, the model performs well.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Cohen's Kappa Score: 35.10%</code></pre>
+<pre><code>Cohen's Kappa Score: 33.09%</code></pre>
 </div>
 </div>
 </section>
