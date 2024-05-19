@@ -40,7 +40,9 @@ Key parameters and hyperparameters used in classification tree include:
 
 -   **xval** : Helps in model validation by performing cross-validation
 
-### Our two primary models
+We had in must of our models to encod categorical variables using **Label Encoding** to convert them into numerical values. In addition, we had to split the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data.
+
+### Our models
 
 1.  Classification Tree without constraints
 
@@ -58,17 +60,26 @@ In our case, the Decision Tree Classifier creates the decision tree. It initiali
 
 ### 10 K-fold CV
 
-Then we have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree. 
+K-Fold cross-validation is a method for assessing the performance of a model. It has the following steps : 
+
+-   Divide the Data: The dataset is split into k equally sized subsets or "folds."
+-   Train and Validate: The model is trained k times. In each iteration, one fold is used as the validation set, and the remaining k−1 folds are used as the training set.
+-   Evaluate: The model's performance is evaluated using the validation set in each iteration.
+Average Performance: The results from each iteration are averaged to provide a single performance metric.
+
+We have decided to use a K-fold cross-validation with 10 folds to fight overfitting. Then rest remained as in our base classification tree. 
 
 ### Classification Tree with Pruning
 
-Now let's talk about the classification tree using pruning.
+Now let's talk about the classification tree using pruning. It is basicaly reducing the complexity of the tree by removing unnecessary sections. This helps a lot against overfitting but at the expense of accuracy. 
 
-We have the same components as in the base method. Nevertheless, some part of the process is different. In this case we are using a complexity parameter to control the size of the tree. This threshold prevents overfitting.
+In our case, we have the same components as in the base method at the beginning. Nevertheless, some part of the process is different. In this case we are using a complexity parameter (max_depth) to control the size of the tree. We tried to play with the tuning of the hyperparameter [5 to 30] to check which value had the best tradeoff between accuracy and overfitting.
 
-One popular method for pruning is the 1-SE rule, which involves the following steps: first build a fully grown tree using standard stopping rules; then calculate the error for all possible sub-trees. The best tree with the lowest error is identified and its standard error (SE) is calculated. Trees with an error within one SE of the error of the best tree are considered equivalent, and among these the shortest tree is selected.
+### Re-Sampling 
 
-In our case, we have decided to tune the max_depth hyperparameter to limit the maximum depth of the decision tree.
+Re-Sampling is a method used to address class unbalanced. As it's name suppose, it creates new observations for classes to take the number of observation of the class with the most occurences. 
+
+In our case, we have used a threshold in order to avoid too little observations in our dataset, which would have reduced the quality of our prediction. We then used the new dataset on our "base" classification tree. 
 
 #### Software and Tools
 
@@ -91,7 +102,8 @@ We then splited the dataset into training (80%) and testing (20%). This step is 
 Once the separation done, we finally have trained our decision tree, using the parameters and hyperparameters talked earlier. Then, thanks to the training model, we have been able to use the model on the test set and then to compute the accuracies of both. This step is essential for controlling the performance of the model, also controlling for overfitting.
 
 After verification, we have found overfitting after constructing the base Classification Tree model. We have then decided to use the K-Fold CV and then to prune our tree, by setting different max_depth value in order to see which tradeoff between accuracy and performance (fighting overfitting) was the best.
-In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations.
+
+In addition, we have decided to address class unbalances by Re-Sampling our dataset. We have selected a threshold among our observation per make of 100 for not having brands with too little observations, then used the new dataset on our "base" classification tree. 
 
 ### Neural Network
 

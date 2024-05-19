@@ -6,7 +6,7 @@ format:
 
 # Classification Tree
 
-In this section we are going to perform a classification tree analysis on the dataset. We start first to load the necessary packages and the dataset. We then have prepared the data by encoding categorical variables and splitted it into training and testing sets. We start by showing the result of our classification tree without any tuning, then with a K-fold CV and also a pruned classification tree with different max_depth values to find the optimal tree depth that balances between training and test accuracy. Finally, we dealt with class imbalance by doing a Re-sampling. 
+After loading the necessary packages, the dataset and then prepared it, here are the results of our Classification Tree models. 
 
 ### Loading R packages, Python libraries and Data Preparation
 ```{r Loading R packages CT, echo= FALSE, message = FALSE, output = FALSE}
@@ -19,7 +19,6 @@ subprocess.run(['pip3', 'install', "pyprojroot"], check=True, stdout=subprocess.
 from pyprojroot.here import here
 open(here("scripts/setup.py"))
 ```
-
 
 ```{python Importing necessayry functions and the data, echo = FALSE, message = FALSE}
 # !pip3 install pyprojroot ----- TO INSTALL IF MISSING
@@ -39,8 +38,6 @@ file_path = here("data/data_cleaned_reduced.csv")
 data = pd.read_csv(file_path)
 ```
 
-After importing all the necessary libraries and packages, we first started by loading the dataset and identified make as the target variable. We also encoded categorical variables using **Label Encoding** to convert them into numerical values.
-
 ```{python Preparing the data, echo = FALSE}
 
 # Preprocess the data
@@ -57,7 +54,7 @@ for column in data.columns:
         label_encoders[column] = le
 ```
 
-We then splited the dataset into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data. Unfortunately, we will see later that our model is overfitting, meaning that it performs poorly when seeing new data. We will address this issue later. You will find here an plot showing the actual data splitting effectuated. The x axis represent the number of observations in our dataset and the y axis the number of makes. 
+After importing the necessary libraries and imported our dataset, we splitted it into training (80%) and testing (20%). This step is essential for preventing overfitting, try to select the best model configuration by training the model, then assess the final model performance on our "unseen data" of the testing set. This helps to build a robust model that generalizes well to new data. Unfortunately, we will see later that our model is overfitting, meaning that it performs poorly when seeing new data. We will address this issue later. You will find here an plot showing the actual data splitting effectuated. The x axis represent the number of observations in our dataset and the y axis the number of makes. 
 
 ```{python Splitting the data, echo = FALSE}
 # Split the data into training and testing sets
@@ -80,13 +77,13 @@ test_data['Set'] = 'Test'
 combined_data = pd.concat([train_data, test_data])
 
 # Visualize the data split
-# plt.figure(figsize=(10, 6))
-# sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
-# plt.title('Visualization of Training and Testing Data Split')
-# plt.xlabel('Data Index')
-# plt.ylabel('Target Variable (make)')
-# plt.legend(title='Dataset')
-# plt.show()
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=combined_data, x=combined_data.index, y=target, hue='Set', palette=['blue', 'orange'])
+plt.title('Visualization of Training and Testing Data Split')
+plt.xlabel('Data Index')
+plt.ylabel('Target Variable (make)')
+plt.legend(title='Dataset')
+plt.show()
 
 ```
 
@@ -123,7 +120,7 @@ As we can see, the tree resulting from our training is much complex, takes a lot
 
 ### Training the Decision Tree with K-fold cross-validation - Results
 
-In order to fight overfitting, we tried to implement a K-fold cross-validation.
+In order to assess the performance of the model, we also tried to use a K-fold cross-validation with 10 folds. 
 
 ```{python}
 
@@ -166,7 +163,7 @@ from sklearn.tree import plot_tree
 # plt.show()
 ```
 
-With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy. 
+With a number of fold of 10, we have not been able to fight overfitting, as the training accuracy remaines higher than the test accuracy, but we notice that our mean accuracy is approx. 70%, which is quite good. nevertheless, we need to address overfitting. 
 
 ### Training the Decision Tree with Pruning method - Results
 
