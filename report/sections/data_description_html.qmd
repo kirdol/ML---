@@ -5,7 +5,7 @@ source(here::here("scripts","setup.R"))
 data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 ```
 
-For this project, we selected a dataset focused on vehicle characteristics, available as a .csv file from data.world. You can access the dataset via the following link: [data.world](https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023). It includes a total of 26 features describing 45,896 vehicle models from 141 brands released between 1984 and 2023. Below is a table providing an overview of the available features and their descriptions. You can find a deeper description of the data in [Annex -@sec-data_summary]. The analysis of the missing values will be dealt with in the data cleaning section.
+For this project, we selected a dataset focused on vehicle characteristics, available as a .csv file from data.world. You can access the dataset via the following link: [data.world](https://data.world/project-data-viz/vehicle-mpg-1984-to-2023-pdv-02-2023). It includes a total of 26 features describing 45,896 vehicle models from 141 brands released between 1984 and 2023. Below is a table providing an overview of the available features and their descriptions. You can find a deeper description of the data in the [Annex -@sec-data_summary]. The analysis of the missing values will be dealt with in the data cleaning section.
 
 ### Description of the features
 

@@ -14,12 +14,91 @@ data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 skim(data)
 ```
 
-## Data Summary {#sec-data_summary}
+## Data summary {#sec-data_summary}
+
+The table below provides an overview of the dataset.
 
 ```{r, echo=FALSE}
 data <- read.csv(here("data", "Vehicle MPG - 1984 to 2023.csv"))
 
 st(data)
+```
+
+
+## Data cleaned overview {#sec-data_cleaned_overview}
+
+**Cleaned Dataset**
+
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
+# Cleaned dataset
+data_cleaned <- read.csv(here("data", "data_cleaned.csv"))
+data_cleaned <- data_cleaned %>%
+  complete(make)
+datatable(data_cleaned, options = list(pageLength = 5,
+                                   class = "hover",
+                                   searchHighlight = TRUE), rownames = FALSE)
+
+
+# Get the number of rows and columns
+num_rows <- nrow(data_cleaned)
+num_cols <- ncol(data_cleaned)
+
+# Get the frequency of column types
+col_types <- sapply(data_cleaned, class)
+type_freq <- table(col_types)
+char_count <- ifelse("character" %in% names(type_freq), type_freq["character"], 0)
+num_count <- ifelse("numeric" %in% names(type_freq), type_freq["numeric"], 0)
+
+# Create a summary data frame
+summary_df <- data.frame(
+  Name = "data_cleaned",
+  Number_of_rows = num_rows,
+  Number_of_columns = num_cols,
+  Character = char_count,
+  Numeric = num_count,
+  Group_variables = "None"
+)
+
+# Display the summary using kable
+kable(summary_df, format = "html", table.attr = "style='width:50%;'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+**Cleaned and Reduced Dataset**
+
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
+# Cleaned_reduced dataset
+data_cleaned_reduced <- read.csv(here("data", "data_cleaned_reduced.csv"))
+data_cleaned_reduced <- data_cleaned_reduced %>%
+  complete(make)
+datatable(data_cleaned_reduced, options = list(pageLength = 5,
+                                   class = "hover",
+                                   searchHighlight = TRUE), rownames = FALSE)
+
+
+# Get the number of rows and columns
+num_rows <- nrow(data_cleaned_reduced)
+num_cols <- ncol(data_cleaned_reduced)
+
+# Get the frequency of column types
+col_types <- sapply(data_cleaned_reduced, class)
+type_freq <- table(col_types)
+char_count <- ifelse("character" %in% names(type_freq), type_freq["character"], 0)
+num_count <- ifelse("numeric" %in% names(type_freq), type_freq["numeric"], 0)
+
+# Create a summary data frame
+summary_df <- data.frame(
+  Name = "data_cleaned_reduced",
+  Number_of_rows = num_rows,
+  Number_of_columns = num_cols,
+  Character = char_count,
+  Numeric = num_count,
+  Group_variables = "None"
+)
+
+# Display the summary using kable
+kable(summary_df, format = "html", table.attr = "style='width:50%;'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 ## 3D Biplot for 6 clusters
