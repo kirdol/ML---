@@ -152,7 +152,7 @@ nb_model_per_make <- data %>%
   summarise(Number = n(), .groups = 'drop')
 
 #makes with only 1 model 
-only_one_model_cars <- nb_model_per_make %>% 
+only_one_model_cars <- nb_model_per_make %>%
   filter(Number == 1 )
 
 #table globale
@@ -161,12 +161,18 @@ datatable(nb_model_per_make,
           options = list(pageLength = 5,
                          class = "hover",
                          searchHighlight = TRUE))
+```
 
+```{r}
 # Option to limit to top 20 makes for better readability
-top_n_makes <- nb_model_per_make %>% top_n(20, nb_model_per_make)
+# top_n_makes <- nb_model_per_make %>% top_n(20, nb_model_per_make)
+
+top_n_makes <- nb_model_per_make %>%
+  arrange(desc(Number)) %>%  # Sort in descending order by the column 'count'
+  slice_max(Number, n = 20)
 
 #plot
-ggplot(top_n_makes, aes(x = reorder(make, nb_model_per_make), y = nb_model_per_make)) +
+ggplot(top_n_makes, aes(x = reorder(make, Number), y = Number)) +
   geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
   labs(title = "Models per Make (Top 20)",
        x = "Make",
@@ -190,7 +196,7 @@ datatable(only_one_model_cars,
                          class = "hover",
                          searchHighlight = TRUE))
 
-ggplot(only_one_model_cars, aes(x = make, y = nb_model_per_make)) +
+ggplot(only_one_model_cars, aes(x = make, y = Number)) +
   geom_bar(stat = "identity", color = "black", fill = "grey", show.legend = FALSE) +
   labs(title = "Makes with only 1 model in the dataset",
        x = "Make",
