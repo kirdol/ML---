@@ -182,7 +182,7 @@ The following software and tools were used to implement and evaluate the models 
 
 -   Pandas and NumPy: Libraries used for data manipulation and numerical computations.
 
-#### Mertics
+#### Metrics
 
 In our machine learning analysis, we used several key metrics to evaluate our model. The main metrics are the training, validation and test accuracies. The **validation accuracy** shows how well the model performs on the validation set, helping us tune the model during training. **Training accuracy** indicates the model’s performance on the training data, which helps identify overfitting. The difference between the training and validation accuracy is useful to detect the presence of overfitting in our models. The **test accuracy** measures the model’s performance on new, unseen data, providing an unbiased evaluation.
 
@@ -198,7 +198,17 @@ Note that this section was written and based on the course website ([ML_BA](http
 
 ## Unsupervised Learning
 
+In order to see the link between features, we decided to proceed with two unsupervised learning methods which are the Principal Component Analysis and the Clustering methods.
+
 ### Principal Component Analysis
+
+- Features: The features are the ones from the data_cleaned data frame. 
+- Scaling: Switching the features from categorical to factor, then factor to numerical. Then, we applied a spectral decomposition on the correlation matrix.
+- Variance proportion: We look at the proportion of variance relative to the total variance. Then we can look at the eigenvalues and check the cumulative percentage of variance that explains at least 80% of variance. Then, we obtained the number of dimensions that represent the data well.
+- Circle of correlation: The circle of correlation allows to check for the correlation between the features. Also, we can summarize into 2 dimensions.
+- Cos2: The cos2 allows to interpret the quality of the representation through the dimensions of the circle of correlation.
+- Biplot: Visualization of the observations (or individuals) within the 2 dimensions as well as the features
+
 
 -   combination of features
 -   scaling
@@ -221,6 +231,8 @@ for nominal data: there is no correct solution; especially replacing by numbers 
 With only categorical data, (Multiple) Correspondence Analysis is a solution. And for mixed data type (categorical and numerical), Factor Analysis of Mixed Data (FAMD) is a solution. However, they are not adapted to large data set.
 
 ### Clustering
+
+In our
 
 -   Partitioning Method
 -   Numerical --\> as we converted into numerical & factors into numerical, use K-Means
