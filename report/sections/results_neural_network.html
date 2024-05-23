@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -79,6 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+
 <section id="neural-networks" class="level1">
 <h1>Neural Networks</h1>
 <p>In this section, we will build a neural network model to predict the make of a car based on the features at our disposal. We will preprocess the data, split it into training and testing sets, define the neural network architecture, compile the model, train it and evaluate its performance.</p>
@@ -107,18 +108,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>batch_size:</strong> 32 (Corresponds to the number of samples that the model processes before updating the weights.)</li>
 <li><strong>validation_split:</strong> 0.2 (Corresponds to the fraction of the training data to be used as validation data.)</li>
 </ul>
-<p>The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is kept to be used as a validation set.</p>
-<p>Overall, the model perform well but we have’t dealt with the issue of unbalanced classes yet. Let’s have a look at the distribution of the sensitivity and specificity for each class.</p>
+<p>The model is trained for 150 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is kept to be used as a validation set.</p>
+<p>Overall, the model performs well but we haven’t dealt with the issue of unbalanced classes yet. Let’s have a look at the distribution of the sensitivity and specificity for each class.</p>
 </section>
 <section id="issue-of-unbalanced-classes" class="level5">
 <h5 class="anchored" data-anchor-id="issue-of-unbalanced-classes">Issue of unbalanced classes</h5>
-<p>The isse of unbalanced classes, as explained previously can highly weaken the model ability to generalize to new data. The model, will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section <strong>?@sec-make_n_plot</strong>, there’s still big differences between the classes.</p>
+<p>The issue of unbalanced classes, as explained previously, can highly weaken the model ability to generalize to new data. The model will automatically prefer to predict the most frequent classes. We can see in the boxplots below the distribution of the sensitivity and specificity for the classes. Even though, we already dealt in part with the unbalanced class during the cleaning process, as seen in the plot in section <strong>?@sec-make_n_plot</strong>, there are still big differences between the classes.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x2ba4d92b0&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4d97c0&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4db560&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4db140&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x2ba4d9c40&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4da240&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4da8d0&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4dae40&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x2a8b82cf0&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4d9460&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x2ba4da480&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4da810&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x2ba4da450&gt;, &lt;matplotlib.lines.Line2D object at 0x2ba4db920&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x3423ce540&gt;, &lt;matplotlib.lines.Line2D object at 0x369c0a930&gt;, &lt;matplotlib.lines.Line2D object at 0x369c0a330&gt;, &lt;matplotlib.lines.Line2D object at 0x369c0b020&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x369c09790&gt;, &lt;matplotlib.lines.Line2D object at 0x369c09d00&gt;, &lt;matplotlib.lines.Line2D object at 0x369c0a750&gt;, &lt;matplotlib.lines.Line2D object at 0x369c0ac90&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x369253500&gt;, &lt;matplotlib.lines.Line2D object at 0x369c08710&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x369c09e50&gt;, &lt;matplotlib.lines.Line2D object at 0x369c0bd10&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x369c08bc0&gt;, &lt;matplotlib.lines.Line2D object at 0x369cb00b0&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>By examining the boxplot representing the distribution of sensitivity and specificity across the classes, we observe clear evidence of class imbalance. Sensitivity and specificity are not consistent across the classes. Specificity, which measures how well the model identifies true negatives, is very high for every class. This indicates that the model is effective at detecting instances that do not belong to a given class. However, sensitivity, which measures the true positive rate and reflects how well the model correctly predicts the make of a car for a specific brand, is not as high. This suggests that the model is not performing well for all classes.</p>
@@ -129,10 +134,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This technique, detailed in the methods section, essentially penalizes the model more for misclassifying the minority class than the majority class. By doing so, the model is encouraged to learn the patterns of the minority class more effectively, thereby enhancing its performance on the test set.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x2bc1c1820&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c1af0&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c3680&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c0650&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x2bc1c1d30&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c2060&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c0530&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c2360&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x2bc1c1520&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c3380&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x2bc1c0b60&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c28d0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x2bc1c30e0&gt;, &lt;matplotlib.lines.Line2D object at 0x2bc1c3890&gt;], 'means': []}</code></pre>
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x38f04a6f0&gt;, &lt;matplotlib.lines.Line2D object at 0x38f048380&gt;, &lt;matplotlib.lines.Line2D object at 0x38f048a70&gt;, &lt;matplotlib.lines.Line2D object at 0x38f049ca0&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x38f048860&gt;, &lt;matplotlib.lines.Line2D object at 0x38f048c80&gt;, &lt;matplotlib.lines.Line2D object at 0x38f048e60&gt;, &lt;matplotlib.lines.Line2D object at 0x38f049df0&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x38f049580&gt;, &lt;matplotlib.lines.Line2D object at 0x38f049760&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x38f049460&gt;, &lt;matplotlib.lines.Line2D object at 0x38f04a8a0&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x38f049700&gt;, &lt;matplotlib.lines.Line2D object at 0x38f04ac60&gt;], 'means': []}</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>As we can see the model is taking better care of the minority classes and overall the sensitivity is higher across the classes. The sensitivity and specificity are more consistent across the classes. The model is better at generalizing to new data. In our case, this method does not eliminate completely the issue of unbalanced classes. Given the structure of our data and the discrepancy of our classes, we will use this technique for the following neural networks and move on.</p>
@@ -142,7 +151,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We can now look at the evolution of the accuracy of our model during the training process with the following plot.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-12-5.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-12-5.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>As we can see, at each epoch, the accuracy is increasing and the loss is decreasing. The model is learning from the training data and improving its predictions.</p>
@@ -150,13 +163,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Performance of the model with weighted class:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 23.32%</code></pre>
+<pre><code>Final Training Accuracy: 78.86%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 34.83%</code></pre>
+<pre><code>Final Validation Accuracy: 72.99%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 34.58%</code></pre>
+<pre><code>Test Set Accuracy: 72.32%</code></pre>
 </div>
 </div>
 <p>Overall, the performance of the model is still good. However the quality can be improved. To address the issue of overfitting, we will introduce Dropout layers in the neural network.</p>
@@ -193,7 +206,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h5 class="anchored" data-anchor-id="selection-of-the-best-dropout-rate">Selection of the best dropout rate</h5>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-18-7.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-18-7.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can see that the model with a dropout rate of 0.1 has the best balance between reducing drastically the overfitting problem and keeping a good overall accuracy. This model has a good balance between training and validation accuracy, and it generalizes well to new data. It also eliminate the overfitting issue. We will use this dropout rate of 0.1 to train the final model that utilize class weights and dropout layers.</p>
@@ -202,26 +219,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h5 class="anchored" data-anchor-id="model-performance-1">Model performance</h5>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="results_neural_network_files/figure-html/unnamed-chunk-21-9.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="results_neural_network_files/figure-html/unnamed-chunk-21-9.png" class="img-fluid figure-img" width="960"></p>
+</figure>
 </div>
 </div>
-<p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work. The model does not need early stopping in our case (150 epochs) since the accuracies are not deacreasing and the loss is not increasing.</p>
+</div>
+<p>We see that the model with dropout layers performs better that the one without it. We reached a better accuracy on the validation set and the model is clearly not overfitting as much. It is interesting to note that the validation accuracy is higher than the training accuracy. This is a good sign that the model is generalizing well to new data. It is also interesting to note that, as predicted, we see that the validation accuracy is higher than the training accuracy. This is due to the way dropout layers work. The model does not need early stopping in our case (150 epochs) since the accuracies are not decreasing and the loss is not increasing.</p>
 <p><strong>Performance of the model with weighted class and dropout layers:</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Training Accuracy: 20.21%</code></pre>
+<pre><code>Final Training Accuracy: 70.43%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Validation Accuracy: 33.39%</code></pre>
+<pre><code>Final Validation Accuracy: 70.25%</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Set Accuracy: 32.77%</code></pre>
+<pre><code>Test Set Accuracy: 69.67%</code></pre>
 </div>
 </div>
-<p>Our final accuracy of our model are not as great as we had with our first model but the model that we are using is at least better at representing the data and generalizing to new data. We aslo computed the Cohen’s Kappa score which is a good indicator of the model’s performance. And as we can see, the model performs well.</p>
+<p>The final accuracy of our model is not as great as we had with our first model but the model that we are using is at least better at representing the data and generalizing to new data. We also computed the Cohen’s Kappa score which is a good indicator of the model’s performance. And as we can see, the model performs well.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Cohen's Kappa Score: 31.73%</code></pre>
+<pre><code>Cohen's Kappa Score: 69.16%</code></pre>
 </div>
 </div>
 </section>
@@ -311,10 +332,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -324,8 +362,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -337,7 +384,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -381,6 +551,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -406,6 +577,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -466,6 +663,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
