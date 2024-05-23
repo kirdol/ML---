@@ -25,7 +25,7 @@ abstract: |
  Our Machine Learning Final Project is aimed at developing a predictive model capable of identifying the make (i.e. the brand) of a vehicle based on its characteristics, including for example consumption, range, and fuel type. To achieve this, we employed advanced machine learning algorithms, specifically classification trees (CT) and neural networks (NN). Recognizing that certain vehicles might exhibit identical characteristics yet differ across other dimensions, we aimed to create a robust model proficient in accurately predicting a vehicle’s brand from its features. Additionally, we explored the potential of clustering our models using unsupervised learning techniques. This project not only reinforced our understanding of machine learning concepts but also demonstrated their practical applicability in addressing real-world problems.
 ---
 
-```{r Loading the packages, echo = FALSE, message = FALSE}
+```{r Loading the packages, echo = FALSE, message = FALSE, warning = FALSE}
 # loading all the necessary packages
 source(here::here("scripts/setup.R"))
 ```

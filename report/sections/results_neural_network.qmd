@@ -31,7 +31,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, cohen_kapp
 from sklearn.model_selection import KFold
 
 # Set random seed for reproducibility
-num_epochs = 150
+num_epochs = 500
 ```
 
 # Neural Networks
@@ -110,7 +110,7 @@ We used activation functions in the hidden layers to introduce non-linearity int
 * **batch_size:** 32 (Corresponds to the number of samples that the model processes before updating the weights.)
 * **validation_split:** 0.2 (Corresponds to the fraction of the training data to be used as validation data.)
 
-The model is trained for 5 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is kept to be used as a validation set.
+The model is trained for 150 epochs with a batch size of 32. The validation split is set to 0.2, which means that 20% of the training data is kept to be used as a validation set.
 
 ```{python, echo = FALSE, output = FALSE}
 # Compile the model
